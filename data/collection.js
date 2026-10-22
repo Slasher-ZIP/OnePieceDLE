@@ -136,7 +136,7 @@ const COLLECTION_CATEGORIES = [
     order: 170,
     fr: "Baroque Works",
     en: "Baroque Works",
-    members: [ "Crocodile", "Nico Robin", "vivi_miss_wednesday", "Bentham (Mr. 2)", "Daz Bonez (Mr. 1)", "Galdino (Mr. 3)", "Mr. 5", "Miss Valentine", "Mr. 4", "Miss Merry Christmas" ]
+    members: [ "Crocodile", "robin_pre", "vivi_miss_wednesday", "Bentham (Mr. 2)", "Daz Bonez (Mr. 1)", "Galdino (Mr. 3)", "Mr. 5", "Miss Valentine", "Mr. 4", "Miss Merry Christmas" ]
   },
   {
     id: "alabasta",
@@ -172,7 +172,7 @@ const COLLECTION_CATEGORIES = [
     order: 220,
     fr: "East Blue",
     en: "East Blue",
-    members: [ "buggy_eastblue", "Alvida", "Kuro", "Don Krieg", "Gin", "Axe Man Morgan", "Arlong", "Hachi", "Zeff", "Kaya", "Jango", "Curly Dadan", "Helmeppo", "coby_young", "Richie", "Mohji", "Cabaji", "Nojiko", "Genzo", "Belle-mère", "Kuina", "Gaimon"]
+    members: [ "buggy_eastblue", "Alvida", "Kuro", "Don Krieg", "Gin", "Axe Man Morgan", "Arlong", "Hachi", "Zeff", "Kaya", "Jango", "Curly Dadan", "helmeppo_pre", "coby_young", "Richie", "Mohji", "Cabaji", "Nojiko", "Genzo", "Belle-mère", "Kuina", "Gaimon"]
   },
   {
     id: "supernatural",
@@ -208,7 +208,7 @@ const COLLECTION_CATEGORIES = [
     order: 175,
     fr: "Water 7",
     en: "Water 7",
-    members: [ "Paulie", "Iceburg", "Tom", "Franky", "Rob Lucci", "Kaku", "Spandam", "Kalifa", "Blueno", "Jabra", "Kumadori", "Fukurou", "Kokoro" ]
+    members: [ "Paulie", "Iceburg", "Tom", "franky_pre", "Rob Lucci", "Kaku", "Spandam", "Kalifa", "Blueno", "Jabra", "Kumadori", "Fukurou", "Kokoro" ]
   },
   {
     id: "elbaf",

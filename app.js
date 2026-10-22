@@ -844,6 +844,23 @@ function updateCollectionUI() {
   renderCollectionGrid();
 }
 
+/** Visuel de l'interrupteur d'époque Mugiwara (track + knob + label). */
+function updateStrawhatEraToggle() {
+  const cb = document.getElementById("collectionStrawhatEra");
+  if (!cb) return;
+  const track = document.getElementById("strawhatEraTrack");
+  const knob = document.getElementById("strawhatEraKnob");
+  const label = document.getElementById("strawhatEraLabel");
+  const post = !!cb.checked;
+  if (track) track.classList.toggle("bg-amber-600", post);
+  if (track) track.classList.toggle("bg-slate-600", !post);
+  if (knob) knob.style.transform = post ? "translateX(20px)" : "translateX(0)";
+  if (label) {
+    label.textContent = post ? "Post-ellipse" : "Pré-ellipse";
+    label.className = "text-[11px] font-bold w-[92px] " + (post ? "text-sky-300" : "text-amber-300");
+  }
+}
+
 function renderCollectionGrid() {
   if (typeof syncCollectionRewards === "function") syncCollectionRewards();
 
@@ -854,6 +871,9 @@ function renderCollectionGrid() {
   const catFilter = document.getElementById("collectionAffFilter")?.value || "all";
   const searchRaw = (document.getElementById("collectionSearch")?.value || "").trim();
   const search = typeof cleanString === "function" ? cleanString(searchRaw) : searchRaw.toLowerCase();
+  // Époque de la page Mugiwara : par défaut les formes pré-ellipse (elles sont
+  // forcées à 100 % par onlyAsVariant, donc naturellement acquises en jouant).
+  const strawhatPost = !!document.getElementById("collectionStrawhatEra")?.checked;
   const unlocked = new Set(getUnlockedNames());
   const lang = currentLang;
 
@@ -865,13 +885,29 @@ function renderCollectionGrid() {
   grid.innerHTML = "";
   grid.className = "flex-1 overflow-y-auto p-3 sm:p-4 space-y-5 content-start";
 
+  // L'interrupteur d'époque ne concerne que la page Mugiwara : masqué par
+  // défaut, ré-affiché par la boucle si la page est réellement rendue.
+  const eraWrap = document.getElementById("strawhatEraWrap");
+  if (eraWrap) eraWrap.classList.add("hidden");
+
   let any = false;
 
   categories.forEach(cat => {
     if (catFilter !== "all" && cat.id !== catFilter) return;
 
+    // L'interrupteur d'époque ne concerne que la page Mugiwara
+    if (eraWrap && cat.id === "strawhat") eraWrap.classList.remove("hidden");
+
     let members = (cat.members || [])
-      .map(n => (typeof resolveCollectionMember === "function" ? resolveCollectionMember(n) : byName.get(n)))
+      .map(n => {
+        // Mugiwara : afficher la forme pré (défaut) ou post selon l'interrupteur.
+        // Les variantes *_pre n'ont pas d'unlock -> toujours considérées débloquées.
+        if (cat.id === "strawhat" && typeof CHARACTER_VARIANTS !== "undefined" && !strawhatPost) {
+          const pre = CHARACTER_VARIANTS.find(v => v.baseName === n && /_pre$/.test(v.id));
+          if (pre) n = pre.id;
+        }
+        return (typeof resolveCollectionMember === "function" ? resolveCollectionMember(n) : byName.get(n));
+      })
       .filter(Boolean);
 
     // Récompenses (Merry, Sunny…) : visibles UNIQUEMENT si déjà débloquées — jamais en silhouette
@@ -1008,6 +1044,9 @@ function renderCollectionGrid() {
 
     grid.appendChild(page);
   });
+
+  // Si la page Mugiwara n'a pas été rendue (filtre), masquer l'interrupteur
+  if (eraWrap && !grid.querySelector('[data-cat="strawhat"]')) eraWrap.classList.add("hidden");
 
   if (!any) {
     grid.innerHTML = `<p class="text-center text-slate-500 text-sm py-10">${lang === "fr" ? "Aucun personnage" : "No characters"}</p>`;
@@ -1405,10 +1444,6 @@ function resolveCharacter(baseChar, storyId) {
   // Deep-ish merge for nested objects; null means "unknown at this point"
   const resolved = Object.assign({}, baseChar);
   for (const k of Object.keys(merged)) {
-    // L'art d'époque (image en history) ne s'applique qu'à la forme NORMALE :
-    // une alt/shiny tirée garde l'image de sa variante (sinon l'histoire
-    // écraserait l'art shiny/alt par l'art d'époque de la base).
-    if (k === "image" && baseChar._variantId) continue;
     if (merged[k] !== null && typeof merged[k] === "object" && !Array.isArray(merged[k])) {
       resolved[k] = Object.assign({}, baseChar[k] || {}, merged[k]);
     } else {
@@ -3844,6 +3879,15 @@ document.getElementById("profileBtn").addEventListener("click", openProfileModal
   if (cs) {
     cs.addEventListener("input", () => { renderCollectionGrid(); });
   }
+  // Interrupteur d'époque de la page Mugiwara (pré-ellipse / post-ellipse)
+  const era = document.getElementById("collectionStrawhatEra");
+  if (era) {
+    era.addEventListener("change", () => {
+      updateStrawhatEraToggle();
+      renderCollectionGrid();
+    });
+    updateStrawhatEraToggle();
+  }
   setupStoryHelp();
   // click backdrop to close
   const modal = document.getElementById("collectionModal");
@@ -4048,9 +4092,9 @@ function setAdminUnlocked(arr) {
 }
 
 // Redéfinir getUnlockedNames pour respecter le sandbox (après définition originale — on override)
-/* Navires (cartes notGuessable, jamais tirables) : déblocage par l'histoire.
- * Merry se connaît dès East Blue (arc Syrup), Sunny à partir de Water 7 —
- * comme un perso classique dont l'arc est atteint par le filtre Histoire. */
+/* Navires (Going Merry / Thousand Sunny) : cartes à part entière, déblocage
+ * par l'histoire — Merry se connaît dès East Blue (arc Syrup), Sunny à partir
+ * de Water 7, comme un perso classique dont l'arc est atteint. */
 function storyUnlockedShips() {
   if (currentStory === "all") return ["Going Merry", "Thousand Sunny"];
   const maxArc = (typeof STORY_POINTS !== "undefined" && STORY_POINTS[currentStory]) ? STORY_POINTS[currentStory].maxArc : null;

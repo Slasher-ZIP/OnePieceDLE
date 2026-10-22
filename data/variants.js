@@ -488,8 +488,6 @@ const CHARACTER_VARIANTS = [
     isShiny: true,
     overrides: {}
   },
-
-
   {
     id: "bigmom_rocks",
     // Passée en alt tirable (au lieu d'être la récompense de la page Rocks)
@@ -524,7 +522,25 @@ const CHARACTER_VARIANTS = [
     isShiny: true,
     overrides: {}
   },
-
+  {
+    id: "robin_pre",
+    baseName: "Nico Robin",
+    displayName: {
+      fr: "Nico Robin",
+      en: "Nico Robin"
+    },
+    aliases: [ "ROBIN PRE ELLIPSE", "PRE ELLIPSE ROBIN", "ROBIN AVANT ELLIPSE", "ROBIN PRE SKIP", "PRE TIMESKIP ROBIN", "MISS ALL SUNDAY" ],
+    image: "img/alt/Robin_pre.webp",
+    stories: [ "alabasta", "skypiea", "water7", "thriller", "marineford" ],
+    forceInPool: true,
+    // Repassée en alt normal tirable : sans ça, une variante onlyAsVariant
+    // serait forcée à 100 % à chaque tirage de Robin.
+    onlyAsVariant: false,
+    rarity: 4,
+    isShiny: false,
+    // Alt normal tirable (la quête « Je veux vivre ! » porte sur robin_live)
+    overrides: {}
+  },
   {
     // Forme démoniaque (Demonio Fleur) : les bras de Robin se transforment en
     // démons — révélée à Thriller Bark, réutilisée à Wano contre Black Maria.
@@ -623,9 +639,60 @@ const CHARACTER_VARIANTS = [
     isShiny: false,
     overrides: {}
   },
-
-
-
+  {
+    // Helmeppo pre-ellipse : encore le fils de Morgan, look "flamboyant" de
+    // Romance Dawn. Jusqu'à Skypiea : à Water 7 il est entraîné par Garp (ch. 432).
+    id: "helmeppo_pre",
+    baseName: "Helmeppo",
+    displayName: {
+      fr: "Helmeppo",
+      en: "Helmeppo"
+    },
+    aliases: [ "HELMEPPO PRE ELLIPSE", "PRE ELLIPSE HELMEPPO", "HELMEPPO ENFANT", "YOUNG HELMEPPO", "MORGAN FILS" ],
+    image: "img/alt/Helmeppo_pre.webp",
+    stories: [ "eastblue", "alabasta", "skypiea" ],
+    forceInPool: true,
+    onlyAsVariant: true,
+    rarity: 3,
+    isShiny: false,
+    overrides: {}
+  },
+  {
+    // Chopper n'a pas encore le bandeau bleu de l'erebre post-ellipse
+    id: "chopper_pre",
+    baseName: "Tony Tony Chopper",
+    displayName: {
+      fr: "Tony Tony Chopper",
+      en: "Tony Tony Chopper"
+    },
+    aliases: [ "CHOPPER PRE ELLIPSE", "PRE ELLIPSE CHOPPER", "CHOPPER AVANT ELLIPSE", "CHOPPER PETIT" ],
+    image: "img/alt/Chopper_pre.webp",
+    // Chopper entre dans l'histoire à Alabasta (Royaume de Drum) : pas de
+    // forceInPool, son arc le place déjà dans le pool dès alabasta.
+    stories: [ "alabasta", "skypiea", "water7", "thriller", "marineford" ],
+    onlyAsVariant: true,
+    rarity: 3,
+    isShiny: false,
+    overrides: {}
+  },
+  {
+    // Franky n'est pas encore "Super" (pas les epaules de cyborg)
+    id: "franky_pre",
+    baseName: "Franky",
+    displayName: {
+      fr: "Franky",
+      en: "Franky"
+    },
+    aliases: [ "FRANKY PRE ELLIPSE", "PRE ELLIPSE FRANKY", "FRANKY AVANT ELLIPSE", "FRANKY SANS SUPER" ],
+    image: "img/alt/Franky_pre.webp",
+    // Franky n'apparaît qu'à Water 7 (son arc) : avant, il n'existe pas.
+    // Pas de forceInPool — il entre dans le pool naturellement à water7.
+    stories: [ "water7", "thriller", "marineford" ],
+    onlyAsVariant: true,
+    rarity: 3,
+    isShiny: false,
+    overrides: {}
+  },
   {
     id: "chopper_shiny",
     baseName: "Tony Tony Chopper",
@@ -635,7 +702,7 @@ const CHARACTER_VARIANTS = [
     },
     aliases: [ "CHOPPER SHINY", "SHINY CHOPPER" ],
     image: "img/shiny/Chopper_shiny.webp",
-    // époque pré-ellipse : la base affiche l'art d'époque (history.image)
+    // s'empile sur chopper_pre (forme forcée) quand celui-ci est actif
     stories: [ "alabasta", "skypiea", "water7", "thriller", "marineford" ],
     rarity: 4,
     isShiny: true,
@@ -699,9 +766,54 @@ const CHARACTER_VARIANTS = [
     isShiny: false,
     overrides: {}
   },
-
-
-
+  {
+    // Zoro pré-ellipse (sans cicatrice) : remplace jusqu'à Marineford inclus
+    id: "zoro_pre",
+    baseName: "Roronoa Zoro",
+    displayName: {
+      fr: "Roronoa Zoro",
+      en: "Roronoa Zoro"
+    },
+    aliases: [ "ZORO PRE ELLIPSE", "PRE ELLIPSE ZORO", "ZORO AVANT ELLIPSE" ],
+    image: "img/alt/ZoroPre.webp",
+    stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
+    onlyAsVariant: true,
+    rarity: 3,
+    isShiny: false,
+    overrides: {}
+  },
+  {
+    // Sanji pré-ellipse : remplace jusqu'à Marineford inclus
+    id: "sanji_pre",
+    baseName: "Vinsmoke Sanji",
+    displayName: {
+      fr: "Vinsmoke Sanji",
+      en: "Vinsmoke Sanji"
+    },
+    aliases: [ "SANJI PRE ELLIPSE", "PRE ELLIPSE SANJI", "SANJI AVANT ELLIPSE" ],
+    image: "img/alt/SanjiPre.webp",
+    stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
+    onlyAsVariant: true,
+    rarity: 3,
+    isShiny: false,
+    overrides: {}
+  },
+  {
+    // Nami pré-ellipse (cheveux courts) : remplace jusqu'à Marineford inclus
+    id: "nami_pre",
+    baseName: "Nami",
+    displayName: {
+      fr: "Nami",
+      en: "Nami"
+    },
+    aliases: [ "NAMI PRE ELLIPSE", "PRE ELLIPSE NAMI", "NAMI CHEVEUX COURTS" ],
+    image: "img/alt/NamiPre.webp",
+    stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
+    onlyAsVariant: true,
+    rarity: 3,
+    isShiny: false,
+    overrides: {}
+  },
   {
     // Cracker dans son armure biscuit (son vrai corps est la carte normale)
     id: "cracker_armor",
@@ -1191,7 +1303,23 @@ const CHARACTER_VARIANTS = [
     isShiny: false,
     overrides: {}
   },
-
+  {
+    // Brook pré-ellipse (Thriller Bark → Guerre au Sommet, violon, pas de lunettes)
+    // : coexiste à Thriller Bark et Marineford (avec la forme actuelle et Rumbar)
+    id: "brook_pre",
+    baseName: "Brook",
+    displayName: {
+      fr: "Brook",
+      en: "Brook"
+    },
+    aliases: [ "BROOK PRE ELLIPSE", "PRE TIMESKIP BROOK", "BROOK AVANT", "BROOK THRILLER BARK" ],
+    image: "img/alt/BrookPre.webp",
+    stories: [ "thriller", "marineford" ],
+    onlyAsVariant: false,
+    rarity: 3,
+    isShiny: false,
+    overrides: {}
+  },
   {
     // Nojiko ancien design (cheveux courts, Arlong Park → Guerre au Sommet) :
     // remplace le nouveau design (ch. 629 / ép. 1149, saga Hommes-Poissons) avant Fishman
@@ -1302,8 +1430,38 @@ const CHARACTER_VARIANTS = [
     isShiny: true,
     overrides: {}
   },
-
-
+  {
+    // Luffy pré-ellipse (Sabaody, visage plus jeune) : remplace jusqu'à Marineford inclus
+    id: "luffy_pre",
+    baseName: "Monkey D. Luffy",
+    displayName: {
+      fr: "Monkey D. Luffy",
+      en: "Monkey D. Luffy"
+    },
+    aliases: [ "LUFFY PRE ELLIPSE", "PRE TIMESKIP LUFFY", "LUFFY AVANT ELLIPSE" ],
+    image: "img/alt/LuffyPre.webp",
+    stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
+    onlyAsVariant: true,
+    rarity: 3,
+    isShiny: false,
+    overrides: {}
+  },
+  {
+    // Usopp pré-ellipse (sans muscles, short de Skypiea) : remplace jusqu'à Marineford inclus
+    id: "usopp_pre",
+    baseName: "Usopp",
+    displayName: {
+      fr: "Usopp",
+      en: "Usopp"
+    },
+    aliases: [ "USOPP PRE ELLIPSE", "PRE TIMESKIP USOPP", "USOPP AVANT ELLIPSE" ],
+    image: "img/alt/UsoppPre.webp",
+    stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
+    onlyAsVariant: true,
+    rarity: 3,
+    isShiny: false,
+    overrides: {}
+  },
   {
     // Shanks AVEC son bras (Romance Dawn, sacrifice pour Luffy) : remplace à East Blue,
     // débloqué par 10 victoires en East Blue en Extrême (« Parié sur la nouvelle ère »)
@@ -1343,7 +1501,7 @@ const CHARACTER_VARIANTS = [
     minStory: "eastblue",
     rarity: 3,
     isShiny: false,
-    unlock: { drawn: [ "Monkey D. Luffy", "Nami", "nami_young", "nojiko_old", "Belle-mère", "Genzo", "Roronoa Zoro", "Vinsmoke Sanji", "Usopp", "Arlong" ] },
+    unlock: { drawn: [ "luffy_pre", "nami_pre", "nami_young", "nojiko_old", "Belle-mère", "Genzo", "zoro_pre", "sanji_pre", "usopp_pre", "Arlong" ] },
     questName: {
       fr: "Marche vers Arlong Park",
       en: "Walk to Arlong Park"
