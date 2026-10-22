@@ -13,7 +13,7 @@ const CHARACTER_VARIANTS = [
     aliases: [ "LAW ENFANT", "YOUNG LAW", "LAW KID", "LAW CHILD" ],
     image: "img/alt/Law_young.webp",
     stories: [ "dressrosa" ],
-    rarity: 4,
+    rarity: 3,
     isShiny: false,
     // Alt normal tirable (quête « Corazon » retirée de la liste officielle)
     overrides: {}
@@ -68,7 +68,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/Ace_young.webp",
     stories: [ "marineford" ],
     onlyAsVariant: false,
-    rarity: 4,
+    rarity: 3,
     isShiny: false,
     overrides: {}
   },
@@ -97,7 +97,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/luffy_young.webp",
     stories: [ "eastblue", "marineford" ],
     onlyAsVariant: true,
-    rarity: 3,
+    rarity: 2,
     isShiny: false,
     overrides: {}
   },
@@ -220,7 +220,7 @@ const CHARACTER_VARIANTS = [
     aliases: [ "GEAR 5", "GEAR5", "LUFFY GEAR 5", "NIKA", "JOYBOY" ],
     image: "img/alt/Gear5.webp",
     minStory: "wano",
-    rarity: 5,
+    rarity: 6,
     isShiny: true,
     unlock: {
       winsWanoEx: 50
@@ -689,7 +689,7 @@ const CHARACTER_VARIANTS = [
     // Pas de forceInPool — il entre dans le pool naturellement à water7.
     stories: [ "water7", "thriller", "marineford" ],
     onlyAsVariant: true,
-    rarity: 3,
+    rarity: 2,
     isShiny: false,
     overrides: {}
   },
@@ -778,7 +778,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/ZoroPre.webp",
     stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
     onlyAsVariant: true,
-    rarity: 3,
+    rarity: 1,
     isShiny: false,
     overrides: {}
   },
@@ -794,7 +794,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/SanjiPre.webp",
     stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
     onlyAsVariant: true,
-    rarity: 3,
+    rarity: 1,
     isShiny: false,
     overrides: {}
   },
@@ -810,7 +810,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/NamiPre.webp",
     stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
     onlyAsVariant: true,
-    rarity: 3,
+    rarity: 1,
     isShiny: false,
     overrides: {}
   },
@@ -1139,7 +1139,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/Bonney_young.webp",
     stories: [ "all" ],
     onlyAsVariant: false,
-    rarity: 4,
+    rarity: 3,
     isShiny: false,
     overrides: {}
   },
@@ -1171,7 +1171,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/ZoroYoung.webp",
     stories: [ "eastblue" ],
     onlyAsVariant: true,
-    rarity: 3,
+    rarity: 2,
     isShiny: false,
     overrides: {}
   },
@@ -1316,7 +1316,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/BrookPre.webp",
     stories: [ "thriller", "marineford" ],
     onlyAsVariant: false,
-    rarity: 3,
+    rarity: 2,
     isShiny: false,
     overrides: {}
   },
@@ -1442,7 +1442,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/LuffyPre.webp",
     stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
     onlyAsVariant: true,
-    rarity: 3,
+    rarity: 1,
     isShiny: false,
     overrides: {}
   },
@@ -1458,7 +1458,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/UsoppPre.webp",
     stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
     onlyAsVariant: true,
-    rarity: 3,
+    rarity: 1,
     isShiny: false,
     overrides: {}
   },
