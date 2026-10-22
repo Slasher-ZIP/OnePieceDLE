@@ -3166,6 +3166,14 @@ function makeGuess(character) {
         }
       });
     }
+    // Quêtes portées par des cartes bases (navires) : la carte débloquée EST la récompense
+    if (typeof CHARACTERS !== "undefined") {
+      CHARACTERS.forEach(c => {
+        if (c.unlock && c.questName && isVariantUnlocked(c)) {
+          if (unlockCharacter(c.name)) newlyUnlockedQuests.push(c);
+        }
+      });
+    }
     let justUnlocked = unlockCharacter(answer.name);
     // Forme forcée empilée d'un shiny : les deux ids doivent être débloqués
     if (answer._shinyId) justUnlocked = unlockCharacter(answer._shinyId) || justUnlocked;
@@ -3386,7 +3394,7 @@ function showQuestRewardModal(variants) {
   }
   if (list) {
     list.innerHTML = variants.map(v => {
-      const name = (v.displayName && (v.displayName[lang] || v.displayName.fr || v.displayName.en)) || v.id;
+      const name = (v.displayName && (v.displayName[lang] || v.displayName.fr || v.displayName.en)) || v.id || v.name;
       const img = v.image
         ? `<img src="${v.image}" alt="${name}" class="w-full h-full object-cover object-top" onerror="this.style.display='none'" />`
         : `<span class="text-3xl">✦</span>`;
@@ -3508,6 +3516,9 @@ const QUEST_CHRONO_ORDER = [
   "luffy_gear3",
   "usopp_sogeking",
   "robin_live",
+  // Navires : récompenses de quête (la carte base EST la récompense)
+  "Going Merry",
+  "Thousand Sunny",
   // Thriller Bark
   "thriller_bark",
   "zoro_nothing",
@@ -3528,7 +3539,7 @@ const QUEST_CHRONO_ORDER = [
 
 /** Rang chronologique d'une quête (inconnue → fin de son arc). */
 function questChronoRank(v) {
-  const i = QUEST_CHRONO_ORDER.indexOf(v.id);
+  const i = QUEST_CHRONO_ORDER.indexOf(v.id || v.name);
   if (i >= 0) return i;
   const sid = v.minStory || (v.stories && v.stories[0]) || "all";
   const keys = typeof STORY_POINTS !== "undefined" ? Object.keys(STORY_POINTS) : [];
@@ -3543,8 +3554,11 @@ function renderQuestsList() {
   const lang = (typeof currentLang !== "undefined" && currentLang) || "fr";
   const t = (typeof TRANSLATIONS !== "undefined" && TRANSLATIONS[lang]) ? TRANSLATIONS[lang] : {};
   const unlocked = new Set((typeof getUnlockedNames === "function" ? getUnlockedNames() : []));
+  // Quêtes portées par des cartes bases (navires Merry/Sunny) : la carte EST la récompense
+  const baseQuests = (typeof CHARACTERS !== "undefined" ? CHARACTERS : []).filter(c => c.unlock && c.questName);
   const quests = CHARACTER_VARIANTS
     .filter(v => v.unlock)
+    .concat(baseQuests)
     .slice()
     .sort((a, b) => questChronoRank(a) - questChronoRank(b));
   if (!quests.length) {
@@ -3552,7 +3566,7 @@ function renderQuestsList() {
     return;
   }
   list.innerHTML = quests.map(v => {
-    const isDone = unlocked.has(v.id);
+    const isDone = unlocked.has(v.id || v.name);
     const prog = questProgress(v);
     // Nom créatif de quête si défini (caché tant que verrouillé : ??? anti-spoiler)
     const qn = (v.questName && (v.questName[lang] || v.questName.fr || v.questName.en)) || null;
@@ -3560,7 +3574,7 @@ function renderQuestsList() {
     // le shiny de Roger). Permet de renommer la quête sans toucher à l'étiquette
     // de la carte dans la collection (displayName).
     const baseName = (v.questSubject && (v.questSubject[lang] || v.questSubject.fr || v.questSubject.en))
-      || (v.displayName && (v.displayName[lang] || v.displayName.fr || v.displayName.en)) || v.id;
+      || (v.displayName && (v.displayName[lang] || v.displayName.fr || v.displayName.en)) || v.id || v.name;
     const name = qn ? (isDone ? joinQuestName(baseName, qn) : qn) : baseName;
     const img = v.image
       ? `<img src="${v.image}" alt="" draggable="false" class="w-full h-full object-cover" style="object-position:center top;${isDone ? "" : "filter:brightness(0.55) opacity(0.6);"}" onerror="this.style.display='none'" />`
@@ -3978,6 +3992,12 @@ function syncGearUnlocksFromWins() {
   CHARACTER_VARIANTS.forEach(v => {
     if (v.unlock && isVariantUnlocked(v)) unlockCharacter(v.id);
   });
+  // Quêtes portées par des cartes bases (navires Merry/Sunny)
+  if (typeof CHARACTERS !== "undefined") {
+    CHARACTERS.forEach(c => {
+      if (c.unlock && c.questName && isVariantUnlocked(c)) unlockCharacter(c.name);
+    });
+  }
 }
 
 (async () => {
@@ -4092,42 +4112,15 @@ function setAdminUnlocked(arr) {
 }
 
 // Redéfinir getUnlockedNames pour respecter le sandbox (après définition originale — on override)
-/* Navires (Going Merry / Thousand Sunny) : cartes à part entière, déblocage
- * par l'histoire — Merry se connaît dès East Blue (arc Syrup), Sunny à partir
- * de Water 7, comme un perso classique dont l'arc est atteint. */
-function storyUnlockedShips() {
-  if (currentStory === "all") return ["Going Merry", "Thousand Sunny"];
-  const maxArc = (typeof STORY_POINTS !== "undefined" && STORY_POINTS[currentStory]) ? STORY_POINTS[currentStory].maxArc : null;
-  if (!maxArc) return [];
-  const maxIdx = ARCS_ORDER.indexOf(maxArc);
-  if (maxIdx < 0) return [];
-  const out = [];
-  ["Going Merry", "Thousand Sunny"].forEach(n => {
-    const c = CHARACTERS.find(x => x.name === n);
-    if (!c) return;
-    const idx = ARCS_ORDER.indexOf(c.arc);
-    if (idx !== -1 && idx <= maxIdx) out.push(n);
-  });
-  return out;
-}
-
 function getUnlockedNames() {
-  let base;
   if (isAdmin() && isAdminSandbox()) {
-    base = getAdminUnlocked().slice();
-  } else {
-    const local = typeof readLocalUnlocked === "function" ? readLocalUnlocked() : (() => { try { return JSON.parse(localStorage.getItem("opdle_unlocked") || "[]"); } catch (e) { return []; } })();
-    if (currentUser && Array.isArray(currentUser.unlocked)) {
-      base = typeof mergeUnlocked === "function" ? mergeUnlocked(currentUser.unlocked, local) : local.slice();
-    } else {
-      base = local.slice();
-    }
+    return getAdminUnlocked().slice();
   }
-  try {
-    const ships = storyUnlockedShips();
-    ships.forEach(n => { if (!base.includes(n)) base.push(n); });
-  } catch (e) {}
-  return base;
+  const local = typeof readLocalUnlocked === "function" ? readLocalUnlocked() : (() => { try { return JSON.parse(localStorage.getItem("opdle_unlocked") || "[]"); } catch (e) { return []; } })();
+  if (currentUser && Array.isArray(currentUser.unlocked)) {
+    return typeof mergeUnlocked === "function" ? mergeUnlocked(currentUser.unlocked, local) : local.slice();
+  }
+  return local.slice();
 }
 
 function unlockCharacter(name) {
@@ -4328,8 +4321,9 @@ function resetQuestProgressAll() {
   // Big Mom Rocks / Kaido mi-dragon resteraient acquises malgré le reset.
   try {
     const quests = CHARACTER_VARIANTS.filter(v => v.unlock && v.collectionOnly);
-    // 1) Les ids des cartes de quête elles-mêmes
-    const questIds = quests.map(v => v.id);
+    // 1) Les ids des cartes de quête elles-mêmes + cartes bases portant une quête (navires)
+    const questIds = quests.map(v => v.id)
+      .concat((typeof CHARACTERS !== "undefined" ? CHARACTERS : []).filter(c => c.unlock && c.questName).map(c => c.name));
     // 2) Les membres des pages d'album dont dépend une quête collectionComplete
     //    (+ Merry, dont la condition est dérivée des mêmes débloquages).
     //    Sans ça, isCategoryCollectionComplete resterait vrai et la carte

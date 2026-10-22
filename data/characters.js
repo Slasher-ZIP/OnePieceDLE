@@ -7758,7 +7758,14 @@ const CHARACTERS = [
     titre: { fr: "Aucun", en: "None" },
     age: null,
     height: null,
-    rarity: 4
+    rarity: 4,
+    questName: {
+      fr: "Merci Merry",
+      en: "Thank you Merry"
+    },
+    // Récompense de quête : les 8 Mugiwara pré-ellipse possédés (formes pre)
+    unlock: { hasVariants: [ "zoro_pre", "nami_pre", "franky_pre", "sanji_pre", "chopper_pre", "brook_pre", "luffy_pre", "usopp_pre" ] },
+    notGuessable: true
   },
   {
     name: "Thousand Sunny",
@@ -7783,7 +7790,14 @@ const CHARACTERS = [
     titre: { fr: "Aucun", en: "None" },
     age: null,
     height: null,
-    rarity: 4
+    rarity: 4,
+    questName: {
+      fr: "Le navire des rêves",
+      en: "Ship of Dreams"
+    },
+    // Récompense de quête : la page Mugiwara de l'album complète
+    unlock: { collectionComplete: "strawhat" },
+    notGuessable: true
   },
   {
     name: "Kokoro",
