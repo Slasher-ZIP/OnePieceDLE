@@ -3520,7 +3520,7 @@ const QUEST_CHRONO_ORDER = [
   "Going Merry",
   "Thousand Sunny",
   // Thriller Bark
-  "thriller_bark",
+  "Thriller Bark",
   "zoro_nothing",
   // Marineford
   "whitebeard_reveal",
@@ -3528,7 +3528,7 @@ const QUEST_CHRONO_ORDER = [
   "luffy_sabo",
   "luffy_gear4_bounceman",
   // Whole Cake
-  "bigmom_ship",
+  "Queen Mama Chanter",
   "luffy_gear4_snakeman",
   // Wano
   "kaido_hybrid",

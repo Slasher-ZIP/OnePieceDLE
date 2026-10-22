@@ -15,7 +15,7 @@ const COLLECTION_CATEGORIES = [
     order: 13,
     fr: "Navires",
     en: "Ships",
-    members: [ "Going Merry", "Thousand Sunny" ]
+    members: [ "Going Merry", "Thousand Sunny", "Thriller Bark", "Queen Mama Chanter" ]
   },
   {
     id: "warlords",

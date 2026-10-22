@@ -7800,6 +7800,60 @@ const CHARACTERS = [
     notGuessable: true
   },
   {
+    name: "Thriller Bark",
+    image: "img/ThrillerBark.webp",
+    aliases: [
+  "THRILLER BARK",
+  "LE PLUS GRAND NAVIRE",
+  "THE BIGGEST SHIP",
+  "PLUS GRAND NAVIRE DU MONDE"
+],
+    gender: { fr: "Aucun", en: "None" },
+    affiliation: { fr: "Pirates de Thriller Bark", en: "Thriller Bark Pirates" },
+    fruit: { fr: "Aucun", en: "None" },
+    haki: { fr: "Aucun", en: "None" },
+    prime: 0,
+    arc: "Thriller Bark",
+    titre: { fr: "Aucun", en: "None" },
+    age: null,
+    height: null,
+    rarity: 4,
+    questName: {
+      fr: "Le plus grand navire du monde",
+      en: "The Biggest Ship in the Whole World"
+    },
+    // Récompense de quête : la page Pirates de Thriller Bark de l'album complète
+    unlock: { collectionComplete: "moria" },
+    notGuessable: true
+  },
+  {
+    name: "Queen Mama Chanter",
+    image: "img/BigMomShip.webp",
+    aliases: [
+  "QUEEN MAMA CHANTER",
+  "GRANDE MERE CHANTERELLE",
+  "LE NAVIRE DE BIG MOM",
+  "MAMA CHANTER"
+],
+    gender: { fr: "Aucun", en: "None" },
+    affiliation: { fr: "Pirates de Big Mom", en: "Big Mom Pirates" },
+    fruit: { fr: "Aucun", en: "None" },
+    haki: { fr: "Aucun", en: "None" },
+    prime: 0,
+    arc: "Whole Cake Island",
+    titre: { fr: "Aucun", en: "None" },
+    age: null,
+    height: null,
+    rarity: 4,
+    questName: {
+      fr: "Le navire de Big Mom",
+      en: "Big Mom's Ship"
+    },
+    // Récompense de quête : la page Famille Charlotte de l'album complète
+    unlock: { collectionComplete: "bigmom" },
+    notGuessable: true
+  },
+  {
     name: "Kokoro",
     image: "img/Kokoro.webp",
     aliases: [

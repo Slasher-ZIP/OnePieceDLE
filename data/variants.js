@@ -536,7 +536,7 @@ const CHARACTER_VARIANTS = [
     // Repassée en alt normal tirable : sans ça, une variante onlyAsVariant
     // serait forcée à 100 % à chaque tirage de Robin.
     onlyAsVariant: false,
-    rarity: 4,
+    rarity: 2,
     isShiny: false,
     // Alt normal tirable (la quête « Je veux vivre ! » porte sur robin_live)
     overrides: {}
@@ -671,7 +671,7 @@ const CHARACTER_VARIANTS = [
     // forceInPool, son arc le place déjà dans le pool dès alabasta.
     stories: [ "alabasta", "skypiea", "water7", "thriller", "marineford" ],
     onlyAsVariant: true,
-    rarity: 3,
+    rarity: 2,
     isShiny: false,
     overrides: {}
   },
@@ -1637,36 +1637,6 @@ const CHARACTER_VARIANTS = [
     isShiny: false,
     unlock: { hasCharacters: ["Monkey D. Luffy","Sabo","Franky","Cavendish","Don Chinjao","Jesus Burgess","Rebecca","Diamante","Bellamy","Kyros","Bartolomeo","Hajrudin","Sai","Ideo","Orlumbus","Elizabello II","Gladius","Baby 5"] },
     questName: { fr: "Les frères à nouveau réunis", en: "Brothers Once Again" },
-    overrides: {}
-  },
-  {
-    id: "thriller_bark",
-    collectionOnly: true,
-    baseName: "Gecko Moria",
-    displayName: { fr: "Thriller Bark", en: "Thriller Bark" },
-    aliases: ["THRILLER BARK","LE PLUS GRAND NAVIRE","THE BIGGEST SHIP","PLUS GRAND NAVIRE DU MONDE"],
-    image: "img/ThrillerBark.webp",
-    minStory: "thriller",
-    rarity: 4,
-    isShiny: false,
-    unlock: { collectionComplete: "moria" },
-    albumCategories: ["ships"],
-    questName: { fr: "Le plus grand navire du monde", en: "The Biggest Ship in the Whole World" },
-    overrides: {}
-  },
-  {
-    id: "bigmom_ship",
-    collectionOnly: true,
-    baseName: "Big Mom",
-    displayName: { fr: "Queen Mama Chanter", en: "Queen Mama Chanter" },
-    aliases: ["QUEEN MAMA CHANTER","GRANDE MERE CHANTERELLE","LE NAVIRE DE BIG MOM","MAMA CHANTER"],
-    image: "img/BigMomShip.webp",
-    minStory: "wholecake",
-    rarity: 4,
-    isShiny: false,
-    unlock: { collectionComplete: "bigmom" },
-    albumCategories: ["ships"],
-    questName: { fr: "Le navire de Big Mom", en: "Big Mom's Ship" },
     overrides: {}
   },
   {
