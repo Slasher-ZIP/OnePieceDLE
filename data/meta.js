@@ -245,24 +245,27 @@ const RARITY_LEGENDARY = new Set([
 ]);
 // 5 = Mythique : légendes mondiales connues de nom, jamais croisées
 const RARITY_MYTHIC = new Set([
+  "Big Mom",
+  "Buggy",
   "Edward Newgate",
   "Emet",
   "Gol D. Roger",
+  "Kaido",
   "Kozuki Oden",
+  "Marshall D. Teach",
   "Monkey D. Dragon",
   "Ryuma",
   "Scopper Gaban",
+  "Shanks",
   "Shiki",
   "Silvers Rayleigh"
 ]);
-// 4 = Épique : sommets de puissance ET de notoriété (Yonko, amiraux…)
+// 4 = Épique : amiraux, commandants, corsaires majeurs…
 const RARITY_EPIC = new Set([
   "Aramaki",
   "Bartholomew Kuma",
-  "Big Mom",
   "Boa Hancock",
   "Borsalino",
-  "Buggy",
   "Catarina Devon",
   "Charlotte Katakuri",
   "Donquixote Doflamingo",
@@ -270,11 +273,9 @@ const RARITY_EPIC = new Set([
   "Dr. Vegapunk",
   "Dracule Mihawk",
   "Issho",
-  "Kaido",
   "King",
   "Kuzan",
   "Marco",
-  "Marshall D. Teach",
   "Monkey D. Garp",
   "Queen",
   "Rob Lucci",
@@ -285,7 +286,6 @@ const RARITY_EPIC = new Set([
   "Saint Topman Warcury",
   "Sakazuki",
   "Sengoku",
-  "Shanks",
   "Uta"
 ]);
 // 3 = Rare : milieu du panier — notables mais exposés, ou obscurs mais incontournables
@@ -437,6 +437,7 @@ const RARITY_UNCOMMON = new Set([
   "Igaram",
   "Inazuma",
   "Jango",
+  "Jinbe",
   "Kawamatsu",
   "Kaya",
   "Kikunojo",
@@ -492,7 +493,6 @@ const RARITY_COMMON = new Set([
   "Genzo",
   "Gin",
   "Helmeppo",
-  "Jinbe",
   "Karoo",
   "Kuro",
   "Mohji",
