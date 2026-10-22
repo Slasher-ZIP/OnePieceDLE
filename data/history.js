@@ -6,6 +6,7 @@
 const CHARACTER_HISTORY = {
   "Monkey D. Luffy": {
     eastblue: {
+      image: "img/alt/LuffyPre.webp",
       height: 172,
       titre: {
         fr: "Capitaine",
@@ -108,6 +109,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      image: "img/Luffy.webp",
       height: 174,
       titre: {
         fr: "Capitaine, Supernova",
@@ -191,6 +193,7 @@ const CHARACTER_HISTORY = {
   },
   "Roronoa Zoro": {
     eastblue: {
+      image: "img/alt/ZoroPre.webp",
       height: 178,
       titre: {
         fr: "Aucun",
@@ -269,6 +272,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      image: "img/Zoro.webp",
       height: 181,
       titre: {
         fr: "Supernova",
@@ -332,6 +336,7 @@ const CHARACTER_HISTORY = {
   },
   "Nami": {
     eastblue: {
+      image: "img/alt/NamiPre.webp",
       height: 169,
       prime: 0,
       age: 18,
@@ -410,6 +415,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      image: "img/Nami.webp",
       height: 170,
       prime: 16000000,
       age: 20,
@@ -477,6 +483,7 @@ const CHARACTER_HISTORY = {
   },
   "Usopp": {
     eastblue: {
+      image: "img/alt/UsoppPre.webp",
       height: 174,
       prime: 0,
       age: 17,
@@ -555,6 +562,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      image: "img/Usopp.webp",
       height: 176,
       prime: 30000000,
       age: 19,
@@ -622,6 +630,7 @@ const CHARACTER_HISTORY = {
   },
   "Vinsmoke Sanji": {
     eastblue: {
+      image: "img/alt/SanjiPre.webp",
       height: 177,
       titre: {
         fr: "Aucun",
@@ -700,6 +709,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      image: "img/Sanji.webp",
       height: 180,
       titre: {
         fr: "Aucun",
@@ -764,6 +774,7 @@ const CHARACTER_HISTORY = {
   "Tony Tony Chopper": {
     // Chopper entre dans l'histoire à Alabasta (Royaume de Drum) : pas avant.
     alabasta: {
+      image: "img/alt/Chopper_pre.webp",
       prime: 0,
       age: 15,
       titre: {
@@ -824,6 +835,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      image: "img/Chopper.webp",
       prime: 50,
       age: 17,
       titre: {
@@ -893,6 +905,7 @@ const CHARACTER_HISTORY = {
       }
     },
     alabasta: {
+      image: "img/alt/Robin_pre.webp",
       titre: {
         fr: "Agent",
         en: "Agent"
@@ -973,6 +986,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      image: "img/Robin.webp",
       titre: {
         fr: "Agent",
         en: "Agent"
@@ -1056,6 +1070,7 @@ const CHARACTER_HISTORY = {
   "Franky": {
     // Franky entre dans l'histoire à Water 7 : pas d'historique avant.
     water7: {
+      image: "img/alt/Franky_pre.webp",
       height: 225,
       prime: 44000000,
       age: 34,
@@ -1095,6 +1110,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      image: "img/Franky.webp",
       height: 240,
       prime: 44000000,
       age: 36,
@@ -1190,6 +1206,7 @@ const CHARACTER_HISTORY = {
       }
     },
     thriller: {
+      image: "img/alt/BrookPre.webp",
       height: 266,
       prime: null,
       age: 88,
@@ -1216,6 +1233,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      image: "img/Brook.webp",
       height: 277,
       prime: 33000000,
       age: 90,
@@ -4307,7 +4325,7 @@ const CHARACTER_HISTORY = {
   },
   "Enel": {
     skypiea: {
-      prime: null,
+      prime: 0,
       age: 37,
       height: 266,
       titre: {
@@ -4362,7 +4380,7 @@ const CHARACTER_HISTORY = {
       }
     },
     all: {
-      prime: null,
+      prime: 0,
       age: 39,
       height: 266,
       titre: {
@@ -8084,7 +8102,7 @@ const CHARACTER_HISTORY = {
       }
     },
     all: {
-      prime: null,
+      prime: 0,
       age: null,
       height: null,
       titre: {
@@ -8678,7 +8696,7 @@ const CHARACTER_HISTORY = {
       }
     },
     all: {
-      prime: null,
+      prime: 0,
       age: 23,
       titre: {
         fr: "Capitaine",
@@ -9760,7 +9778,7 @@ const CHARACTER_HISTORY = {
   },
   "Shamrock": {
     all: {
-      prime: null,
+      prime: 0,
       fruit: {
         fr: "Inconnu",
         en: "Unknown"
@@ -10444,6 +10462,7 @@ const CHARACTER_HISTORY = {
   },
   "Helmeppo": {
     eastblue: {
+      image: "img/alt/Helmeppo_pre.webp",
       titre: { fr: "Marine", en: "Marine" },
       prime: 0,
       fruit: {
@@ -10473,6 +10492,7 @@ const CHARACTER_HISTORY = {
       }
     },
     water7: {
+      image: "img/Helmeppo.webp",
       haki: {
         fr: "Inconnu",
         en: "Unknown"
@@ -10743,7 +10763,7 @@ const CHARACTER_HISTORY = {
   },
   "Kyros": {
     dressrosa: {
-      prime: null,
+      prime: 0,
       fruit: {
         fr: "Aucun",
         en: "None"
@@ -10769,10 +10789,10 @@ const CHARACTER_HISTORY = {
         fr: "Inconnu",
         en: "Unknown"
       },
-      prime: null
+      prime: 0
     },
     all: {
-      prime: null,
+      prime: 0,
       fruit: {
         fr: "Aucun",
         en: "None"
@@ -11521,7 +11541,7 @@ const CHARACTER_HISTORY = {
   },
   "Emet": {
     all: {
-      prime: null,
+      prime: 0,
       fruit: {
         fr: "Aucun",
         en: "None"
@@ -13270,7 +13290,7 @@ const CHARACTER_HISTORY = {
   },
   "Gunko": {
     all: {
-      prime: null,
+      prime: 0,
       fruit: {
         fr: "Inconnu",
         en: "Unknown"
@@ -13757,7 +13777,7 @@ const CHARACTER_HISTORY = {
   },
   "Wapol": {
     alabasta: {
-      prime: null,
+      prime: 0,
       fruit: {
         fr: "Paramecia",
         en: "Paramecia"
@@ -13821,7 +13841,7 @@ const CHARACTER_HISTORY = {
       }
     },
     all: {
-      prime: null,
+      prime: 0,
       fruit: {
         fr: "Paramecia",
         en: "Paramecia"
@@ -16041,7 +16061,7 @@ const CHARACTER_HISTORY = {
   },
   "Charlotte Chiffon": {
     wholecake: {
-      prime: 0,
+      prime: null,
       age: 26,
       height: 215,
       titre: {

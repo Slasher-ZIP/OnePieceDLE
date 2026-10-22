@@ -746,15 +746,32 @@ function rarityLabel(r, lang) {
 }
 
 
-function setupStoryHelp() {
-  const btn = document.getElementById("storyHelpBtn");
-  const text = document.getElementById("storyHelpText");
+/** Texte d'aide : **mot clé** → <span class="help-key"> (jaune). Les retours
+ *  ligne des chaînes sont conservés (whitespace-pre-line sur le <p>). */
+function helpHtml(str) {
+  return String(str || "").replace(/\*\*([^*]+)\*\*/g, '<span class="help-key">$1</span>');
+}
+
+/** Aide sous les réglages : le bouton « ? » masque/affiche SON texte.
+ *  Chaque aide reste dans sa colonne (voir styles.css), donc les deux
+ *  peuvent être ouvertes simultanément sans casser la grille. */
+function setupHelpToggle(btnId, textId, key) {
+  const btn = document.getElementById(btnId);
+  const text = document.getElementById(textId);
   if (!btn || !text) return;
   const t = TRANSLATIONS[currentLang] || {};
-  text.textContent = t.storyHelpText || "";
+  text.innerHTML = helpHtml(t[key]);
   btn.addEventListener("click", () => {
-    text.classList.toggle("hidden");
+    const isOpen = btn.getAttribute("aria-expanded") === "true";
+    text.classList.toggle("hidden", isOpen);
+    btn.setAttribute("aria-expanded", isOpen ? "false" : "true");
   });
+}
+
+function setupStoryHelp() {
+  setupHelpToggle("storyHelpBtn", "storyHelpText", "storyHelpText");
+  setupHelpToggle("modeHelpBtn", "modeHelpText", "modeHelpText");
+  setupHelpToggle("versusAutoHelpBtn", "versusAutoHelpText", "versusAutoHelpText");
 }
 
 
@@ -827,23 +844,6 @@ function updateCollectionUI() {
   renderCollectionGrid();
 }
 
-/** Visuel de l'interrupteur d'époque Mugiwara (track + knob + label). */
-function updateStrawhatEraToggle() {
-  const cb = document.getElementById("collectionStrawhatEra");
-  if (!cb) return;
-  const track = document.getElementById("strawhatEraTrack");
-  const knob = document.getElementById("strawhatEraKnob");
-  const label = document.getElementById("strawhatEraLabel");
-  const post = !!cb.checked;
-  if (track) track.classList.toggle("bg-amber-600", post);
-  if (track) track.classList.toggle("bg-slate-600", !post);
-  if (knob) knob.style.transform = post ? "translateX(20px)" : "translateX(0)";
-  if (label) {
-    label.textContent = post ? "Post-ellipse" : "Pré-ellipse";
-    label.className = "text-[11px] font-bold w-[92px] " + (post ? "text-sky-300" : "text-amber-300");
-  }
-}
-
 function renderCollectionGrid() {
   if (typeof syncCollectionRewards === "function") syncCollectionRewards();
 
@@ -854,9 +854,6 @@ function renderCollectionGrid() {
   const catFilter = document.getElementById("collectionAffFilter")?.value || "all";
   const searchRaw = (document.getElementById("collectionSearch")?.value || "").trim();
   const search = typeof cleanString === "function" ? cleanString(searchRaw) : searchRaw.toLowerCase();
-  // Époque de la page Mugiwara : par défaut les formes pré-ellipse (elles sont
-  // forcées à 100 % par onlyAsVariant, donc naturellement acquises en jouant).
-  const strawhatPost = !!document.getElementById("collectionStrawhatEra")?.checked;
   const unlocked = new Set(getUnlockedNames());
   const lang = currentLang;
 
@@ -868,29 +865,13 @@ function renderCollectionGrid() {
   grid.innerHTML = "";
   grid.className = "flex-1 overflow-y-auto p-3 sm:p-4 space-y-5 content-start";
 
-  // L'interrupteur d'époque ne concerne que la page Mugiwara : masqué par
-  // défaut, ré-affiché par la boucle si la page est réellement rendue.
-  const eraWrap = document.getElementById("strawhatEraWrap");
-  if (eraWrap) eraWrap.classList.add("hidden");
-
   let any = false;
 
   categories.forEach(cat => {
     if (catFilter !== "all" && cat.id !== catFilter) return;
 
-    // L'interrupteur d'époque ne concerne que la page Mugiwara
-    if (eraWrap && cat.id === "strawhat") eraWrap.classList.remove("hidden");
-
     let members = (cat.members || [])
-      .map(n => {
-        // Mugiwara : afficher la forme pré (défaut) ou post selon l'interrupteur.
-        // Les variantes *_pre n'ont pas d'unlock -> toujours considérées débloquées.
-        if (cat.id === "strawhat" && typeof CHARACTER_VARIANTS !== "undefined" && !strawhatPost) {
-          const pre = CHARACTER_VARIANTS.find(v => v.baseName === n && /_pre$/.test(v.id));
-          if (pre) n = pre.id;
-        }
-        return (typeof resolveCollectionMember === "function" ? resolveCollectionMember(n) : byName.get(n));
-      })
+      .map(n => (typeof resolveCollectionMember === "function" ? resolveCollectionMember(n) : byName.get(n)))
       .filter(Boolean);
 
     // Récompenses (Merry, Sunny…) : visibles UNIQUEMENT si déjà débloquées — jamais en silhouette
@@ -1027,9 +1008,6 @@ function renderCollectionGrid() {
 
     grid.appendChild(page);
   });
-
-  // Si la page Mugiwara n'a pas été rendue (filtre), masquer l'interrupteur
-  if (eraWrap && !grid.querySelector('[data-cat="strawhat"]')) eraWrap.classList.add("hidden");
 
   if (!any) {
     grid.innerHTML = `<p class="text-center text-slate-500 text-sm py-10">${lang === "fr" ? "Aucun personnage" : "No characters"}</p>`;
@@ -1427,6 +1405,10 @@ function resolveCharacter(baseChar, storyId) {
   // Deep-ish merge for nested objects; null means "unknown at this point"
   const resolved = Object.assign({}, baseChar);
   for (const k of Object.keys(merged)) {
+    // L'art d'époque (image en history) ne s'applique qu'à la forme NORMALE :
+    // une alt/shiny tirée garde l'image de sa variante (sinon l'histoire
+    // écraserait l'art shiny/alt par l'art d'époque de la base).
+    if (k === "image" && baseChar._variantId) continue;
     if (merged[k] !== null && typeof merged[k] === "object" && !Array.isArray(merged[k])) {
       resolved[k] = Object.assign({}, baseChar[k] || {}, merged[k]);
     } else {
@@ -1691,11 +1673,27 @@ function updateLanguageUI() {
   }
   const storyHelp = document.getElementById("storyHelpText");
   if (storyHelp && TRANSLATIONS[currentLang].storyHelpText) {
-    storyHelp.textContent = TRANSLATIONS[currentLang].storyHelpText;
+    storyHelp.innerHTML = helpHtml(TRANSLATIONS[currentLang].storyHelpText);
   }
   const storyHelpBtn = document.getElementById("storyHelpBtn");
   if (storyHelpBtn && TRANSLATIONS[currentLang].storyHelpBtn) {
     storyHelpBtn.textContent = TRANSLATIONS[currentLang].storyHelpBtn;
+  }
+  const modeHelp = document.getElementById("modeHelpText");
+  if (modeHelp && TRANSLATIONS[currentLang].modeHelpText) {
+    modeHelp.innerHTML = helpHtml(TRANSLATIONS[currentLang].modeHelpText);
+  }
+  const modeHelpBtn = document.getElementById("modeHelpBtn");
+  if (modeHelpBtn && TRANSLATIONS[currentLang].modeHelpBtn) {
+    modeHelpBtn.textContent = TRANSLATIONS[currentLang].modeHelpBtn;
+  }
+  const autoHelp = document.getElementById("versusAutoHelpText");
+  if (autoHelp && TRANSLATIONS[currentLang].versusAutoHelpText) {
+    autoHelp.innerHTML = helpHtml(TRANSLATIONS[currentLang].versusAutoHelpText);
+  }
+  const autoHelpBtn = document.getElementById("versusAutoHelpBtn");
+  if (autoHelpBtn && TRANSLATIONS[currentLang].versusAutoHelpBtn) {
+    autoHelpBtn.textContent = TRANSLATIONS[currentLang].versusAutoHelpBtn;
   }
   if (typeof updateAttemptsUI === "function") updateAttemptsUI();
   if (typeof updateOnlineUI === "function") updateOnlineUI();
@@ -1732,6 +1730,15 @@ function updateAttemptsUI() {
     box.classList.remove("hidden");
     const left = Math.max(0, maxAttempts - attemptsCount);
     countEl.textContent = left;
+  }
+  // « Nouveau » grisé pendant la partie (bloqué aussi dans requestNewRound) ;
+  // l'état visuel suit isGameOver/attemptsCount et se réactive en fin de manche.
+  const ng = document.getElementById("newGameBtn");
+  if (ng) {
+    const blocked = !isGameOver && attemptsCount > 0;
+    ng.disabled = blocked;
+    ng.style.opacity = blocked ? "0.45" : "";
+    ng.title = blocked ? ((TRANSLATIONS[currentLang] || {}).toastRestartBlocked || "") : "";
   }
 }
 
@@ -2396,7 +2403,16 @@ function pickMysteryCategory() {
   // Extreme: pick one random category not already bridled (never 0 = character)
   const possible = [1, 2, 3, 4, 5, 6, 7, 8, 9].filter(i => !mysteryCategories.includes(i));
   if (possible.length === 0) return null;
-  return possible[Math.floor(Math.random() * possible.length)];
+  // En ligne : RNG déterministe dérivé de la seed du salon + manche +
+  // séquence → les DEUX clients masquent les mêmes catégories pour les
+  // mêmes essais (avant : Math.random local → tableaux divergents).
+  let r = Math.random();
+  if (typeof online !== "undefined" && online.active &&
+      typeof onlineHashStr === "function" && typeof onlineRng === "function") {
+    online.mystSeq = (online.mystSeq || 0) + 1;
+    r = onlineRng(onlineHashStr(String(online.seed || "") + "#" + versusRound + "#" + online.mystSeq))();
+  }
+  return possible[Math.floor(r * possible.length)];
 }
 
 function normalizeCharacterTitles() {
@@ -2587,6 +2603,11 @@ function endVersus(sendQuit) {
       try { online.chan.send({ type: "broadcast", event: "msg", payload: { t: "quit", from: online.myKey, by: online.myIdx } }); } catch (e) {}
     }
     if (typeof onlineLeaveRoom === "function") onlineLeaveRoom(true);
+  } else if (typeof online !== "undefined" && (online.chan || online.code) && typeof onlineLeaveRoom === "function") {
+    // Salon ouvert mais partie pas encore lancée (phase d'attente) :
+    // on ferme quand même le canal, sinon le salon reste fantôme
+    // (rejoignable alors que le joueur pense l'avoir fermé).
+    onlineLeaveRoom(true);
   }
   versusMode = false;
   versusWinner = -1;
@@ -3071,6 +3092,7 @@ function makeGuess(character) {
   if (character.name === answer.name) {
     isGameOver = true;
     input.disabled = true;
+    if (typeof updateAttemptsUI === "function") updateAttemptsUI(); // réactive « Nouveau »
     // Partie forcée (admin) : exclue des stats, la série est préservée
     if (!roundForced) {
       streak++;
@@ -3103,7 +3125,9 @@ function makeGuess(character) {
           const wasNew = unlockCharacter(v.id);
           if (wasNew) newlyUnlockedQuests.push(v);
         } else if (v.unlock && isVariantUnlocked(v) && !v.collectionOnly) {
-          unlockCharacter(v.id);
+          // Quête accomplie : popup « Quête accomplie ! » aussi pour les
+          // quêtes hors collection (elles n'apparaissaient jamais avant).
+          if (unlockCharacter(v.id)) newlyUnlockedQuests.push(v);
         }
       });
     }
@@ -3136,6 +3160,7 @@ function makeGuess(character) {
     // Out of attempts
     isGameOver = true;
     input.disabled = true;
+    if (typeof updateAttemptsUI === "function") updateAttemptsUI(); // réactive « Nouveau »
     if (!roundForced) {
       streak = 0;
       localStorage.setItem("opdle_streak", streak);
@@ -3231,9 +3256,11 @@ function highlightSuggestion(items) {
 }
 
 /** Prime compacte : 30M, 1,5Md (FR) / 1.5B (EN). HTML optionnel pour style. */
-/** 0 = "prime inconnue" : aucun personnage d'One Piece n'a 0 berry. */
+/** Prime inconnue = valeur jamais révélée (null/undefined) → « Inconnue ».
+ *  0 est une VRAIE valeur : un Marine/GM/civil n'a pas de prime (Smoker = 0),
+ *  à l'inverse d'un pirate dont la prime n'a pas été dévoilée (Rocks = null). */
 function isPrimeUnknown(prime) {
-  return prime === null || prime === undefined || prime === 0;
+  return prime === null || prime === undefined;
 }
 function formatPrimeDisplay(prime, lang, asHtml = false) {
   if (isPrimeUnknown(prime)) {
@@ -3446,8 +3473,6 @@ const QUEST_CHRONO_ORDER = [
   "luffy_gear3",
   "usopp_sogeking",
   "robin_live",
-  "going_merry",
-  "thousand_sunny",
   // Thriller Bark
   "thriller_bark",
   "zoro_nothing",
@@ -3598,6 +3623,7 @@ function showVictoryModal() {
 function showGiveUpModal(isFail = false) {
   if (!isFail && isGameOver) return;
   isGameOver = true;
+  if (typeof updateAttemptsUI === "function") updateAttemptsUI(); // réactive « Nouveau »
   if (!isFail) {
     // Abandon avant le premier essai : la série est préservée
     if (attemptsCount > 0) {
@@ -3756,7 +3782,27 @@ document.getElementById("guessInput").addEventListener("keydown", (e) => {
 if (typeof setupSettings === "function") setupSettings();
 if (typeof applyTheme === "function") applyTheme(getTheme());
 document.getElementById("giveUpBtn").addEventListener("click", () => { if (versusMode) versusGiveUp(); else { if (!isGameOver && attemptsCount > 0 && typeof recordGameEnd === "function") recordGameEnd({ win: false, how: "abandon" }); showGiveUpModal(false); } });
-document.getElementById("versusBtn")?.addEventListener("click", () => { if (versusMode) endVersus(); else openVersusSetup(); });
+document.getElementById("versusBtn")?.addEventListener("click", () => {
+  if (!versusMode) { openVersusSetup(); return; }
+  // Salon en attente (pas encore de partie) : rouvrir la modale pour
+  // revoir le CODE et les réglages — aucune confirmation de quit.
+  if (typeof online !== "undefined" && online.chan && !online.started) {
+    if (typeof onlineSwitchTab === "function") onlineSwitchTab("online");
+    if (typeof updateOnlineUI === "function") updateOnlineUI();
+    document.getElementById("versusModal")?.classList.remove("hidden");
+    return;
+  }
+  // En partie (ou local) : le bouton Versus QUITTE la partie,
+  // avec confirmation explicite (envoi d'un forfait à l'adversaire).
+  const t = TRANSLATIONS[currentLang] || {};
+  showConfirmModal({
+    icon: "⚔️",
+    title: t.versusQuitTitle || (currentLang === "fr" ? "Quitter le versus ?" : "Leave the versus?"),
+    desc: t.versusQuitDesc || (currentLang === "fr" ? "La partie en cours se termine et le salon est fermé : l'adversaire remporte la manche par forfait." : "The current game ends and the room closes: your opponent wins the round by forfeit."),
+    okLabel: t.versusQuitOk || (currentLang === "fr" ? "Quitter" : "Leave"),
+    danger: true
+  }).then(yes => { if (yes) endVersus(); });
+});
 document.getElementById("versusQuitBtn")?.addEventListener("click", () => endVersus());
 document.getElementById("versusDrawBtn")?.addEventListener("click", () => versusAskDraw());
 document.getElementById("versusStartBtn")?.addEventListener("click", () => startVersusFromModal());
@@ -3798,15 +3844,6 @@ document.getElementById("profileBtn").addEventListener("click", openProfileModal
   if (cs) {
     cs.addEventListener("input", () => { renderCollectionGrid(); });
   }
-  // Interrupteur d'époque de la page Mugiwara (pré-ellipse / post-ellipse)
-  const era = document.getElementById("collectionStrawhatEra");
-  if (era) {
-    era.addEventListener("change", () => {
-      updateStrawhatEraToggle();
-      renderCollectionGrid();
-    });
-    updateStrawhatEraToggle();
-  }
   setupStoryHelp();
   // click backdrop to close
   const modal = document.getElementById("collectionModal");
@@ -3836,6 +3873,14 @@ document.querySelectorAll(".profileModalClose").forEach(b => b.addEventListener(
 document.getElementById("profileCloseBtn").addEventListener("click", closeAuthAndProfile);
 document.getElementById("profileLogoutBtn").addEventListener("click", logoutAccount);
 function requestNewRound() {
+  // Bloqué pendant une partie : « Nouveau » ne doit pas pouvoir remise à zéro
+  // un plateau en cours (solo, local OU en ligne — en ligne, ça désynchronise).
+  // Le passage à la manche suivante se fait uniquement en fin de manche
+  // (modale victoire/nul), où isGameOver = true.
+  if (!isGameOver && attemptsCount > 0) {
+    showToast((TRANSLATIONS[currentLang] || {}).toastRestartBlocked || (currentLang === "fr" ? "Termine ta partie d'abord 🚫" : "Finish your game first 🚫"));
+    return;
+  }
   if (typeof online !== "undefined" && online.active && typeof onlineNextRound === "function") { onlineNextRound(); return; }
   startGame();
 }
@@ -4003,15 +4048,42 @@ function setAdminUnlocked(arr) {
 }
 
 // Redéfinir getUnlockedNames pour respecter le sandbox (après définition originale — on override)
+/* Navires (cartes notGuessable, jamais tirables) : déblocage par l'histoire.
+ * Merry se connaît dès East Blue (arc Syrup), Sunny à partir de Water 7 —
+ * comme un perso classique dont l'arc est atteint par le filtre Histoire. */
+function storyUnlockedShips() {
+  if (currentStory === "all") return ["Going Merry", "Thousand Sunny"];
+  const maxArc = (typeof STORY_POINTS !== "undefined" && STORY_POINTS[currentStory]) ? STORY_POINTS[currentStory].maxArc : null;
+  if (!maxArc) return [];
+  const maxIdx = ARCS_ORDER.indexOf(maxArc);
+  if (maxIdx < 0) return [];
+  const out = [];
+  ["Going Merry", "Thousand Sunny"].forEach(n => {
+    const c = CHARACTERS.find(x => x.name === n);
+    if (!c) return;
+    const idx = ARCS_ORDER.indexOf(c.arc);
+    if (idx !== -1 && idx <= maxIdx) out.push(n);
+  });
+  return out;
+}
+
 function getUnlockedNames() {
+  let base;
   if (isAdmin() && isAdminSandbox()) {
-    return getAdminUnlocked().slice();
+    base = getAdminUnlocked().slice();
+  } else {
+    const local = typeof readLocalUnlocked === "function" ? readLocalUnlocked() : (() => { try { return JSON.parse(localStorage.getItem("opdle_unlocked") || "[]"); } catch (e) { return []; } })();
+    if (currentUser && Array.isArray(currentUser.unlocked)) {
+      base = typeof mergeUnlocked === "function" ? mergeUnlocked(currentUser.unlocked, local) : local.slice();
+    } else {
+      base = local.slice();
+    }
   }
-  const local = typeof readLocalUnlocked === "function" ? readLocalUnlocked() : (() => { try { return JSON.parse(localStorage.getItem("opdle_unlocked") || "[]"); } catch (e) { return []; } })();
-  if (currentUser && Array.isArray(currentUser.unlocked)) {
-    return typeof mergeUnlocked === "function" ? mergeUnlocked(currentUser.unlocked, local) : local.slice();
-  }
-  return local.slice();
+  try {
+    const ships = storyUnlockedShips();
+    ships.forEach(n => { if (!base.includes(n)) base.push(n); });
+  } catch (e) {}
+  return base;
 }
 
 function unlockCharacter(name) {
@@ -5420,14 +5492,9 @@ async function settingsResetProgress() {
     resetQuestProgressAll();
     localStorage.removeItem("opdle_avatar");
     localStorage.removeItem("opdle_admin_unlocked");
-    // Le reset doit aussi effacer les réglages admin et les stats de tirage,
-    // sinon ils survivent et faussent les parties suivantes.
-    if (typeof resetRarityWeightTable === "function") resetRarityWeightTable();
-    if (typeof adminSetRarityOverrides === "function") adminSetRarityOverrides({});
-    if (typeof applyAdminRarityOverrides === "function") applyAdminRarityOverrides();
+    // Réinitialiser la progression ne touche PAS à la config admin :
+    // les raretés/poids/variantes réglés via le menu admin sont conservés.
     try { localStorage.removeItem(PICK_STATS_KEY); } catch (e) {}
-    try { localStorage.removeItem(ADMIN_VARIANT_KEY); } catch (e) {}
-    if (typeof VARIANT_OVERRIDE_CACHE !== "undefined") VARIANT_OVERRIDE_CACHE = null;
   } catch (e) {}
   streak = 0;
   wins = 0;
@@ -5484,18 +5551,13 @@ async function settingsDeleteAccount() {
       resetQuestProgressAll();
       localStorage.removeItem("opdle_avatar");
       localStorage.removeItem("opdle_admin_unlocked");
-      localStorage.removeItem(RARITY_WEIGHT_KEY);
-      localStorage.removeItem(ADMIN_RARITY_KEY);
       localStorage.removeItem(PICK_STATS_KEY);
-      localStorage.removeItem(ADMIN_VARIANT_KEY);
-      try { VARIANT_OVERRIDE_CACHE = null; } catch (e) {}
+      // La suppression du compte ne touche PAS à la config admin du site :
+      // raretés/poids/variantes réglés via le menu admin sont conservés.
     } catch (e) {}
     streak = 0; wins = 0;
     bestStreak = 0; gamesTotal = 0;
     hardExtremeWins = 0; extremeWins = 0;
-    if (typeof resetRarityWeightTable === "function") resetRarityWeightTable();
-    if (typeof adminSetRarityOverrides === "function") adminSetRarityOverrides({});
-    if (typeof applyAdminRarityOverrides === "function") applyAdminRarityOverrides();
     updateProfileUI();
     updateStatsUI();
     closeSettingsModal();

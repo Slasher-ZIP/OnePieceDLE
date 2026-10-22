@@ -23,7 +23,7 @@ const CHARACTERS = [
   "CAPITAINE",
   "L HOMME QUI DEVIENDRA ROI DES PIRATES",
   "GEAR 5"
-],
+, "LUFFY PRE ELLIPSE", "PRE TIMESKIP LUFFY", "LUFFY AVANT ELLIPSE"],
     gender: {
       fr: "Homme",
       en: "Male"
@@ -66,7 +66,7 @@ const CHARACTERS = [
   "EPEISTE",
   "SABREUR",
   "TROIS EPEE"
-],
+, "ZORO PRE ELLIPSE", "PRE ELLIPSE ZORO", "ZORO AVANT ELLIPSE"],
     gender: {
       fr: "Homme",
       en: "Male"
@@ -104,7 +104,7 @@ const CHARACTERS = [
   "NAVIGATRICE",
   "LA BELLE VOLEUSE",
   "CHAT"
-],
+, "NAMI PRE ELLIPSE", "PRE ELLIPSE NAMI", "NAMI CHEVEUX COURTS"],
     gender: {
       fr: "Femme",
       en: "Female"
@@ -144,7 +144,7 @@ const CHARACTERS = [
   "SNIPER",
   "LONG NEZ",
   "ROI DES SNIPERS"
-],
+, "USOPP PRE ELLIPSE", "PRE TIMESKIP USOPP", "USOPP AVANT ELLIPSE"],
     gender: {
       fr: "Homme",
       en: "Male"
@@ -185,7 +185,7 @@ const CHARACTERS = [
   "JAMBE NOIRE",
   "JAMBES NOIRES",
   "LES JAMBES NOIRES"
-],
+, "SANJI PRE ELLIPSE", "PRE ELLIPSE SANJI", "SANJI AVANT ELLIPSE"],
     gender: {
       fr: "Homme",
       en: "Male"
@@ -223,7 +223,7 @@ const CHARACTERS = [
   "MEDECIN",
   "NEZ BLEU",
   "DOCTEUR"
-],
+, "CHOPPER PRE ELLIPSE", "PRE ELLIPSE CHOPPER", "CHOPPER AVANT ELLIPSE", "CHOPPER PETIT"],
     gender: {
       fr: "Homme",
       en: "Male"
@@ -261,7 +261,7 @@ const CHARACTERS = [
   "ARCHEOLOGUE",
   "DEMON",
   "MISS ALL SUNDAY"
-],
+, "ROBIN PRE ELLIPSE", "PRE ELLIPSE ROBIN", "ROBIN AVANT ELLIPSE", "ROBIN PRE SKIP", "PRE TIMESKIP ROBIN"],
     gender: {
       fr: "Femme",
       en: "Female"
@@ -298,7 +298,7 @@ const CHARACTERS = [
   "EQUIPAGE DE LUFFY",
   "CHARBON",
   "MENUISIER"
-],
+, "FRANKY PRE ELLIPSE", "PRE ELLIPSE FRANKY", "FRANKY AVANT ELLIPSE", "FRANKY SANS SUPER"],
     gender: {
       fr: "Homme",
       en: "Male"
@@ -334,7 +334,7 @@ const CHARACTERS = [
   "EQUIPAGE DE LUFFY",
   "SQUELETTE",
   "MUSICIEN"
-],
+, "BROOK PRE ELLIPSE", "PRE TIMESKIP BROOK", "BROOK AVANT", "BROOK THRILLER BARK"],
     gender: {
       fr: "Homme",
       en: "Male"
@@ -1622,7 +1622,7 @@ const CHARACTERS = [
       fr: "Observation",
       en: "Observation"
     },
-    prime: null,
+    prime: 0,
     arc: "Skypiea",
     titre: { fr: "Aucun", en: "None" },
     age: 39,
@@ -1725,7 +1725,7 @@ const CHARACTERS = [
       fr: "Observation, Armement",
       en: "Observation, Armament"
     },
-    prime: null,
+    prime: 0,
     arc: "Loguetown",
     titre: { fr: "Capitaine", en: "Captain" },
     age: 23,
@@ -2679,7 +2679,7 @@ const CHARACTERS = [
       fr: "Observation, Roi",
       en: "Observation, Conqueror's"
     },
-    prime: null,
+    prime: 0,
     arc: "Rêverie",
     titre: { fr: "Aucun", en: "None" },
     age: 0,
@@ -2711,7 +2711,7 @@ const CHARACTERS = [
       fr: "Inconnu",
       en: "Unknown"
     },
-    prime: null,
+    prime: 0,
     arc: "Egghead",
     titre: { fr: "Aucun", en: "None" },
     age: 0,
@@ -2748,7 +2748,7 @@ const CHARACTERS = [
       fr: "Observation, Roi",
       en: "Observation, Conqueror's"
     },
-    prime: null,
+    prime: 0,
     arc: "Egghead",
     titre: { fr: "Aucun", en: "None" },
     age: 0,
@@ -2785,7 +2785,7 @@ const CHARACTERS = [
       fr: "Observation, Roi",
       en: "Observation, Conqueror's"
     },
-    prime: null,
+    prime: 0,
     arc: "Egghead",
     titre: { fr: "Aucun", en: "None" },
     age: 0,
@@ -2823,7 +2823,7 @@ const CHARACTERS = [
         fr: "Armement, Roi",
         en: "Armament, Conqueror's"
       },
-    prime: null,
+    prime: 0,
     arc: "Egghead",
     titre: { fr: "Aucun", en: "None" },
     age: 0,
@@ -2860,7 +2860,7 @@ const CHARACTERS = [
       fr: "Observation",
       en: "Observation"
     },
-    prime: null,
+    prime: 0,
     arc: "Egghead",
     titre: { fr: "Aucun", en: "None" },
     age: 0,
@@ -2924,7 +2924,7 @@ const CHARACTERS = [
       fr: "Inconnu",
       en: "Unknown"
     },
-    prime: null,
+    prime: 0,
     arc: "Elbaf",
     titre: { fr: "Aucun", en: "None" },
     age: 0,
@@ -3755,7 +3755,7 @@ const CHARACTERS = [
       fr: "Observation, Roi",
       en: "Observation, Conqueror's"
     },
-    prime: null,
+    prime: 0,
     arc: "Egghead",
     titre: { fr: "Aucun", en: "None" },
     age: 0,
@@ -3902,7 +3902,7 @@ const CHARACTERS = [
   "HELMEPPO",
   "MARINE",
   "FILS DU CAPITAINE MORGAN"
-],
+, "HELMEPPO PRE ELLIPSE", "PRE ELLIPSE HELMEPPO", "HELMEPPO ENFANT", "YOUNG HELMEPPO", "MORGAN FILS"],
     gender: {
       fr: "Homme",
       en: "Male"
@@ -4108,7 +4108,7 @@ const CHARACTERS = [
       fr: "Inconnu",
       en: "Unknown"
     },
-    prime: null,
+    prime: 0,
     arc: "Dressrosa",
     titre: { fr: "Famille Royale", en: "Royal Family" },
     age: 44,
@@ -4784,7 +4784,7 @@ const CHARACTERS = [
       fr: "Inconnu",
       en: "Unknown"
     },
-    prime: null,
+    prime: 0,
     arc: "Egghead",
     titre: { fr: "Aucun", en: "None" },
     age: 900,
@@ -6186,7 +6186,7 @@ const CHARACTERS = [
       fr: "Inconnu",
       en: "Unknown"
     },
-    prime: null,
+    prime: 0,
     arc: "Elbaf",
     titre: { fr: "Aucun", en: "None" },
     age: 77,
@@ -6617,7 +6617,7 @@ const CHARACTERS = [
       fr: "Aucun",
       en: "None"
     },
-    prime: null,
+    prime: 0,
     arc: "Royaume de Drum",
     titre: { fr: "Famille Royale", en: "Royal Family" },
     age: 29,
@@ -8046,7 +8046,7 @@ const CHARACTERS = [
       fr: "Aucun",
       en: "None"
     },
-    prime: 0,
+    prime: null,
     arc: "Whole Cake Island",
     titre: { fr: "Aucun", en: "None" },
     age: 26,

@@ -19,7 +19,10 @@ const online = {
   // Chien de garde d'inactivité : dernier message adverse reçu (forfait si silence)
   idleSecs: 120, lastRemote: 0, idleTimer: null,
   // Mode "chacun son mystère" : phase pick puis play
-  phase: "play", myPick: null, oppPick: null, pendingPick: null
+  phase: "play", myPick: null, oppPick: null, pendingPick: null,
+  // Séquence des catégories bridées : RNG déterministe (seed du salon) →
+  // les deux clients tirent les MÊMES catégories masquées
+  mystSeq: 0
 };
 const ONLINE_LOBBY = "opdle-lobby-v1";
 
@@ -156,7 +159,7 @@ function onlineSendGuess(character) {
   if (online.active && !online.applyingRemote && online.chan && character) {
     online.lastGuessName = character.name;
     try {
-      online.chan.send({ type: "broadcast", event: "msg", payload: { t: "guess", from: online.myKey, by: online.myIdx, name: character.name } });
+      online.chan.send({ type: "broadcast", event: "msg", payload: { t: "guess", from: online.myKey, by: online.myIdx, turn: versusTurn, name: character.name } });
     } catch (e) {}
   }
   onlineSyncTimer();
@@ -172,7 +175,7 @@ function onlineSendWin(guessName) {
 function onlineAskDraw() {
   if (!online.active || !online.chan) return;
   try {
-    online.chan.send({ type: "broadcast", event: "msg", payload: { t: "drawAsk", from: online.myKey, by: online.myIdx } });
+    online.chan.send({ type: "broadcast", event: "msg", payload: { t: "drawAsk", from: online.myKey, by: online.myIdx, turn: versusTurn } });
     onlineToast("½ …");
   } catch (e) {}
 }
@@ -243,10 +246,26 @@ function onlineIdleStop() {
 }
 function onlineIdleCheck() {
   if (!online.active || !online.started || isGameOver) return;
+  // Onglet en arrière-plan : les timers y sont throttlés, le silence observé
+  // n'est pas une preuve d'inactivité → la surveillance est laissée à
+  // l'onglet actif (qui reçoit quand même les messages).
+  if (typeof document !== "undefined" && document.hidden) return;
+  // Arbitrage : seul le joueur DONT CE N'EST PAS LE TOUR peut gagner par
+  // inactivité (l'adversaire devait jouer et n'a rien fait). Si c'est mon
+  // tour, c'est moi le joueur lent — jamais l'adversaire. Cette règle,
+  // fondée sur le tour partagé, garantit qu'un seul des deux clients peut
+  // déclarer le forfait (fin des doubles victoires).
+  if (versusTurn === online.myIdx) return;
+  // Seuil adaptatif : au-delà de turnSecs × 2 (+ marge), un tour complet sans
+  // message serait anormal — mais le throttlage d'un onglet en arrière-plan
+  // peut retarder l'auto-pass. Timer 60 s → 150 s avant de conclure.
+  const seuilSecs = Math.max(online.idleSecs || 120, (online.turnSecs || 0) * 2 + 30);
   const quietMs = Date.now() - (online.lastRemote || Date.now());
-  if (quietMs >= (online.idleSecs || 120) * 1000) {
+  if (quietMs >= seuilSecs * 1000) {
     onlineIdleStop();
-    // Même issue qu'un départ : victoire par forfait
+    // Forfait explicite envoyé AVANT de fermer : l'adversaire apprend la
+    // vérité par le message (et non par la disparition de sa présence).
+    onlineSend({ t: "forfeit", by: online.myIdx, winner: online.myIdx });
     versusScores[online.myIdx]++;
     versusWinner = online.myIdx;
     versusRound++;
@@ -265,6 +284,17 @@ function onlineOnMsg(p) {
   if (!p || p.t == null) return;
   if (p.from && p.from === online.myKey) return; // ignore propre écho
   online.lastRemote = Date.now();
+  // Re-synchro légère du tour : les messages qui ne basculent pas le tour
+  // eux-mêmes (draw, win, hello, mymyst) portent la vision de l'émetteur →
+  // si elle diffère de la mienne, je réaligne ma bannière. Les messages
+  // "guess"/"pass" restent maîtres de leur bascule et ne sont pas concernés.
+  if ((p.t === "drawAsk" || p.t === "drawAnswer" || p.t === "win" || p.t === "hello" || p.t === "mymyst") &&
+      typeof p.turn === "number" && online.active && !isGameOver && online.phase === "play" &&
+      versusTurn !== p.turn) {
+    versusTurn = p.turn;
+    updateVersusBanner();
+    onlineSyncTimer();
+  }
   switch (p.t) {
     case "guess": onlineRemoteGuess(p); break;
     case "pass":
@@ -425,7 +455,9 @@ function onlineMaybeBegin() {
 function onlineSend(payload) {
   if (!online.chan) return;
   try {
-    online.chan.send({ type: "broadcast", event: "msg", payload: Object.assign({ from: online.myKey }, payload) });
+    // "turn" accompagne chaque message : permet de réaligner le tour si un
+    // message a été perdu ou retardé (bannières qui divergent).
+    online.chan.send({ type: "broadcast", event: "msg", payload: Object.assign({ from: online.myKey, turn: versusTurn }, payload) });
   } catch (e) {}
 }
 
@@ -443,6 +475,7 @@ function onlineRemoteGuess(p) {
 
 function onlineApplyStart(round, story, difficulty, opts) {
   versusRound = round;
+  online.mystSeq = 0; // catégories bridées : séquence remise à zéro à chaque manche
   if (story && story !== currentStory && typeof STORY_POINTS !== "undefined" && STORY_POINTS[story]) {
     currentStory = story;
     try { localStorage.setItem("opdle_story", story); } catch (e) {}
@@ -504,7 +537,10 @@ function onlineOnRoom(p) {
   online.started = true;
   closeVersusModal();
   onlineApplyStart(1, p.story, p.difficulty, { turnSecs: p.turnSecs, bridled: p.bridled, mmode: p.mmode });
-  onlineSend({ t: "hello", pool: mine.pool, vc: mine.vc, name: versusNames[1] });
+  // Préférences de l'invité (matchmaking) : l'hôte fusionne au hello.
+  const gDiff = document.getElementById("versusOptDiff")?.value || currentDifficulty;
+  const gStory = document.getElementById("versusOptStory")?.value || currentStory;
+  onlineSend({ t: "hello", pool: mine.pool, vc: mine.vc, name: versusNames[1], diff: gDiff, story: gStory });
 }
 
 function onlineOnStart(p) {
@@ -519,6 +555,29 @@ function onlineOnHello(p) {
   if (typeof p.pool === "number" && (p.pool !== mine.pool || p.vc !== mine.vc)) {
     onlineToast((onlineT() || {}).versusPoolMismatch || "pool différent");
   }
+  // Matchmaking auto : ne garder que la difficulté la PLUS FACILE et l'arc
+  // le PLUS ANCIEN des deux joueurs, puis rediffuser le start corrigé
+  // (l'invité se réapplique aussi via onlineOnStart).
+  const po = online.pendingOpts || {};
+  if (!po.autoMatch) return;
+  const DIFF_RANK = { easy: 0, medium: 1, hard: 2, extreme: 3 };
+  const ownDiff = po.autoDiff || currentDifficulty;
+  const ownStory = po.autoStory || currentStory;
+  const theirDiff = (typeof p.diff === "string" && DIFF_RANK[p.diff] !== undefined) ? p.diff : ownDiff;
+  const theirStory = (typeof p.story === "string" && p.story) ? p.story : ownStory;
+  const mergedDiff = (DIFF_RANK[theirDiff] < DIFF_RANK[ownDiff]) ? theirDiff : ownDiff;
+  let mergedStory = ownStory;
+  if (typeof storyIndex === "function" && storyIndex(theirStory) < storyIndex(ownStory)) mergedStory = theirStory;
+  if (mergedDiff === currentDifficulty && mergedStory === currentStory) return;
+  currentDifficulty = mergedDiff;
+  currentStory = mergedStory;
+  try { localStorage.setItem("opdle_diff", mergedDiff); localStorage.setItem("opdle_story", mergedStory); } catch (e) {}
+  if (typeof updateModeButtons === "function") updateModeButtons();
+  if (typeof updateStoryButtons === "function") updateStoryButtons();
+  onlineSend({ t: "start", round: versusRound, story: mergedStory, difficulty: mergedDiff,
+    turnSecs: online.turnSecs, bridled: online.bridled, mmode: online.mmode });
+  onlineApplyStart(versusRound, mergedStory, mergedDiff,
+    { turnSecs: online.turnSecs, bridled: online.bridled, mmode: online.mmode });
 }
 
 function onlineNextRound() {
@@ -534,7 +593,7 @@ function onlineMembers() {
     const out = [];
     for (const k of Object.keys(s)) {
       const metas = s[k] || [];
-      for (const m of metas) out.push({ key: k, name: m.name, idx: m.idx });
+      for (const m of metas) out.push({ key: k, name: m.name, idx: m.idx, joinedAt: m.joinedAt });
     }
     return out;
   } catch (e) { return []; }
@@ -553,6 +612,18 @@ function onlineOnPresence() {
   if (!online.chan) return;
   const others = onlineMembers().filter(m => m.key !== online.myKey);
   onlineSyncNames();
+  // Invité en double : deux clients ont pris idx=1 (arrivée simultanée).
+  // Seul le premier arrivé reste — l'autre referme son salon proprement
+  // (endVersus(false) : pas de forfait envoyé, il n'a jamais joué).
+  if (online.myIdx === 1 && !online.isHost) {
+    const dup = others.find(m => m.idx === 1);
+    if (dup && typeof dup.joinedAt === "number" && typeof online.myJoinedAt === "number" &&
+        dup.joinedAt <= online.myJoinedAt) {
+      onlineToast((onlineT() || {}).versusRoomFull || "complet");
+      endVersus(false);
+      return;
+    }
+  }
   if (online.isHost && !online.started && others.length >= 1) {
     online.started = true;
     versusScores = [0, 0];
@@ -567,15 +638,28 @@ function onlineOnPresence() {
     onlineToast((onlineT() || {}).versusConnected || "Connecté !");
   }
   if (online.active && others.length === 0 && online.started) {
-    // L'adversaire a quitté en pleine partie : victoire par forfait
-    versusScores[online.myIdx]++;
-    versusWinner = online.myIdx;
-    versusRound++;
+    // L'adversaire a disparu (onglet fermé, coupure réseau, fin de session).
+    // Même arbitrage que le chien de garde : seul celui dont CE N'EST PAS
+    // LE TOUR peut gagner. Si c'était mon tour, personne ne marque — on ne
+    // peut pas prouver une victoire qu'on n'a pas jouée.
+    if (isGameOver) { onlineEndSession(); return; } // manche déjà finie : simple nettoyage
+    const gagnant = (versusTurn !== online.myIdx) ? online.myIdx : -1;
     isGameOver = true;
     try { document.getElementById("guessInput").disabled = true; } catch (e) {}
-    if (typeof recordGameEnd === "function") recordGameEnd({ win: true, how: "forfeit", winner: versusNames[online.myIdx] });
-    showVictoryModal();
-    onlineToast((onlineT() || {}).versusPeerLeft || "Adversaire parti");
+    if (gagnant >= 0) {
+      versusScores[gagnant]++;
+      versusWinner = gagnant;
+      versusRound++;
+      if (typeof recordGameEnd === "function") recordGameEnd({ win: true, how: "forfeit", winner: versusNames[gagnant] });
+      showVictoryModal();
+      onlineToast((onlineT() || {}).versusPeerLeft || "Adversaire parti");
+    } else {
+      // C'était mon tour : manche annulée (match nul)
+      versusRound++;
+      if (typeof recordGameEnd === "function") recordGameEnd({ draw: true, how: "abandon" });
+      showToast((TRANSLATIONS[currentLang] || {}).versusDrawDone || "Match nul");
+      showGiveUpModal(true);
+    }
     onlineEndSession();
   }
 }
@@ -596,7 +680,11 @@ async function onlineSubscribe(timeoutMs) {
 
 async function onlineOpenRoom(code, asHost, explicitName) {
   if (!onlineNeedNet()) return false;
+  // Double-clic sur Rejoindre/Créer : une seule connexion à la fois.
+  if (online.connecting) return false;
   onlineLeaveRoom(true);
+  online.connecting = true;
+  const tok = online.roomTok || 0;
   online.code = code;
   online.isHost = asHost;
   online.myIdx = asHost ? 0 : 1;
@@ -630,6 +718,7 @@ async function onlineOpenRoom(code, asHost, explicitName) {
   online.chan.on("presence", { event: "sync" }, () => onlineOnPresence());
   online.chan.on("presence", { event: "leave" }, () => onlineOnPresence());
   const st = await onlineSubscribe(12000);
+  if (tok !== online.roomTok) return false; // join annulé/remplacé pendant l'attente
   if (st !== "SUBSCRIBED") {
     onlineToast((onlineT() || {}).versusNoNet || "no net");
     onlineLeaveRoom(true);
@@ -642,13 +731,26 @@ async function onlineOpenRoom(code, asHost, explicitName) {
     onlineLeaveRoom(true);
     return false;
   }
-  try { await online.chan.track({ name: me, idx: online.myIdx }); } catch (e) {}
-  startGame();
+  // joinedAt sert à départager deux invités qui prendraient le même idx=1
+  // (course d'arrivée) : le premier arrivé reste, le second est écarté.
+  online.myJoinedAt = Date.now();
+  try { await online.chan.track({ name: me, idx: online.myIdx, joinedAt: online.myJoinedAt }); } catch (e) {}
+  if (tok !== online.roomTok) return false;
+  online.connecting = false;
+  startGame(); // startGame appelle closeModals() : on rouvre la modale du
+  // salon juste après, pour que le CODE et les réglages restent visibles
+  // en attendant l'adversaire (c'est le panneau « en attente »).
   updateOnlineUI();
+  onlineSwitchTab("online");
+  document.getElementById("versusModal")?.classList.remove("hidden");
   return true;
 }
 
 function onlineLeaveRoom(silent) {
+  // Annule tout join en cours : un appel en attente (subscribe/track) qui
+  // reprendrait après une fermeture ne doit pas ressusciter l'ancien état.
+  online.roomTok = (online.roomTok || 0) + 1;
+  online.connecting = false;
   onlineIdleStop();
   if (online.chan) {
     try {
@@ -706,7 +808,7 @@ async function onlineAuto() {
     onlineLobbyLeave();
     versusNames = ["?", me];
     onlineOpenRoom(code, false, me).then(ok => {
-      if (ok) { closeVersusModal(); onlineStatus(""); }
+      if (ok) { onlineStatus(""); updateOnlineUI(); } // modale ouverte : code visible
     });
   });
   ch.on("presence", { event: "sync" }, () => {
@@ -725,14 +827,27 @@ async function onlineAuto() {
     if (online.myKey > other.key) {
       // Moi : j'héberge et j'invite (auto : 45 s imposées, mystère partagé)
       const code = onlineRandCode();
-      online.pendingOpts = { turnSecs: 45, bridled: false, mmode: "shared" };
+      const ho = onlineReadHostOpts();
+      // Les choix du panneau deviennent ceux de l'hôte (comme « Créer un salon »)
+      if (ho.difficulty && ho.difficulty !== currentDifficulty) {
+        currentDifficulty = ho.difficulty;
+        try { localStorage.setItem("opdle_diff", ho.difficulty); } catch (e) {}
+        if (typeof updateModeButtons === "function") updateModeButtons();
+      }
+      if (ho.story && ho.story !== currentStory && typeof STORY_POINTS !== "undefined" && STORY_POINTS[ho.story]) {
+        currentStory = ho.story;
+        try { localStorage.setItem("opdle_story", ho.story); } catch (e) {}
+        if (typeof updateStoryButtons === "function") updateStoryButtons();
+      }
+      online.pendingOpts = { turnSecs: 45, bridled: false, mmode: "shared",
+        autoMatch: true, autoDiff: ho.difficulty, autoStory: ho.story };
       const myName = online.pendingName || me;
       try {
         ch.send({ type: "broadcast", event: "invite", payload: { to: other.key, code, story: currentStory, difficulty: currentDifficulty } });
       } catch (e) {}
       onlineLobbyLeave();
       onlineOpenRoom(code, true, myName).then(ok => {
-        if (ok) { closeVersusModal(); onlineStatus(""); }
+        if (ok) { onlineStatus(""); updateOnlineUI(); } // modale ouverte : code visible
       });
     }
     // Sinon : j'attends l'invitation de l'autre
@@ -885,7 +1000,7 @@ function setupOnlineUI() {
     }
     const code = onlineRandCode();
     const ok = await onlineOpenRoom(code, true, me);
-    if (ok) { closeVersusModal(); onlineStatus(""); }
+    if (ok) { onlineStatus(""); } // modale ouverte : code + réglages visibles
     updateOnlineUI();
   });
   document.getElementById("versusJoinBtn")?.addEventListener("click", async () => {
@@ -894,7 +1009,7 @@ function setupOnlineUI() {
     if (code.length !== 4) { onlineStatus("CODE ?"); return; }
     const me = (document.getElementById("versusOnlineName")?.value || "").trim().slice(0, 16) || versusNames[1];
     const ok = await onlineOpenRoom(code, false, me);
-    if (ok) { closeVersusModal(); onlineStatus(""); }
+    if (ok) { onlineStatus(""); } // modale ouverte : code + réglages visibles
     updateOnlineUI();
   });
   document.getElementById("versusRoomCode")?.addEventListener("keydown", (e) => {
@@ -906,8 +1021,19 @@ function setupOnlineUI() {
   document.getElementById("versusLeaveBtn")?.addEventListener("click", () => {
     // endVersus envoie le "quit" AVANT de couper le canal : sinon l'autre
     // joueur ne remarque le départ qu'au timeout de présence.
-    endVersus();
-    closeVersusModal();
+    // Confirmation (comme le bouton Versus en jeu) : le code partagé sera perdu.
+    const t = onlineT() || {};
+    showConfirmModal({
+      icon: "🚪",
+      title: t.versusQuitTitle || (currentLang === "fr" ? "Quitter le versus ?" : "Leave the versus?"),
+      desc: t.versusQuitRoomDesc || (currentLang === "fr" ? "Le salon se ferme et son code n'est plus valable." : "The room closes and its code is no longer valid."),
+      okLabel: t.versusQuitOk || (currentLang === "fr" ? "Quitter" : "Leave"),
+      danger: true
+    }).then(yes => {
+      if (!yes) return;
+      endVersus();
+      closeVersusModal();
+    });
   });
   onlineSwitchTab("local");
 }

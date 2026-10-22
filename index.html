@@ -103,7 +103,10 @@
     <!-- Réglages de partie + actions -->
     <div class="grid grid-cols-2 gap-2">
       <label class="flex flex-col gap-1">
-        <span id="labelMode" class="text-[11px] uppercase tracking-wider text-slate-500 font-semibold px-0.5">Mode</span>
+        <div class="flex items-center justify-between gap-2 px-0.5">
+          <span id="labelMode" class="text-[11px] uppercase tracking-wider text-slate-500 font-semibold px-0.5">Mode</span>
+          <button type="button" id="modeHelpBtn" data-help-for="modeHelpText" class="help-toggle text-[10px] font-semibold text-sky-400 hover:text-sky-300 underline-offset-2 hover:underline" title="Aide" aria-expanded="false">?</button>
+        </div>
         <select id="modeSelect" class="w-full bg-slate-800 border border-slate-600/70 text-white text-sm font-medium rounded-xl px-3 py-2.5 outline-none focus:border-amber-400/70 focus:ring-1 focus:ring-amber-400/30 cursor-pointer appearance-none" style="background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 0.75rem center;background-size:1rem;padding-right:2.25rem">
           <option value="easy">Facile</option>
           <option value="medium">Moyen</option>
@@ -114,9 +117,8 @@
       <label class="flex flex-col gap-1">
         <div class="flex items-center justify-between gap-2 px-0.5">
           <span id="labelStory" class="text-[11px] uppercase tracking-wider text-slate-500 font-semibold">Histoire</span>
-          <button type="button" id="storyHelpBtn" class="text-[10px] font-semibold text-indigo-400 hover:text-indigo-300 underline-offset-2 hover:underline" title="Aide">?</button>
+          <button type="button" id="storyHelpBtn" data-help-for="storyHelpText" class="help-toggle text-[10px] font-semibold text-sky-400 hover:text-sky-300 underline-offset-2 hover:underline" title="Aide" aria-expanded="false">?</button>
         </div>
-        <p id="storyHelpText" class="hidden text-[10px] text-slate-400 leading-relaxed px-0.5 mb-1"></p>
         <select id="storySelect" class="w-full bg-slate-800 border border-slate-600/70 text-white text-sm font-medium rounded-xl px-3 py-2.5 outline-none focus:border-indigo-400/70 focus:ring-1 focus:ring-indigo-400/30 cursor-pointer appearance-none" style="background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 0.75rem center;background-size:1rem;padding-right:2.25rem">
           <option value="eastblue">East Blue</option>
           <option value="alabasta">Alabasta</option>
@@ -131,6 +133,12 @@
           <option value="all" selected>Actuel</option>
         </select>
       </label>
+    </div>
+    <!-- Aides Difficulté / Histoire : une seule zone partagée sous la grille,
+         les deux colonnes restent alignées quel que soit l'état des aides. -->
+    <div id="helpRow" class="grid grid-cols-2 gap-2 mt-1">
+      <p id="modeHelpText" class="hidden help-text text-[10px] text-slate-400 leading-relaxed px-0.5 whitespace-pre-line"></p>
+      <p id="storyHelpText" class="hidden help-text text-[10px] text-slate-400 leading-relaxed px-0.5 whitespace-pre-line"></p>
     </div>
 
     <!-- Actions de partie -->
@@ -359,15 +367,6 @@
           <select id="collectionAffFilter" class="bg-slate-800 border border-slate-600/70 text-white text-xs font-medium rounded-lg px-2.5 py-2 outline-none focus:border-indigo-400/70 cursor-pointer max-w-[220px]">
             <option value="all">Toutes catégories</option>
           </select>
-          <label id="strawhatEraWrap" class="hidden inline-flex items-center gap-2 bg-slate-800 border border-slate-600/70 rounded-lg px-2.5 py-2 cursor-pointer select-none"
-                 title="Page Mugiwara uniquement : avant ou après l'ellipse">
-            <span class="text-[11px] font-semibold text-slate-300">Époque</span>
-            <span class="relative inline-flex h-5 w-10 items-center rounded-full bg-slate-600" id="strawhatEraTrack">
-              <span id="strawhatEraKnob" class="absolute left-0.5 h-4 w-4 rounded-full bg-amber-400 shadow transition-transform"></span>
-            </span>
-            <span id="strawhatEraLabel" class="text-[11px] font-bold text-amber-300 w-[92px]">Pré-ellipse</span>
-            <input id="collectionStrawhatEra" type="checkbox" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none" />
-          </label>
         </div>
         <div class="flex flex-wrap gap-2 mt-2 text-[10px] text-slate-500">
           <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-slate-500"></span> Commun</span>
@@ -619,7 +618,11 @@
           <input id="versusRoomCode" maxlength="4" placeholder="CODE" class="flex-1 min-w-0 bg-slate-800 border border-slate-600/70 text-white text-sm font-bold tracking-widest uppercase rounded-lg px-3 py-2 outline-none focus:border-sky-400/70 text-center" />
           <button id="versusJoinBtn" class="px-4 bg-slate-700 hover:bg-slate-600 text-white text-sm font-bold py-2 rounded-xl transition">Rejoindre</button>
         </div>
-        <button id="versusAutoBtn" class="w-full bg-slate-700 hover:bg-slate-600 text-white text-sm font-bold py-2.5 rounded-xl transition">🔍 Trouver un adversaire</button>
+        <div class="flex items-center gap-1.5">
+          <button id="versusAutoBtn" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white text-sm font-bold py-2.5 rounded-xl transition">🔍 Trouver un adversaire</button>
+          <button type="button" id="versusAutoHelpBtn" data-help-for="versusAutoHelpText" class="help-toggle text-[10px] font-semibold text-sky-400 hover:text-sky-300 underline-offset-2 hover:underline" title="Aide" aria-expanded="false">?</button>
+        </div>
+        <p id="versusAutoHelpText" class="hidden help-text text-[10px] text-slate-400 leading-relaxed px-0.5 whitespace-pre-line"></p>
         <p id="versusOnlineStatus" class="text-[11px] text-slate-400 text-center min-h-[1rem]"></p>
         <div id="versusRoomInfo" class="hidden text-center bg-sky-950/60 border border-sky-500/40 rounded-xl p-3">
           <p class="text-[11px] text-slate-400">Salon</p>
