@@ -68,7 +68,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/Ace_young.webp",
     stories: [ "marineford" ],
     onlyAsVariant: false,
-    rarity: 3,
+    rarity: 2,
     isShiny: false,
     overrides: {}
   },
@@ -382,7 +382,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/Buggy_young.webp",
     stories: [ "eastblue", "wano" ],
     onlyAsVariant: false,
-    rarity: 3,
+    rarity: 2,
     isShiny: false,
     overrides: {}
   },
@@ -1139,7 +1139,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/Bonney_young.webp",
     stories: [ "all" ],
     onlyAsVariant: false,
-    rarity: 3,
+    rarity: 4,
     isShiny: false,
     overrides: {}
   },
