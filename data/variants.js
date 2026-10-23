@@ -68,7 +68,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/Ace_young.webp",
     stories: [ "marineford" ],
     onlyAsVariant: false,
-    rarity: 2,
+    rarity: 3,
     isShiny: false,
     overrides: {}
   },
@@ -338,7 +338,7 @@ const CHARACTER_VARIANTS = [
     // Tant que cet alt est dispo, la forme normale de Buggy ne sort plus :
     // la place libre revient aux autres alts du perso (l'enfant).
     excludesBase: true,
-    rarity: 3,
+    rarity: 1,
     isShiny: false,
     overrides: {}
   },
@@ -382,7 +382,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/Buggy_young.webp",
     stories: [ "eastblue", "wano" ],
     onlyAsVariant: false,
-    rarity: 2,
+    rarity: 3,
     isShiny: false,
     overrides: {}
   },
@@ -414,7 +414,7 @@ const CHARACTER_VARIANTS = [
     stories: [ "eastblue", "alabasta", "skypiea" ],
     forceInPool: true,
     onlyAsVariant: true,
-    rarity: 3,
+    rarity: 1,
     isShiny: false,
     overrides: {}
   },
@@ -653,7 +653,7 @@ const CHARACTER_VARIANTS = [
     stories: [ "eastblue", "alabasta", "skypiea" ],
     forceInPool: true,
     onlyAsVariant: true,
-    rarity: 3,
+    rarity: 1,
     isShiny: false,
     overrides: {}
   },
@@ -762,7 +762,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/WhitebeardPrime.webp",
     stories: [ "wano" ],
     onlyAsVariant: false,
-    rarity: 5,
+    rarity: 6,
     isShiny: false,
     overrides: {}
   },
@@ -859,7 +859,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/RayleighYoung.webp",
     stories: [ "wano" ],
     onlyAsVariant: false,
-    rarity: 4,
+    rarity: 5,
     isShiny: false,
     overrides: {}
   },
@@ -1139,7 +1139,7 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/Bonney_young.webp",
     stories: [ "all" ],
     onlyAsVariant: false,
-    rarity: 4,
+    rarity: 3,
     isShiny: false,
     overrides: {}
   },
@@ -1353,7 +1353,7 @@ const CHARACTER_VARIANTS = [
     // Flashback God Valley raconté à Wano (Oden) : fait entrer Gaban (arc Elbaf) dans le pool
     forceInPool: true,
     onlyAsVariant: false,
-    rarity: 4,
+    rarity: 5,
     isShiny: false,
     overrides: {}
   },
@@ -1499,7 +1499,7 @@ const CHARACTER_VARIANTS = [
     aliases: [ "MARCHE ARLONG PARK", "WALK TO ARLONG PARK", "MARCHE VERS ARLONG PARK" ],
     image: "img/alt/NamiWalk.webp",
     minStory: "eastblue",
-    rarity: 3,
+    rarity: 4,
     isShiny: false,
     unlock: { drawn: [ "luffy_pre", "nami_pre", "nami_young", "nojiko_old", "Belle-mère", "Genzo", "zoro_pre", "sanji_pre", "usopp_pre", "Arlong" ] },
     questName: {
@@ -1585,7 +1585,7 @@ const CHARACTER_VARIANTS = [
     aliases: ["ONE PIECE EXISTE","ONE PIECE IS REAL","L ONE PIECE EXISTE","LE DERNIER MOT DE BARBE BLANCHE"],
     image: "img/alt/BarbeBlancheOnepieceisReal.webp",
     minStory: "marineford",
-    rarity: 5,
+    rarity: 6,
     isShiny: false,
     unlock: { wins: 100 },
     questName: { fr: "One Piece existe !", en: "The One Piece is Real" },
