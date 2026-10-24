@@ -1351,8 +1351,8 @@ const CHARACTER_VARIANTS = [
     overrides: {}
   },
   {
-    // Gaban jeune (ère Roger, God Valley) : la base montre désormais le vieux Gaban (Elbaf),
-    // l'image jeune d'origine est réutilisée ici — coexiste à Wano (flashback God Valley)
+    // Gaban jeune (ère Roger) : jamais avant Elbaf — le flashback God Valley de
+    // Wano ne révèle pas Gaban au lecteur. Disponible seulement en Actuel.
     id: "gaban_young",
     baseName: "Scopper Gaban",
     displayName: {
@@ -1361,9 +1361,7 @@ const CHARACTER_VARIANTS = [
     },
     aliases: [ "YOUNG GABAN", "GABAN JEUNE", "GABAN GOD VALLEY", "GABAN PRIME" ],
     image: "img/alt/GabanYoung.webp",
-    stories: [ "wano" ],
-    // Flashback God Valley raconté à Wano (Oden) : fait entrer Gaban (arc Elbaf) dans le pool
-    forceInPool: true,
+    stories: [ "all" ],
     onlyAsVariant: false,
     rarity: 5,
     isShiny: false,

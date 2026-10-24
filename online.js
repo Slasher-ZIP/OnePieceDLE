@@ -566,9 +566,9 @@ function onlineOnRoom(p) {
   closeVersusModal();
   onlineApplyStart(1, p.story, p.difficulty, { turnSecs: p.turnSecs, bridled: p.bridled, mmode: p.mmode });
   // Préférences de l'invité (matchmaking) : l'hôte fusionne au hello.
-  const gDiff = document.getElementById("versusOptDiff")?.value || currentDifficulty;
-  const gStory = document.getElementById("versusOptStory")?.value || currentStory;
-  onlineSend({ t: "hello", pool: mine.pool, vc: mine.vc, name: versusNames[1], diff: gDiff, story: gStory });
+  // Ce sont SES réglages actuels (menu principal), pas les sélecteurs du panneau
+  // (qui restent réservés à la création manuelle d'un salon).
+  onlineSend({ t: "hello", pool: mine.pool, vc: mine.vc, name: versusNames[1], diff: currentDifficulty, story: currentStory });
 }
 
 function onlineOnStart(p) {
@@ -855,20 +855,10 @@ async function onlineAuto() {
     if (online.myKey > other.key) {
       // Moi : j'héberge et j'invite (auto : 45 s imposées, mystère partagé)
       const code = onlineRandCode();
-      const ho = onlineReadHostOpts();
-      // Les choix du panneau deviennent ceux de l'hôte (comme « Créer un salon »)
-      if (ho.difficulty && ho.difficulty !== currentDifficulty) {
-        currentDifficulty = ho.difficulty;
-        try { localStorage.setItem("opdle_diff", ho.difficulty); } catch (e) {}
-        if (typeof updateModeButtons === "function") updateModeButtons();
-      }
-      if (ho.story && ho.story !== currentStory && typeof STORY_POINTS !== "undefined" && STORY_POINTS[ho.story]) {
-        currentStory = ho.story;
-        try { localStorage.setItem("opdle_story", ho.story); } catch (e) {}
-        if (typeof updateStoryButtons === "function") updateStoryButtons();
-      }
+      // Matchmaking : chaque joueur apporte SES réglages actuels (menu principal).
+      // L'hôte fusionne ensuite avec ceux de l'invité en prenant le plus bas.
       online.pendingOpts = { turnSecs: 45, bridled: false, mmode: "shared",
-        autoMatch: true, autoDiff: ho.difficulty, autoStory: ho.story };
+        autoMatch: true, autoDiff: currentDifficulty, autoStory: currentStory };
       const myName = online.pendingName || me;
       try {
         ch.send({ type: "broadcast", event: "invite", payload: { to: other.key, code, story: currentStory, difficulty: currentDifficulty } });
