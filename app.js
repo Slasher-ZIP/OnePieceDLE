@@ -2072,7 +2072,8 @@ function isVariantAvailable(variant, storyId) {
   // Idem pour excludesBase (buggy_eastblue, nojiko_old, robin_pre...) : ces
   // variantes remplacent la base dans leurs arcs, mais en Actuel la forme
   // actuelle est canonique -- la base doit pouvoir sortir.
-  if (sid === "all" && !isOnlyAsVariant(variant) && !variant.excludesBase) return true;
+  // arcOnly : alt limité à ses arcs (ex. enfants East Blue), jamais en Actuel.
+  if (sid === "all" && !isOnlyAsVariant(variant) && !variant.excludesBase && !variant.arcOnly) return true;
   // Arcs imposés par l'admin (même vides = nulle part), sinon liste de la variante.
   if (ovo && Array.isArray(ovo.stories)) {
     return ovo.stories.includes(sid);
@@ -2416,7 +2417,9 @@ function rollForm(base, variants, odds) {
   function pickByRarityWeight(list) {
     // Mêmes multiplicateurs que la part de compartiment (FORM_RARITY_MULT) :
     // une seule source de vérité pour la rareté.
-    const weights = list.map(v => Math.max(0.0001, formRarityMult(v)));
+    // formWeight (optionnel, données) : répartition interne plus marquée entre alts
+    // (ex. enfant rare à East Blue, pré-ellipse dominante)
+    const weights = list.map(v => Math.max(0.0001, formRarityMult(v) * (v.formWeight != null ? v.formWeight : 1)));
     const tot = weights.reduce((a, b) => a + b, 0) || 1;
     let rr = Math.random() * tot;
     for (let i = 0; i < list.length; i++) {

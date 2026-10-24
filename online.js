@@ -133,7 +133,7 @@ function pickOnlineMystery(seedStr) {
   }
   if (noBase) pAlt += Math.max(0, 1 - (pAlt + pShiny));
   const pickW = (list) => {
-    const weights = list.map(v => Math.max(1, 7 - (v.rarity != null ? v.rarity : 3)));
+    const weights = list.map(v => Math.max(0.0001, (7 - (v.rarity != null ? v.rarity : 3)) * (v.formWeight != null ? v.formWeight : 1)));
     const tot = weights.reduce((a, b) => a + b, 0) || 1;
     let rr = rng() * tot;
     for (let i = 0; i < list.length; i++) { rr -= weights[i]; if (rr <= 0) return list[i]; }

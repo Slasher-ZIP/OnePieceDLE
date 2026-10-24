@@ -96,7 +96,10 @@ const CHARACTER_VARIANTS = [
     aliases: [ "LUFFY ENFANT", "YOUNG LUFFY", "LUFFY KID" ],
     image: "img/alt/luffy_young.webp",
     stories: [ "eastblue", "marineford" ],
-    onlyAsVariant: true,
+    // Enfant : rare face à la pré-ellipse (poids interne 0,2)
+    formWeight: 0.2,
+    arcOnly: true,
+    onlyAsVariant: false,
     rarity: 2,
     isShiny: false,
     overrides: {}
@@ -781,7 +784,8 @@ const CHARACTER_VARIANTS = [
     aliases: [ "ZORO PRE ELLIPSE", "PRE ELLIPSE ZORO", "ZORO AVANT ELLIPSE" ],
     image: "img/alt/ZoroPre.webp",
     stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
-    onlyAsVariant: true,
+    excludesBase: true,
+    onlyAsVariant: false,
     rarity: 1,
     isShiny: false,
     overrides: {}
@@ -813,7 +817,8 @@ const CHARACTER_VARIANTS = [
     aliases: [ "NAMI PRE ELLIPSE", "PRE ELLIPSE NAMI", "NAMI CHEVEUX COURTS" ],
     image: "img/alt/NamiPre.webp",
     stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
-    onlyAsVariant: true,
+    excludesBase: true,
+    onlyAsVariant: false,
     rarity: 1,
     isShiny: false,
     overrides: {}
@@ -1174,7 +1179,9 @@ const CHARACTER_VARIANTS = [
     aliases: [ "ZORO ENFANT", "YOUNG ZORO", "ZORO KID", "ZORO CHILD" ],
     image: "img/alt/ZoroYoung.webp",
     stories: [ "eastblue" ],
-    onlyAsVariant: true,
+    formWeight: 0.2,
+    arcOnly: true,
+    onlyAsVariant: false,
     rarity: 2,
     isShiny: false,
     overrides: {}
@@ -1254,7 +1261,9 @@ const CHARACTER_VARIANTS = [
     aliases: [ "NAMI ENFANT", "YOUNG NAMI", "NAMI KID", "NAMI CHILD" ],
     image: "img/alt/NamiYoung.webp",
     stories: [ "eastblue" ],
-    onlyAsVariant: true,
+    formWeight: 0.2,
+    arcOnly: true,
+    onlyAsVariant: false,
     rarity: 3,
     isShiny: false,
     overrides: {}
@@ -1446,7 +1455,8 @@ const CHARACTER_VARIANTS = [
     aliases: [ "LUFFY PRE ELLIPSE", "PRE TIMESKIP LUFFY", "LUFFY AVANT ELLIPSE" ],
     image: "img/alt/LuffyPre.webp",
     stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
-    onlyAsVariant: true,
+    excludesBase: true,
+    onlyAsVariant: false,
     rarity: 1,
     isShiny: false,
     overrides: {}
