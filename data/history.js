@@ -1601,10 +1601,7 @@ const CHARACTER_HISTORY = {
         fr: "Aucun",
         en: "None"
       },
-      haki: {
-        fr: "Observation, Armement",
-        en: "Observation, Armament"
-      },
+      haki: { fr: "Inconnu", en: "Unknown" },
       titre: {
         fr: "Aucun",
         en: "None"
@@ -1622,10 +1619,7 @@ const CHARACTER_HISTORY = {
         fr: "Aucun",
         en: "None"
       },
-      haki: {
-        fr: "Observation, Armement",
-        en: "Observation, Armament"
-      },
+      haki: { fr: "Inconnu", en: "Unknown" },
       titre: {
         fr: "Aucun",
         en: "None"
@@ -7208,10 +7202,7 @@ const CHARACTER_HISTORY = {
         fr: "Equipage d'empereur",
         en: "Emperor's Crew"
       },
-      haki: {
-        fr: "Observation, Armement",
-        en: "Observation, Armament"
-      }
+      haki: { fr: "Inconnu", en: "Unknown" }
     },
     dressrosa: {
       prime: 330000000,
@@ -7224,10 +7215,7 @@ const CHARACTER_HISTORY = {
         fr: "Equipage d'empereur",
         en: "Emperor's Crew"
       },
-      haki: {
-        fr: "Observation, Armement",
-        en: "Observation, Armament"
-      }
+      haki: { fr: "Inconnu", en: "Unknown" }
     },
     wholecake: {
       haki: {
@@ -11649,7 +11637,7 @@ const CHARACTER_HISTORY = {
   },
   "Jango": {
     eastblue: {
-      prime: 0,
+      prime: 9000000,
       fruit: {
         fr: "Aucun",
         en: "None"
@@ -11665,6 +11653,7 @@ const CHARACTER_HISTORY = {
       }
     },
     alabasta: {
+      prime: 0,
       haki: {
         fr: "Aucun",
         en: "None"
@@ -13110,6 +13099,15 @@ const CHARACTER_HISTORY = {
         fr: "Pirates de Rocks",
         en: "Rocks Pirates"
       }
+    },
+    wano: {
+      prime: null,
+      age: null,
+      height: 435,
+      fruit: { fr: "Inconnu", en: "Unknown" },
+      haki: { fr: "Inconnu", en: "Unknown" },
+      titre: { fr: "Capitaine", en: "Captain" },
+      affiliation: { fr: "Pirates de Rocks", en: "Rocks Pirates" }
     }
   },
   "Lafitte": {
@@ -13266,6 +13264,14 @@ const CHARACTER_HISTORY = {
         fr: "Famille Dadan (Bandits du Mont Colubo)",
         en: "Dadan Family (Mt. Colubo Bandits)"
       }
+    },
+    water7: {
+      age: 53,
+      prime: 0,
+      fruit: { fr: "Aucun", en: "None" },
+      haki: { fr: "Aucun", en: "None" },
+      titre: { fr: "Aucun", en: "None" },
+      affiliation: { fr: "Famille Dadan (Bandits du Mont Colubo)", en: "Dadan Family (Mt. Colubo Bandits)" }
     }
   },
   "Douglas Bullet": {
@@ -15301,6 +15307,15 @@ const CHARACTER_HISTORY = {
         fr: "Aucun",
         en: "None"
       }
+    },
+    fishman: {
+      age: 11,
+      height: null,
+      prime: null,
+      fruit: { fr: "Aucun", en: "None" },
+      haki: { fr: "Inconnu", en: "Unknown" },
+      titre: { fr: "Aucun", en: "None" },
+      affiliation: { fr: "Esclave", en: "Slave" }
     }
   },
   "Charlotte Oven": {
@@ -15812,6 +15827,13 @@ const CHARACTER_HISTORY = {
     },
     all: {
       prime: 500000000
+    },
+    skypiea: {
+      age: 74,
+      prime: 0,
+      haki: { fr: "Inconnu", en: "Unknown" },
+      titre: { fr: "Vice-Amiral", en: "Vice Admiral" },
+      affiliation: { fr: "Marine", en: "Marines" }
     }
   },
   "Fukaboshi": {
@@ -16148,6 +16170,10 @@ const CHARACTER_HISTORY = {
       }
     },
     wholecake: {
+      haki: {
+        fr: "Observation, Armement",
+        en: "Observation, Armament"
+      },
       prime: 429000000
     }
   },
@@ -16178,6 +16204,12 @@ const CHARACTER_HISTORY = {
     },
     all: {
       age: 29
+    },
+    marineford: {
+      haki: {
+        fr: "Observation",
+        en: "Observation"
+      }
     }
   },
   "Shura": {
@@ -16207,6 +16239,12 @@ const CHARACTER_HISTORY = {
     },
     all: {
       age: 33
+    },
+    marineford: {
+      haki: {
+        fr: "Observation",
+        en: "Observation"
+      }
     }
   },
   "Satori": {
@@ -16236,6 +16274,12 @@ const CHARACTER_HISTORY = {
     },
     all: {
       age: 27
+    },
+    marineford: {
+      haki: {
+        fr: "Observation",
+        en: "Observation"
+      }
     }
   },
   "Gedatsu": {
@@ -16265,6 +16309,12 @@ const CHARACTER_HISTORY = {
     },
     all: {
       age: 31
+    },
+    marineford: {
+      haki: {
+        fr: "Observation",
+        en: "Observation"
+      }
     }
   },
   "Karoo": {
@@ -16444,10 +16494,7 @@ const CHARACTER_HISTORY = {
         fr: "Aucun",
         en: "None"
       },
-      haki: {
-        fr: "Aucun",
-        en: "None"
-      },
+      haki: { fr: "Observation, Armement", en: "Observation, Armament" },
       age: 28,
       height: 242,
       affiliation: {
@@ -16460,16 +16507,10 @@ const CHARACTER_HISTORY = {
       }
     },
     wholecake: {
-      haki: {
-        fr: "Aucun",
-        en: "None"
-      }
+      haki: { fr: "Observation, Armement", en: "Observation, Armament" }
     },
     wano: {
-      haki: {
-        fr: "Aucun",
-        en: "None"
-      }
+      haki: { fr: "Observation, Armement", en: "Observation, Armament" }
     },
     all: {
       prime: 210000000,
@@ -16477,10 +16518,7 @@ const CHARACTER_HISTORY = {
         fr: "Aucun",
         en: "None"
       },
-      haki: {
-        fr: "Aucun",
-        en: "None"
-      },
+      haki: { fr: "Observation, Armement", en: "Observation, Armament" },
       age: 28,
       height: 242,
       affiliation: {
@@ -16679,6 +16717,13 @@ const CHARACTER_HISTORY = {
         fr: "Commandant, Equipage d'empereur",
         en: "Commander, Emperor's Crew"
       }
+    },
+    water7: {
+      prime: null,
+      fruit: { fr: "Aucun", en: "None" },
+      haki: { fr: "Aucun", en: "None" },
+      titre: { fr: "Commandant, Equipage d'empereur", en: "Commander, Emperor's Crew" },
+      affiliation: { fr: "Pirates de Barbe Blanche", en: "Whitebeard Pirates" }
     }
   },
   "Vista": {
@@ -16688,10 +16733,7 @@ const CHARACTER_HISTORY = {
         fr: "Aucun",
         en: "None"
       },
-      haki: {
-        fr: "Aucun",
-        en: "None"
-      },
+      haki: { fr: "Observation, Armement", en: "Observation, Armament" },
       age: 47,
       height: 328,
       affiliation: {
@@ -16704,28 +16746,16 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
-      haki: {
-        fr: "Aucun",
-        en: "None"
-      }
+      haki: { fr: "Observation, Armement", en: "Observation, Armament" }
     },
     dressrosa: {
-      haki: {
-        fr: "Aucun",
-        en: "None"
-      }
+      haki: { fr: "Observation, Armement", en: "Observation, Armament" }
     },
     wholecake: {
-      haki: {
-        fr: "Aucun",
-        en: "None"
-      }
+      haki: { fr: "Observation, Armement", en: "Observation, Armament" }
     },
     wano: {
-      haki: {
-        fr: "Aucun",
-        en: "None"
-      }
+      haki: { fr: "Observation, Armement", en: "Observation, Armament" }
     },
     all: {
       prime: null,
@@ -16733,10 +16763,7 @@ const CHARACTER_HISTORY = {
         fr: "Aucun",
         en: "None"
       },
-      haki: {
-        fr: "Aucun",
-        en: "None"
-      },
+      haki: { fr: "Observation, Armement", en: "Observation, Armament" },
       age: 47,
       height: 328,
       affiliation: {
@@ -16756,10 +16783,7 @@ const CHARACTER_HISTORY = {
         fr: "Paramecia",
         en: "Paramecia"
       },
-      haki: {
-        fr: "Aucun",
-        en: "None"
-      },
+      haki: { fr: "Observation, Armement", en: "Observation, Armament" },
       age: 42,
       height: 503,
       affiliation: {
@@ -16772,28 +16796,16 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
-      haki: {
-        fr: "Aucun",
-        en: "None"
-      }
+      haki: { fr: "Observation, Armement", en: "Observation, Armament" }
     },
     dressrosa: {
-      haki: {
-        fr: "Aucun",
-        en: "None"
-      }
+      haki: { fr: "Observation, Armement", en: "Observation, Armament" }
     },
     wholecake: {
-      haki: {
-        fr: "Aucun",
-        en: "None"
-      }
+      haki: { fr: "Observation, Armement", en: "Observation, Armament" }
     },
     wano: {
-      haki: {
-        fr: "Aucun",
-        en: "None"
-      }
+      haki: { fr: "Observation, Armement", en: "Observation, Armament" }
     },
     all: {
       prime: null,
@@ -16801,10 +16813,7 @@ const CHARACTER_HISTORY = {
         fr: "Paramecia",
         en: "Paramecia"
       },
-      haki: {
-        fr: "Aucun",
-        en: "None"
-      },
+      haki: { fr: "Observation, Armement", en: "Observation, Armament" },
       age: 42,
       height: 503,
       affiliation: {
@@ -16815,6 +16824,15 @@ const CHARACTER_HISTORY = {
         fr: "Commandant, Equipage d'empereur",
         en: "Commander, Emperor's Crew"
       }
+    },
+    skypiea: {
+      age: 42,
+      height: 503,
+      prime: null,
+      fruit: { fr: "Inconnu", en: "Unknown" },
+      haki: { fr: "Inconnu", en: "Unknown" },
+      titre: { fr: "Commandant, Equipage d'empereur", en: "Commander, Emperor's Crew" },
+      affiliation: { fr: "Pirates de Barbe Blanche", en: "Whitebeard Pirates" }
     }
   }
 };

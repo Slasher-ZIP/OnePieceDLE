@@ -2236,7 +2236,7 @@ const CHARACTERS = [
       en: "Unknown"
     },
     prime: 0,
-    arc: "Loguetown",
+    arc: "Romance Dawn",
     titre: { fr: "Capitaine", en: "Captain" },
     age: 44,
     height: 285,
@@ -5613,7 +5613,7 @@ const CHARACTERS = [
     },
     // Révolutionnaire : prime jamais révélée -> null (Inconnu), pas 0.
     prime: null,
-    arc: "Île des Hommes-Poissons",
+    arc: "Dressrosa",
     titre: { fr: "Révolutionnaire", en: "Revolutionary" },
     age: 38,
     height: 280,
@@ -5682,7 +5682,7 @@ const CHARACTERS = [
       en: "Observation, Armament"
     },
     prime: 457000000,
-    arc: "Egghead",
+    arc: "Rêverie",
     titre: { fr: "Commandant", en: "Commander" },
     age: 34,
     height: 196,
@@ -5716,7 +5716,7 @@ const CHARACTERS = [
       en: "Observation, Armament"
     },
     prime: 293000000,
-    arc: "Egghead",
+    arc: "Rêverie",
     titre: { fr: "Commandant", en: "Commander" },
     age: 160,
     height: 1253,
@@ -5750,7 +5750,7 @@ const CHARACTERS = [
       en: "Observation, Armament"
     },
     prime: 316000000,
-    arc: "Egghead",
+    arc: "Rêverie",
     titre: { fr: "Commandant", en: "Commander" },
     age: 37,
     height: 149,
@@ -5938,7 +5938,7 @@ const CHARACTERS = [
       en: "None"
     },
     prime: 210000000,
-    arc: "Archipel de Sabaody",
+    arc: "Île des Hommes-Poissons",
     titre: { fr: "Capitaine", en: "Captain" },
     age: 32,
     height: 228,
@@ -6032,7 +6032,7 @@ const CHARACTERS = [
       en: "Armament, Conqueror's"
     },
     prime: null,
-    arc: "Elbaf",
+    arc: "Wano Kuni",
     titre: { fr: "Capitaine", en: "Captain" },
     age: null,
     height: 435,
@@ -6123,7 +6123,7 @@ const CHARACTERS = [
       en: "None"
     },
     prime: 7800000,
-    arc: "Post-Marineford",
+    arc: "Post-Enies Lobby",
     titre: { fr: "Aucun", en: "None" },
     age: 55,
     height: 221,
@@ -7457,7 +7457,7 @@ const CHARACTERS = [
     fruit: { fr: "Aucun", en: "None" },
     haki: { fr: "Inconnu", en: "Unknown" },
     prime: null,
-    arc: "Dressrosa",
+    arc: "Île des Hommes-Poissons",
     titre: { fr: "Aucun", en: "None" },
     age: 23,
     height: 160,
@@ -7635,7 +7635,7 @@ const CHARACTERS = [
     fruit: { fr: "Paramecia", en: "Paramecia" },
     haki: { fr: "Observation, Armement", en: "Observation, Armament" },
     prime: 0,
-    arc: "Marineford",
+    arc: "Jaya",
     titre: { fr: "Vice-Amiral", en: "Vice Admiral" },
     age: 76,
     height: 204,
@@ -7843,7 +7843,7 @@ const CHARACTERS = [
     fruit: { fr: "Aucun", en: "None" },
     haki: { fr: "Aucun", en: "None" },
     prime: 0,
-    arc: "Whole Cake Island",
+    arc: "Dressrosa",
     titre: { fr: "Aucun", en: "None" },
     age: null,
     height: null,
@@ -8574,7 +8574,7 @@ const CHARACTERS = [
       en: "None"
     },
     prime: null,
-    arc: "Marineford",
+    arc: "Post-Enies Lobby",
     titre: { fr: "Commandant, Equipage d'empereur", en: "Commander, Emperor crew" },
     age: null,
     height: null,
@@ -8636,7 +8636,7 @@ const CHARACTERS = [
       en: "Observation, Armament"
     },
     prime: null,
-    arc: "Marineford",
+    arc: "Jaya",
     titre: { fr: "Commandant, Equipage d'empereur", en: "Commander, Emperor crew" },
     age: 42,
     height: 503,
