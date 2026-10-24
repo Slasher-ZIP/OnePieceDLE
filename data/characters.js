@@ -585,6 +585,9 @@ const CHARACTERS = [
   },
   {
     name: "Buggy",
+    // Forme de base (Cross Guild) : seulement à partir de Fish-Man Island.
+    // Avant, Buggy n'apparaît que via ses alts (buggy_eastblue, buggy_young).
+    minStory: "fishman",
     image: "img/Buggy.webp",
     aliases: [
   "BUGGY",

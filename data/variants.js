@@ -338,6 +338,8 @@ const CHARACTER_VARIANTS = [
     // Tant que cet alt est dispo, la forme normale de Buggy ne sort plus :
     // la place libre revient aux autres alts du perso (l'enfant).
     excludesBase: true,
+    // Fait entrer Buggy dans la pool à East Blue (sinon la base minStory l'en exclut)
+    forceInPool: true,
     rarity: 1,
     isShiny: false,
     overrides: {}
@@ -381,6 +383,7 @@ const CHARACTER_VARIANTS = [
     aliases: [ "BUGGY ENFANT", "BAGGY ENFANT", "YOUNG BUGGY", "BUGGY KID", "BUGGY CHILD" ],
     image: "img/alt/Buggy_young.webp",
     stories: [ "eastblue", "wano" ],
+    forceInPool: true,
     onlyAsVariant: false,
     rarity: 3,
     isShiny: false,

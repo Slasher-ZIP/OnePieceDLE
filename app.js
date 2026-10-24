@@ -1382,6 +1382,11 @@ function getAvailableCharacters() {
     });
   } catch (e) {}
 
+  // Base réservée à un point d'histoire (ex. Buggy : minStory "fishman"). Placé
+  // avant le forceInPool : un alt forceInPool (buggy_eastblue…) la ré-ajoute là où
+  // il est disponible.
+  pool = pool.filter(c => !c.minStory || storyIndex(currentStory) >= storyIndex(c.minStory));
+
   // Force-include bases for variants with forceInPool (e.g. young Sabo at Fish-Man Island)
   const forced = getForceInPoolVariants(currentStory);
   if (forced.length) {
