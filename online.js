@@ -115,7 +115,9 @@ function pickOnlineMystery(seedStr) {
   }
   const alts = variants.filter(v => !v.isShiny && !v.unlock);
   const shinies = variants.filter(v => v.isShiny && !v.unlock);
-  const noBase = alts.length > 0 && alts.some(v => v.excludesBase);
+  // Même règle que le solo : excludesBase jamais en mode Actuel ("all") --
+  // la forme de base (actuelle) doit y rester tirable.
+  const noBase = currentStory !== "all" && alts.length > 0 && alts.some(v => v.excludesBase);
   let pAlt = alts.length ? odds.alt : 0;
   let pShiny = shinies.length ? odds.shiny : 0;
   // Même boost + plafond que le solo (mode spécial Alt/Shiny débloqué par
@@ -419,6 +421,8 @@ function renderVersusPickbar() {
   }
   const ok = document.getElementById("versusPickOkBtn");
   if (ok) ok.textContent = t.versusPickOk || "Valider";
+  const inp = document.getElementById("versusPickInput");
+  if (inp) inp.placeholder = t.versusPickInputPh || "Nom du perso…";
 }
 
 function onlinePickRandom() {
@@ -427,11 +431,30 @@ function onlinePickRandom() {
   try { pool = getAvailableCharacters(); } catch (e) {}
   if (!pool.length) return;
   online.pendingPick = pool[Math.floor(Math.random() * pool.length)].name;
+  const input = document.getElementById("versusPickInput");
+  if (input) input.value = "";
   renderVersusPickbar();
+}
+
+/** Perso tapé dans la barre de choix (nom ou alias, comme une réponse). */
+function onlinePickByName(text) {
+  const q = typeof cleanString === "function" ? cleanString(text || "") : (text || "").trim().toLowerCase();
+  if (!q) return null;
+  let pool = [];
+  try { pool = getAvailableCharacters(); } catch (e) {}
+  return pool.find(c => (typeof cleanString === "function" ? cleanString(c.name) : c.name.toLowerCase()) === q ||
+    (c.aliases || []).some(a => (typeof cleanString === "function" ? cleanString(a) : a.toLowerCase()) === q)) || null;
 }
 
 function onlinePickConfirm() {
   if (!online.active || online.phase !== "pick") return;
+  const input = document.getElementById("versusPickInput");
+  const typed = input ? input.value.trim() : "";
+  if (typed) {
+    const c = onlinePickByName(typed);
+    if (!c) { onlineToast((onlineT() || {}).versusPickNotFound || "Personnage introuvable"); return; }
+    online.pendingPick = c.name;
+  }
   if (!online.pendingPick) return;
   online.myPick = online.pendingPick;
   onlineSend({ t: "mymyst", by: online.myIdx, name: online.myPick });
@@ -446,6 +469,7 @@ function onlineMaybeBegin() {
   if (!opp) return;
   online.phase = "play";
   answer = opp;
+  if (typeof recordMysteryPick === "function") recordMysteryPick(answer);
   renderVersusPickbar();
   updateVersusBanner();
   onlineToast((onlineT() || {}).versusPickBegin || "Que le meilleur gagne !");
@@ -490,7 +514,9 @@ function onlineApplyStart(round, story, difficulty, opts) {
   if (o.mmode === "own" || o.mmode === "shared") online.mmode = o.mmode;
   if (typeof updateModeButtons === "function") updateModeButtons();
   if (typeof updateStoryButtons === "function") updateStoryButtons();
+  deferPickRecord = true;
   startGame();
+  deferPickRecord = false;
   if (online.mmode === "own") {
     // Chacun fait deviner SON perso : phase de choix puis on joue
     online.phase = "pick";
@@ -503,6 +529,7 @@ function onlineApplyStart(round, story, difficulty, opts) {
     online.phase = "play";
     renderVersusPickbar();
     answer = pickOnlineMystery(online.seed + "#" + round);
+    if (typeof recordMysteryPick === "function") recordMysteryPick(answer);
   }
   updateVersusBanner();
   if (typeof updateOnlineUI === "function") updateOnlineUI();
@@ -1018,6 +1045,7 @@ function setupOnlineUI() {
   document.getElementById("versusAutoBtn")?.addEventListener("click", () => onlineAuto());
   document.getElementById("versusPickRandomBtn")?.addEventListener("click", () => onlinePickRandom());
   document.getElementById("versusPickOkBtn")?.addEventListener("click", () => onlinePickConfirm());
+  document.getElementById("versusPickInput")?.addEventListener("keydown", e => { if (e.key === "Enter") onlinePickConfirm(); });
   document.getElementById("versusLeaveBtn")?.addEventListener("click", () => {
     // endVersus envoie le "quit" AVANT de couper le canal : sinon l'autre
     // joueur ne remarque le départ qu'au timeout de présence.

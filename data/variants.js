@@ -533,9 +533,10 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/Robin_pre.webp",
     stories: [ "alabasta", "skypiea", "water7", "thriller", "marineford" ],
     forceInPool: true,
-    // Repassée en alt normal tirable : sans ça, une variante onlyAsVariant
-    // serait forcée à 100 % à chaque tirage de Robin.
-    onlyAsVariant: false,
+    // Remplace la forme de base (post-ellipse) en arcs pré-ellipse ; robin_young
+    // coexiste en alt probabiliste (pas de forçage 100 %, sinon robin_young serait
+    // inatteignable à Water 7).
+    excludesBase: true,
     rarity: 2,
     isShiny: false,
     // Alt normal tirable (la quête « Je veux vivre ! » porte sur robin_live)
@@ -1315,7 +1316,8 @@ const CHARACTER_VARIANTS = [
     aliases: [ "BROOK PRE ELLIPSE", "PRE TIMESKIP BROOK", "BROOK AVANT", "BROOK THRILLER BARK" ],
     image: "img/alt/BrookPre.webp",
     stories: [ "thriller", "marineford" ],
-    onlyAsVariant: false,
+    // Remplace la forme de base à Thriller Bark (brook_young coexiste) ; seule forme à Marineford
+    excludesBase: true,
     rarity: 2,
     isShiny: false,
     overrides: {}

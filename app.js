@@ -817,8 +817,10 @@ function updateCollectionUI() {
   // Le numérateur compte les persos ET leurs variantes (alts, shinies, gears) ;
   // le dénominateur doit couvrir les deux, sinon l'album affiche plus de 100 %.
   const total = collectionTotalCount();
+  const knownKeys = new Set([...(CHARACTERS || []).map(c => c.name), ...(CHARACTER_VARIANTS || []).map(v => v.id)]);
+  const knownUnlocked = [...unlocked].filter(k => knownKeys.has(k)).length;
   const countEl = document.getElementById("collectionCount");
-  if (countEl) countEl.textContent = `${unlocked.size} / ${total}`;
+  if (countEl) countEl.textContent = `${knownUnlocked} / ${total}`;
 
   const raritySel = document.getElementById("collectionRarityFilter");
   const affSel = document.getElementById("collectionAffFilter");
@@ -2062,7 +2064,10 @@ function isVariantAvailable(variant, storyId) {
   // pre-ellipse) ne servent qu'aux arcs anciens -- les rendre disponibles ici
   // les ferait passer en forcee et la carte de base (post-ellipse) ne
   // sortirait plus jamais, alors que c'est justement la forme canonique d'Actuel.
-  if (sid === "all" && !isOnlyAsVariant(variant)) return true;
+  // Idem pour excludesBase (buggy_eastblue, nojiko_old, robin_pre...) : ces
+  // variantes remplacent la base dans leurs arcs, mais en Actuel la forme
+  // actuelle est canonique -- la base doit pouvoir sortir.
+  if (sid === "all" && !isOnlyAsVariant(variant) && !variant.excludesBase) return true;
   // Arcs imposés par l'admin (même vides = nulle part), sinon liste de la variante.
   if (ovo && Array.isArray(ovo.stories)) {
     return ovo.stories.includes(sid);
@@ -2380,7 +2385,9 @@ function rollForm(base, variants, odds) {
   const shinies = variants.filter(v => isVariantShiny(v) && !v.unlock);
   // excludesBase : un alt présent interdit la forme normale (ex. Buggy East
   // Blue à côté de Buggy enfant, mais jamais Buggy tout court).
-  const noBase = alts.length > 0 && alts.some(v => v.excludesBase);
+  // Jamais en mode Actuel ("all") : la forme de base est la forme canonique
+  // actuelle et doit y rester tirable.
+  const noBase = currentStory !== "all" && alts.length > 0 && alts.some(v => v.excludesBase);
 
   // Part de chaque compartiment, modulée par la rareté des variantes qu'il
   // contient (R4 = taux de base ; plus c'est rare, moins ça tombe).
@@ -2575,14 +2582,17 @@ function hideShinyBanner() {
 function updateVersusBanner() {
   const banner = document.getElementById("versusBanner");
   if (!banner) return;
-  banner.classList.toggle("hidden", !versusMode);
-  banner.classList.toggle("flex", versusMode);
+  // La ligne bleue n'apparaît qu'une fois la partie lancée : pendant le choix
+  // du mystère, la barre violette suffit (sinon elle prête à confusion).
+  const picking = typeof online !== "undefined" && online.active && online.phase === "pick";
+  const show = versusMode && !picking;
+  banner.classList.toggle("hidden", !show);
+  banner.classList.toggle("flex", show);
   if (!versusMode) return;
   const t = TRANSLATIONS[currentLang] || TRANSLATIONS.fr;
   let txt;
-  if (typeof online !== "undefined" && online.phase === "pick") {
-    const mine = online.myPick || online.pendingPick;
-    txt = `🎯 ${t.versusPickPrompt || "Choisis ton mystère !"}${mine ? " — " + mine : ""}`;
+  if (picking) {
+    txt = "";
   } else {
     txt = `⚔️ ${t.versusRound || "Manche"} ${versusRound} · ${versusNames[0]} ${versusScores[0]} — ${versusScores[1]} ${versusNames[1]} · ` +
       (t.versusTurn || "À {name} de jouer").replace("{name}", versusNames[versusTurn]);
@@ -2596,7 +2606,10 @@ function updateVersusBanner() {
   const el = document.getElementById("versusBannerText");
   if (el) el.textContent = txt;
   const quit = document.getElementById("versusQuitBtn");
-  if (quit) quit.title = t.versusQuit || "Quit";
+  if (quit) {
+    quit.textContent = t.versusQuitBtn || "Quit";
+    quit.title = t.versusQuit || "Quit";
+  }
   const drawBtn = document.getElementById("versusDrawBtn");
   if (drawBtn) {
     drawBtn.textContent = "½ " + (t.versusDrawBtn || "Nul");
@@ -2610,6 +2623,10 @@ function openVersusSetup() {
   const i2 = document.getElementById("versusName2");
   if (i1 && !i1.value) { i1.value = versusNames[0]; i1.placeholder = t.versusJ1 || "Joueur 1"; }
   if (i2 && !i2.value) { i2.value = versusNames[1]; i2.placeholder = t.versusJ2 || "Joueur 2"; }
+  const l1 = document.getElementById("versusPseudo1Label");
+  const l2 = document.getElementById("versusPseudo2Label");
+  if (l1) l1.textContent = t.versusPseudo1 || "Pseudo joueur 1";
+  if (l2) l2.textContent = t.versusPseudo2 || "Pseudo joueur 2";
   document.getElementById("versusModal")?.classList.remove("hidden");
 }
 
@@ -2644,6 +2661,7 @@ function endVersus(sendQuit) {
     // (rejoignable alors que le joueur pense l'avoir fermé).
     onlineLeaveRoom(true);
   }
+  recordVersusMatch();
   versusMode = false;
   versusWinner = -1;
   updateVersusBanner();
@@ -2702,7 +2720,9 @@ function versusAskDraw() {
 function startGame() {
   hideShinyBanner();
   answer = pickRandomCharacter();
-  if (typeof recordMysteryPick === "function") recordMysteryPick(answer);
+  // Versus en ligne : la vraie réponse est enregistrée par onlineApplyStart /
+  // onlineMaybeBegin (sinon on compterait un mystère tiré au hasard, jamais joué).
+  if (typeof recordMysteryPick === "function" && !deferPickRecord) recordMysteryPick(answer);
   guessedNames.clear();
   currentGuessesList = [];
   attemptsCount = 0;
@@ -3453,7 +3473,10 @@ function questProgress(variant) {
     let stats = {};
     try { stats = JSON.parse(localStorage.getItem(PICK_STATS_KEY) || "{}"); } catch (e) {}
     const cur = u.drawn.filter(k => (Number(stats[k]) || 0) > 0).length;
-    parts.push({ label: fr ? "Mystères déjà tirés" : "Mysteries already drawn", cur, need: u.drawn.length });
+    parts.push({
+      label: fr ? "Personnages d'East Blue tirés en mystère (chacun compte une fois)" : "East Blue characters drawn as mystery (each counts once)",
+      cur, need: u.drawn.length
+    });
   }
   if (Array.isArray(u.hasVariants)) {
     let un = [];
@@ -4200,6 +4223,8 @@ const HISTORY_MAX = 50;
 let roundRecorded = false;
 // Partie forcée via l'admin (mystère imposé) : exclue des stats/historique.
 let roundForced = false;
+// Versus en ligne : l'enregistrement du mystère est fait quand la réponse est connue.
+let deferPickRecord = false;
 
 function loadGameHistory() {
   try {
@@ -4210,6 +4235,28 @@ function loadGameHistory() {
 function saveGameHistory(h) {
   try { localStorage.setItem(GAME_HISTORY_KEY, JSON.stringify((h || []).slice(0, HISTORY_MAX))); } catch (e) {}
 }
+/* Historique des matchs versus (score final), séparé de l'historique des manches. */
+const VERSUS_MATCH_KEY = "opdle_versus_matches_v1";
+const VERSUS_MATCH_MAX = 50;
+function loadVersusMatches() {
+  try { return JSON.parse(localStorage.getItem(VERSUS_MATCH_KEY) || "[]"); } catch (e) { return []; }
+}
+/** Sauvegarde le score final du match en cours (appelé à la fin du versus). */
+function recordVersusMatch() {
+  if (!versusMode || !Array.isArray(versusNames) || versusRound <= 1) return;
+  const m = loadVersusMatches();
+  m.unshift({
+    t: Date.now(),
+    names: [versusNames[0], versusNames[1]],
+    scores: [versusScores[0], versusScores[1]],
+    rounds: versusRound - 1,
+    st: currentStory,
+    d: currentDifficulty,
+    on: (typeof online !== "undefined" && online.active) ? 1 : 0
+  });
+  try { localStorage.setItem(VERSUS_MATCH_KEY, JSON.stringify(m.slice(0, VERSUS_MATCH_MAX))); } catch (e) {}
+}
+
 /** Enregistre la fin de manche en cours (une seule fois par manche).
  *  res: { win, draw, how: "guess"|"fail"|"forfeit"|"draw"|"abandon", winner } */
 function recordGameEnd(res) {
@@ -4299,6 +4346,7 @@ function resetQuestProgressAll() {
   }
   // Historique de parties : source de vérité qui ferait REMONTER les quêtes
   try { localStorage.removeItem(GAME_HISTORY_KEY); } catch (e) {}
+  try { localStorage.removeItem(VERSUS_MATCH_KEY); } catch (e) {}
   // Stats de tirage : pilote la quête « La Marche » (u.drawn)
   try { localStorage.removeItem(PICK_STATS_KEY); } catch (e) {}
   // Compteur brut « parties jouées » (utilisé par certaines quêtes)
@@ -4672,7 +4720,8 @@ function computeFormOdds(baseName, difficulty, storyId) {
   }
   const alts = variants.filter(v => !isVariantShiny(v) && !v.unlock);
   const shinies = variants.filter(v => isVariantShiny(v) && !v.unlock);
-  const noBase = alts.length > 0 && alts.some(v => v.excludesBase);
+  // Même règle que rollForm : excludesBase jamais en mode Actuel.
+  const noBase = sid !== "all" && alts.length > 0 && alts.some(v => v.excludesBase);
   // Même modulation de rareté que rollForm : l'affichage doit coller au réel.
   let pAlt = alts.length ? odds.alt * formBucketMult(alts) : 0;
   let pShiny = shinies.length ? odds.shiny * formBucketMult(shinies) : 0;
@@ -5277,6 +5326,9 @@ function renderSettingsStats() {
     charTot = CHARACTERS.length;
     for (const c of CHARACTERS) if (unlocked.has(c.name)) charGot++;
   }
+  // Album : seules les clés connues comptent (pas d'identifiant orphelin au-dessus du total)
+  const albumKnown = new Set([...(CHARACTERS || []).map(c => c.name), ...(CHARACTER_VARIANTS || []).map(v => v.id)]);
+  const albumGot = [...unlocked].filter(k => albumKnown.has(k)).length;
   const cell = (label, val, cls) =>
     `<div class="rounded-xl bg-slate-800/60 border border-slate-700/60 px-2 py-2 text-center">` +
     `<div class="text-lg font-black tabular-nums ${cls || "text-white"}">${val}</div>` +
@@ -5288,6 +5340,27 @@ function renderSettingsStats() {
     const sp = (typeof STORY_POINTS !== "undefined" && STORY_POINTS[sid]) || null;
     return (sp && t[sp.labelKey]) || sid;
   };
+  const matchRows = loadVersusMatches().slice(0, 10).map(m => {
+    let when = "";
+    try {
+      const d = new Date(m.t);
+      when = d.toLocaleDateString(locale, { day: "2-digit", month: "2-digit" }) + " " +
+        d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" });
+    } catch (e) {}
+    const [s1, s2] = m.scores;
+    const verdict = s1 === s2 ? "½ " + (t.settingsResDraw || "Nul")
+      : (s1 > s2 ? "✓ " + m.names[0] : "✓ " + m.names[1]);
+    const cls = s1 === s2 ? "text-slate-400" : "text-emerald-400";
+    const stN = storyName(m.st);
+    return `<div class="flex items-center gap-2.5 rounded-xl bg-slate-800/40 border border-slate-700/40 px-2 py-1.5">` +
+      `<div class="min-w-0 flex-1">` +
+        `<div class="text-xs font-bold text-white truncate">${m.names[0]} ${s1} — ${s2} ${m.names[1]}</div>` +
+        `<div class="text-[10px] ${cls} font-semibold truncate">${verdict} · ${m.rounds} ${t.settingsRounds || (currentLang === "en" ? "rounds" : "manches")}` +
+        ` · ${diffName[m.d] || m.d}${stN ? " · " + stN : ""}${m.on ? " · 🌐" : ""}</div>` +
+      `</div>` +
+      `<div class="text-[10px] text-slate-500 tabular-nums shrink-0">${when}</div>` +
+      `</div>`;
+  }).join("");
   const rows = hist.map(h => {
     let img = null, nm = h.a || "?";
     try {
@@ -5346,11 +5419,15 @@ function renderSettingsStats() {
     `<div class="grid grid-cols-3 gap-1.5">` +
     cell("✦ " + (t.settingsShinyFound || "Shinies"), shinyGot + "/" + shinyTot, "text-violet-300") +
     cell("◇ " + (t.settingsAltFound || "Alts"), altGot + "/" + altTot, "text-sky-300") +
-    cell("🃏 " + (t.settingsAlbum || "Album"), (charGot + shinyGot + altGot) + "/" + (charTot + shinyTot + altTot), "text-amber-200") +
+    cell("🃏 " + (t.settingsAlbum || "Album"), albumGot + "/" + collectionTotalCount(), "text-amber-200") +
     `</div>` +
     `<div>` +
     `<div class="text-[11px] uppercase tracking-wider text-slate-500 font-bold mb-1.5">${t.settingsHistory || "Historique"}</div>` +
     (rows || `<p class="text-xs text-slate-500 text-center py-3">${t.settingsHistoryEmpty || ""}</p>`) +
+    `</div>` +
+    `<div>` +
+    `<div class="text-[11px] uppercase tracking-wider text-slate-500 font-bold mb-1.5">${t.settingsVsHistory || "Matchs versus"}</div>` +
+    (matchRows || `<p class="text-xs text-slate-500 text-center py-3">${t.settingsVsHistoryEmpty || ""}</p>`) +
     `</div>`;
 }
 

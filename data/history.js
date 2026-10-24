@@ -3549,6 +3549,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 45,
       haki: {
         fr: "Observation, Armement",
         en: "Observation, Armament"
@@ -4268,6 +4269,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 41,
       haki: {
         fr: "Aucun",
         en: "None"
@@ -4338,6 +4340,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 39,
       haki: {
         fr: "Observation",
         en: "Observation"
@@ -4533,12 +4536,13 @@ const CHARACTER_HISTORY = {
     }
   },
   "Sakazuki": {
+    // Water 7 (flashback Enies Lobby) : on le voit sans rien savoir de lui -> inconnu
     water7: {
-      prime: 0,
-      age: 53,
+      prime: null,
+      age: null,
       titre: {
-        fr: "Amiral",
-        en: "Admiral"
+        fr: "Inconnu",
+        en: "Unknown"
       },
       haki: {
         fr: "Inconnu",
@@ -4570,6 +4574,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 55,
       haki: {
         fr: "Observation, Armement",
         en: "Observation, Armament"
@@ -5053,6 +5058,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 79,
       haki: {
         fr: "Observation, Armement, Roi",
         en: "Observation, Armament, Conqueror's"
@@ -6033,6 +6039,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 27,
       haki: {
         fr: "Aucun",
         en: "None"
@@ -6185,6 +6192,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 44,
       haki: {
         fr: "Aucun",
         en: "None"
@@ -6265,6 +6273,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 35,
       haki: {
         fr: "Aucun",
         en: "None"
@@ -6347,6 +6356,7 @@ const CHARACTER_HISTORY = {
       prime: 100000000
     },
     fishman: {
+      age: 160,
       haki: {
         fr: "Inconnu",
         en: "Unknown"
@@ -6434,6 +6444,7 @@ const CHARACTER_HISTORY = {
       prime: 100000000
     },
     fishman: {
+      age: 160,
       haki: {
         fr: "Inconnu",
         en: "Unknown"
@@ -7484,6 +7495,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 32,
       titre: {
         fr: "Agent",
         en: "Agent"
@@ -7596,6 +7608,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 31,
       titre: {
         fr: "Agent",
         en: "Agent"
@@ -7712,6 +7725,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 37,
       titre: {
         fr: "Agent",
         en: "Agent"
@@ -7783,6 +7797,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 47,
       haki: {
         fr: "Inconnu",
         en: "Unknown"
@@ -8400,6 +8415,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 25,
       haki: {
         fr: "Inconnu",
         en: "Unknown"
@@ -8516,6 +8532,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 18,
       titre: {
         fr: "Famille Royale, Agent",
         en: "Royal Family, Agent"
@@ -8638,6 +8655,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 23,
       haki: {
         fr: "Inconnu",
         en: "Unknown"
@@ -9425,6 +9443,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 67,
       haki: {
         fr: "Inconnu",
         en: "Unknown"
@@ -10491,6 +10510,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 22,
       haki: {
         fr: "Armement",
         en: "Armament"
@@ -10572,6 +10592,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 38,
       haki: {
         fr: "Aucun",
         en: "None"
@@ -11673,6 +11694,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 29,
       haki: {
         fr: "Aucun",
         en: "None"
@@ -11905,6 +11927,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 24,
       titre: {
         fr: "Agent",
         en: "Agent"
@@ -12029,6 +12052,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 30,
       titre: {
         fr: "Agent",
         en: "Agent"
@@ -12153,6 +12177,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 51,
       titre: {
         fr: "Agent",
         en: "Agent"
@@ -12351,6 +12376,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 18,
       haki: {
         fr: "Aucun",
         en: "None"
@@ -12409,6 +12435,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 33,
       haki: {
         fr: "Aucun",
         en: "None"
@@ -12510,6 +12537,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 68,
       haki: {
         fr: "Aucun",
         en: "None"
@@ -12586,6 +12614,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 24,
       haki: {
         fr: "Aucun",
         en: "None"
@@ -12738,6 +12767,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 21,
       haki: {
         fr: "Aucun",
         en: "None"
@@ -13022,6 +13052,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 127,
       haki: {
         fr: "Inconnu",
         en: "Unknown"
@@ -13126,6 +13157,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 41,
       haki: {
         fr: "Inconnu",
         en: "Unknown"
@@ -13194,6 +13226,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 55,
       haki: {
         fr: "Aucun",
         en: "None"
@@ -13406,6 +13439,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 35,
       haki: {
         fr: "Aucun",
         en: "None"
@@ -14261,6 +14295,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 64,
       haki: {
         fr: "Inconnu",
         en: "Unknown"
@@ -14343,6 +14378,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 73,
       haki: {
         fr: "Observation",
         en: "Observation"
@@ -14407,6 +14443,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 36,
       haki: {
         fr: "Aucun",
         en: "None"
@@ -14471,6 +14508,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 47,
       haki: {
         fr: "Aucun",
         en: "None"
@@ -15022,7 +15060,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
-      age: 20
+      age: 22
     },
     all: {
       age: 22,
@@ -15191,6 +15229,7 @@ const CHARACTER_HISTORY = {
       }
     },
     fishman: {
+      age: 27,
       prime: 195000000,
       titre: {
         fr: "Capitaine",
@@ -16133,6 +16172,9 @@ const CHARACTER_HISTORY = {
         en: "Observation"
       }
     },
+    fishman: {
+      age: 29
+    },
     all: {
       age: 29
     }
@@ -16158,6 +16200,9 @@ const CHARACTER_HISTORY = {
         fr: "Observation",
         en: "Observation"
       }
+    },
+    fishman: {
+      age: 33
     },
     all: {
       age: 33
@@ -16185,6 +16230,9 @@ const CHARACTER_HISTORY = {
         en: "Observation"
       }
     },
+    fishman: {
+      age: 27
+    },
     all: {
       age: 27
     }
@@ -16210,6 +16258,9 @@ const CHARACTER_HISTORY = {
         fr: "Observation",
         en: "Observation"
       }
+    },
+    fishman: {
+      age: 31
     },
     all: {
       age: 31
@@ -16237,6 +16288,9 @@ const CHARACTER_HISTORY = {
         en: "None"
       }
     },
+    fishman: {
+      age: 16
+    },
     all: {
       age: 16
     }
@@ -16262,6 +16316,9 @@ const CHARACTER_HISTORY = {
         fr: "Aucun",
         en: "None"
       }
+    },
+    fishman: {
+      age: 22
     },
     all: {
       age: 22
