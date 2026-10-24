@@ -2008,7 +2008,13 @@ function setSpecialMode(on) {
 const SPECIAL_NON_NORMAL_CAP = 1;
 const SPECIAL_FORM_MULT = 3;
 const SPECIAL_SHINY_MULT = 4;
-function formCap() { return isSpecialMode() ? SPECIAL_NON_NORMAL_CAP : 0.55; }
+function formCap() {
+  if (isSpecialMode()) return SPECIAL_NON_NORMAL_CAP;
+  // Actuel : la carte normale doit rester la forme principale (toutes les formes
+  // sont disponibles, mais elles se partagent au plus 42 %).
+  if (typeof currentStory !== "undefined" && currentStory === "all") return 0.42;
+  return 0.55;
+}
 function formBoost() { return isSpecialMode() ? SPECIAL_FORM_MULT : 1; }
 function shinyBoost() { return isSpecialMode() ? SPECIAL_SHINY_MULT : 1; }
 /** Applique boost (+ multiplicateur shiny) puis plafond sur (pAlt, pShiny) :
@@ -2064,16 +2070,11 @@ function isVariantAvailable(variant, storyId) {
   if (variant.unlock) {
     return isVariantUnlocked(variant);
   }
-  // "Actuel" = le manga lu dans son entirety : toutes les variantes sont
-  // disponibles. Exception : les formes forcees (onlyAsVariant, ex. les alts
-  // pre-ellipse) ne servent qu'aux arcs anciens -- les rendre disponibles ici
-  // les ferait passer en forcee et la carte de base (post-ellipse) ne
-  // sortirait plus jamais, alors que c'est justement la forme canonique d'Actuel.
-  // Idem pour excludesBase (buggy_eastblue, nojiko_old, robin_pre...) : ces
-  // variantes remplacent la base dans leurs arcs, mais en Actuel la forme
-  // actuelle est canonique -- la base doit pouvoir sortir.
-  // arcOnly : alt limité à ses arcs (ex. enfants East Blue), jamais en Actuel.
-  if (sid === "all" && !isOnlyAsVariant(variant) && !variant.excludesBase && !variant.arcOnly) return true;
+  // "Actuel" = le manga lu dans son entier : TOUTES les formes sont disponibles
+  // (pré-ellipse, anciens designs, exclusives d'arc). En Actuel elles sont
+  // probabilistes (rollForm ne force personne ici) : la carte normale reste la
+  // forme principale et les autres se partagent le reste, pondérées par rareté.
+  if (sid === "all") return true;
   // Arcs imposés par l'admin (même vides = nulle part), sinon liste de la variante.
   if (ovo && Array.isArray(ovo.stories)) {
     return ovo.stories.includes(sid);
@@ -2267,6 +2268,8 @@ function applyVariant(baseChar, variant) {
 function forceOnlyAsVariantIfNeeded(char, storyId) {
   if (!char || char._variantId) return char;
   const sid = storyId || currentStory;
+  // Actuel : toutes les formes sont probabilistes, on montre la carte normale.
+  if (sid === "all") return char;
   const variants = getVariantsForBase(char.name, sid);
   const only = variants.filter(v => isOnlyAsVariant(v));
   if (only.length === 1) return applyVariant(char, only[0]);
@@ -2367,7 +2370,10 @@ function collectAcceptForm(key) {
  *  onlyAsVariant, shiny empilé) ; le mode Collecter ajoute seulement une
  *  ré-acceptation bornée par forme (voir collectAcceptForm). */
 function rollForm(base, variants, odds) {
-  const onlyVariants = variants.filter(v => isOnlyAsVariant(v));
+  // Actuel : aucune forme forcée — toutes les formes sont des alts probabilistes
+  // pour que la carte normale reste la forme principale.
+  const actuel = currentStory === "all";
+  const onlyVariants = actuel ? [] : variants.filter(v => isOnlyAsVariant(v));
   if (onlyVariants.length > 0) {
     const pick = onlyVariants[Math.floor(Math.random() * onlyVariants.length)];
     const forced = applyVariant(base, pick);
@@ -4719,7 +4725,8 @@ function computeFormOdds(baseName, difficulty, storyId) {
   const variants = typeof getVariantsForBase === "function"
     ? getVariantsForBase(baseName, sid)
     : [];
-  const onlyVariants = variants.filter(v => isOnlyAsVariant(v));
+  // Actuel : aucune forme forcée (elles deviennent des alts probabilistes).
+  const onlyVariants = sid === "all" ? [] : variants.filter(v => isOnlyAsVariant(v));
   if (onlyVariants.length > 0) {
     // Comme dans pickRandomCharacter, un shiny peut s'empiler sur la forme
     // forcée : la proba shiny réelle n'est pas nulle dans ce cas.

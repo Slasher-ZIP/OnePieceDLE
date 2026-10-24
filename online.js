@@ -93,7 +93,8 @@ function pickOnlineMystery(seedStr) {
   const variants = getVariantsForBase(base.name, currentStory);
   if (!variants.length) return base;
   const odds = (typeof FORM_ODDS !== "undefined" && FORM_ODDS[currentDifficulty]) || FORM_ODDS.medium;
-  const onlyVariants = variants.filter(v => v.onlyAsVariant);
+  // Actuel : aucune forme forcée (alts probabilistes, carte normale majoritaire).
+  const onlyVariants = currentStory === "all" ? [] : variants.filter(v => v.onlyAsVariant);
   if (onlyVariants.length > 0) {
     const pick = onlyVariants[Math.floor(rng() * onlyVariants.length)];
     const forced = applyVariant(base, pick);
