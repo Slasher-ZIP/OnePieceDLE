@@ -421,8 +421,8 @@ const CHARACTERS = [
       en: "Logia"
     },
     haki: {
-      fr: "Armement, Roi",
-      en: "Armament, Conqueror's"
+      fr: "Observation, Armement, Roi",
+      en: "Observation, Armament, Conqueror's"
     },
     prime: 550000000,
     arc: "Royaume de Drum",
@@ -2888,8 +2888,8 @@ const CHARACTERS = [
       en: "Elbaf"
     },
     fruit: {
-      fr: "Inconnu",
-      en: "Unknown"
+      fr: "Mythique Zoan",
+      en: "Mythical Zoan"
     },
     haki: {
       fr: "Observation, Roi",
@@ -3751,8 +3751,8 @@ const CHARACTERS = [
       en: "World Government"
     },
     fruit: {
-      fr: "Mythique Zoan",
-      en: "Mythical Zoan"
+      fr: "Inconnu",
+      en: "Unknown"
     },
     haki: {
       fr: "Observation, Roi",
@@ -6182,9 +6182,9 @@ const CHARACTERS = [
       en: "World Government"
     },
     fruit: {
-        fr: "Inconnu",
-        en: "Unknown"
-      },
+      fr: "Paramecia",
+      en: "Paramecia"
+    },
     haki: {
       fr: "Inconnu",
       en: "Unknown"
@@ -8180,8 +8180,8 @@ const CHARACTERS = [
       en: "Zoan"
     },
     haki: {
-      fr: "Inconnu",
-      en: "Unknown"
+      fr: "Observation, Armement",
+      en: "Observation, Armament"
     },
     prime: 429000000,
     arc: "Île des Hommes-Poissons",
@@ -8476,8 +8476,8 @@ const CHARACTERS = [
       en: "None"
     },
     haki: {
-      fr: "Aucun",
-      en: "None"
+      fr: "Observation, Armement",
+      en: "Observation, Armament"
     },
     prime: 210000000,
     arc: "Dressrosa",
@@ -8601,8 +8601,8 @@ const CHARACTERS = [
       en: "None"
     },
     haki: {
-      fr: "Aucun",
-      en: "None"
+      fr: "Observation, Armement",
+      en: "Observation, Armament"
     },
     prime: null,
     arc: "Marineford",
@@ -8632,8 +8632,8 @@ const CHARACTERS = [
       en: "Paramecia"
     },
     haki: {
-      fr: "Aucun",
-      en: "None"
+      fr: "Observation, Armement",
+      en: "Observation, Armament"
     },
     prime: null,
     arc: "Marineford",
