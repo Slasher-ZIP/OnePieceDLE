@@ -320,7 +320,7 @@ const CHARACTER_VARIANTS = [
     },
     aliases: [ "RAYLEIGH SHINY", "SHINY RAYLEIGH" ],
     image: "img/shiny/Rayleigh_shiny.webp",
-    stories: [ "marineford", "fishman" ],
+    stories: [ "all" ],
     rarity: 6,
     isShiny: true,
     overrides: {}
@@ -461,7 +461,7 @@ const CHARACTER_VARIANTS = [
     },
     aliases: [ "SANJI SHINY", "SHINY SANJI" ],
     image: "img/shiny/Sanji_shiny.webp",
-    stories: [ "wholecake", "wano" ],
+    stories: [ "wano" ],
     rarity: 5,
     isShiny: true,
     overrides: {}
@@ -523,7 +523,7 @@ const CHARACTER_VARIANTS = [
     },
     aliases: [ "BIG MOM SHINY", "SHINY BIG MOM", "LINLIN SHINY", "SHINY LINLIN" ],
     image: "img/shiny/BigmomShiny.jpeg",
-    stories: [ "wholecake", "wano" ],
+    stories: [ "wholecake" ],
     rarity: 6,
     isShiny: true,
     overrides: {}
@@ -559,7 +559,7 @@ const CHARACTER_VARIANTS = [
     },
     aliases: [ "ROBIN DEMON", "DEMON ROBIN", "DEMONIO FLEUR", "ROBIN DEMONIAQUE", "ROBIN ONI" ],
     image: "img/shiny/RobinDemon.png",
-    stories: [ "thriller", "wano" ],
+    stories: [ "wano" ],
     onlyAsVariant: false,
     rarity: 4,
     isShiny: true,
@@ -710,7 +710,7 @@ const CHARACTER_VARIANTS = [
     aliases: [ "CHOPPER SHINY", "SHINY CHOPPER" ],
     image: "img/shiny/Chopper_shiny.webp",
     // s'empile sur chopper_pre (forme forcée) quand celui-ci est actif
-    stories: [ "alabasta", "skypiea", "water7", "thriller", "marineford" ],
+    stories: [ "water7" ],
     rarity: 4,
     isShiny: true,
     overrides: {}
@@ -801,7 +801,8 @@ const CHARACTER_VARIANTS = [
     aliases: [ "SANJI PRE ELLIPSE", "PRE ELLIPSE SANJI", "SANJI AVANT ELLIPSE" ],
     image: "img/alt/SanjiPre.webp",
     stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
-    onlyAsVariant: true,
+    excludesBase: true,
+    onlyAsVariant: false,
     rarity: 1,
     isShiny: false,
     overrides: {}
@@ -1244,7 +1245,7 @@ const CHARACTER_VARIANTS = [
     },
     aliases: [ "BEPO SULONG", "SULONG BEPO", "BEPO SULU" ],
     image: "img/alt/BepoSulong.webp",
-    stories: [ "wano" ],
+    stories: [ "all" ],
     onlyAsVariant: false,
     rarity: 4,
     isShiny: true,
@@ -1402,7 +1403,7 @@ const CHARACTER_VARIANTS = [
     displayName: { fr: "Jack", en: "Jack" },
     aliases: [ "JACK ZOAN", "JACK MAMMOTH", "JACK MAMMOUTH" ],
     image: "img/alt/JackZoan.webp",
-    stories: [ "wano" ],
+    stories: [ "wano", "wholecake" ],
     onlyAsVariant: false,
     rarity: 4,
     isShiny: true,
@@ -1472,7 +1473,8 @@ const CHARACTER_VARIANTS = [
     aliases: [ "USOPP PRE ELLIPSE", "PRE TIMESKIP USOPP", "USOPP AVANT ELLIPSE" ],
     image: "img/alt/UsoppPre.webp",
     stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
-    onlyAsVariant: true,
+    excludesBase: true,
+    onlyAsVariant: false,
     rarity: 1,
     isShiny: false,
     overrides: {}
@@ -1660,7 +1662,7 @@ const CHARACTER_VARIANTS = [
     displayName: { fr: "Sengoku ✦ Shiny", en: "Sengoku ✦ Shiny" },
     aliases: ["SENGOKU SHINY","SHINY SENGOKU","LE BOUDDHA SHINY","SENGOKU BOUDDHA"],
     image: "img/alt/SengokuBuddha.jpeg",
-    minStory: "marineford",
+    stories: [ "marineford" ],
     rarity: 5,
     isShiny: true,
     overrides: {}
