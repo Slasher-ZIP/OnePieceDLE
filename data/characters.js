@@ -2930,7 +2930,7 @@ const CHARACTERS = [
     prime: 0,
     arc: "Elbaf",
     titre: { fr: "Aucun", en: "None" },
-    age: 0,
+    age: 39,
     height: 0,
     rarity: 4
   },

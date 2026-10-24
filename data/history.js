@@ -3853,7 +3853,7 @@ const CHARACTER_HISTORY = {
       }
     },
     wano: {
-      prime: 0,
+      prime: 500000000,
       age: 36,
       titre: {
         fr: "Vice-Amiral",
@@ -3865,7 +3865,7 @@ const CHARACTER_HISTORY = {
       }
     },
     all: {
-      prime: 0,
+      prime: 500000000,
       age: 36,
       titre: {
         fr: "Vice-Amiral",
@@ -4503,7 +4503,7 @@ const CHARACTER_HISTORY = {
       }
     },
     wano: {
-      prime: 0,
+      prime: 3000000000,
       age: 58,
       fruit: {
         fr: "Logia",
@@ -4519,7 +4519,7 @@ const CHARACTER_HISTORY = {
       }
     },
     all: {
-      prime: 0,
+      prime: 3000000000,
       age: 58,
       fruit: {
         fr: "Logia",
@@ -4607,7 +4607,7 @@ const CHARACTER_HISTORY = {
       }
     },
     wano: {
-      prime: 0,
+      prime: 5000000000,
       age: 55,
       titre: {
         fr: "Amiral",
@@ -4619,7 +4619,7 @@ const CHARACTER_HISTORY = {
       }
     },
     all: {
-      prime: 0,
+      prime: 5000000000,
       age: 55,
       titre: {
         fr: "Amiral",
@@ -4841,7 +4841,7 @@ const CHARACTER_HISTORY = {
       }
     },
     wano: {
-      prime: 0,
+      prime: 3000000000,
       age: 54,
       titre: {
         fr: "Amiral",
@@ -4853,7 +4853,7 @@ const CHARACTER_HISTORY = {
       }
     },
     all: {
-      prime: 0,
+      prime: 3000000000,
       age: 54,
       titre: {
         fr: "Amiral",
@@ -4873,7 +4873,7 @@ const CHARACTER_HISTORY = {
       }
     },
     wano: {
-      prime: 0,
+      prime: 3000000000,
       age: 41,
       titre: {
         fr: "Amiral",
@@ -4885,7 +4885,7 @@ const CHARACTER_HISTORY = {
       }
     },
     all: {
-      prime: 0,
+      prime: 3000000000,
       age: 41,
       titre: {
         fr: "Amiral",
@@ -4996,7 +4996,7 @@ const CHARACTER_HISTORY = {
       }
     },
     wano: {
-      prime: 0,
+      prime: 3000000000,
       age: 78,
       haki: {
         fr: "Observation, Armement, Roi",
@@ -5008,7 +5008,7 @@ const CHARACTER_HISTORY = {
       }
     },
     all: {
-      prime: 0,
+      prime: 3000000000,
       age: 78,
       haki: {
         fr: "Observation, Armement, Roi",
@@ -6701,7 +6701,7 @@ const CHARACTER_HISTORY = {
       }
     },
     wano: {
-      prime: 0,
+      prime: 500000000,
       age: 18,
       titre: {
         fr: "Capitaine",
@@ -6713,7 +6713,7 @@ const CHARACTER_HISTORY = {
       }
     },
     all: {
-      prime: 0,
+      prime: 500000000,
       age: 18,
       titre: {
         fr: "Capitaine",
@@ -8686,6 +8686,7 @@ const CHARACTER_HISTORY = {
       }
     },
     wano: {
+      prime: 100000000,
       haki: {
         fr: "Observation, Armement",
         en: "Observation, Armament"
@@ -8696,7 +8697,7 @@ const CHARACTER_HISTORY = {
       }
     },
     all: {
-      prime: 0,
+      prime: 100000000,
       age: 23,
       titre: {
         fr: "Capitaine",
@@ -10533,14 +10534,14 @@ const CHARACTER_HISTORY = {
         fr: "Armement",
         en: "Armament"
       },
-      prime: 0
+      prime: 100000000
     },
     all: {
       titre: {
         fr: "Marine",
         en: "Marine"
       },
-      prime: 0,
+      prime: 100000000,
       fruit: {
         fr: "Aucun",
         en: "None"
@@ -13576,7 +13577,7 @@ const CHARACTER_HISTORY = {
       titre: { fr: "Marine", en: "Marine" }
     },
     wano: {
-      prime: 0,
+      prime: 500000000,
       haki: {
         fr: "Observation, Armement",
         en: "Observation, Armament"
@@ -13592,7 +13593,7 @@ const CHARACTER_HISTORY = {
       titre: { fr: "Marine", en: "Marine" }
     },
     all: {
-      prime: 0,
+      prime: 500000000,
       haki: {
         fr: "Observation, Armement",
         en: "Observation, Armament"
@@ -15803,14 +15804,14 @@ const CHARACTER_HISTORY = {
       }
     },
     wano: {
-      prime: 0,
+      prime: 500000000,
       titre: {
         fr: "Vice-Amiral",
         en: "Vice Admiral"
       }
     },
     all: {
-      prime: 0
+      prime: 500000000
     }
   },
   "Fukaboshi": {
