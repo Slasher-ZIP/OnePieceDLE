@@ -2260,13 +2260,20 @@ function applyVariant(baseChar, variant) {
   return resolved;
 }
 
-/** Si le perso n'a QUE des onlyAsVariant dispo à ce point d'histoire (ex. Sabo à FMI), force cette forme. */
+/** Si le perso n'a QUE des onlyAsVariant dispo à ce point d'histoire (ex. Sabo à FMI), force cette forme.
+ *  Si sa forme de base est remplacée à ce point (excludesBase, ex. Robin avant Fish-Man),
+ *  on montre la forme qui la remplace : l'image de la base spoilerait l'époque. */
 function forceOnlyAsVariantIfNeeded(char, storyId) {
   if (!char || char._variantId) return char;
-  const variants = getVariantsForBase(char.name, storyId || currentStory);
+  const sid = storyId || currentStory;
+  const variants = getVariantsForBase(char.name, sid);
   const only = variants.filter(v => isOnlyAsVariant(v));
   if (only.length === 1) return applyVariant(char, only[0]);
   if (only.length > 1) return applyVariant(char, only[Math.floor(Math.random() * only.length)]);
+  if (sid !== "all") {
+    const repl = variants.find(v => v.excludesBase && !isVariantShiny(v) && !v.unlock);
+    if (repl) return applyVariant(char, repl);
+  }
   return char;
 }
 
@@ -2826,8 +2833,9 @@ function compareValues(guess, answer) {
       value: guess.name,
       class: nameClass,
       isCharacter: true,
-      // Toujours l'image de la forme trouvée (answer) si même identité
-      character: sameIdentity ? answer : guess
+      // Toujours l'image de la forme trouvée (answer) si même identité ; sinon la
+      // forme affichée à ce point d'histoire (pas la base si elle est remplacée)
+      character: sameIdentity ? answer : forceOnlyAsVariantIfNeeded(guess, currentStory)
     });
   }
 
