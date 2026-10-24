@@ -98,7 +98,6 @@ const CHARACTER_VARIANTS = [
     stories: [ "eastblue", "marineford" ],
     // Enfant : rare face à la pré-ellipse (poids interne 0,2)
     formWeight: 0.2,
-    arcOnly: true,
     onlyAsVariant: false,
     rarity: 2,
     isShiny: false,
@@ -1181,7 +1180,6 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/ZoroYoung.webp",
     stories: [ "eastblue" ],
     formWeight: 0.2,
-    arcOnly: true,
     onlyAsVariant: false,
     rarity: 2,
     isShiny: false,
@@ -1263,7 +1261,6 @@ const CHARACTER_VARIANTS = [
     image: "img/alt/NamiYoung.webp",
     stories: [ "eastblue" ],
     formWeight: 0.2,
-    arcOnly: true,
     onlyAsVariant: false,
     rarity: 3,
     isShiny: false,
