@@ -676,6 +676,10 @@ function updateAuthTabs() {
   const title = document.getElementById("authModalTitle");
   const submit = document.getElementById("authSubmitBtn");
   const userWrap = document.getElementById("authUsernameWrap");
+  if (loginTab) loginTab.textContent = t.authLogin || "Connexion";
+  if (regTab) regTab.textContent = t.authRegister || "Créer un compte";
+  const uPh = document.getElementById("authUsername");
+  if (uPh) uPh.placeholder = t.authUserPh || t.authUser || (currentLang === "fr" ? "Ton pseudo" : "Your username");
   if (authMode === "login") {
     loginTab.className = "flex-1 py-1.5 rounded-md text-xs font-semibold bg-amber-500 text-slate-950";
     regTab.className = "flex-1 py-1.5 rounded-md text-xs font-semibold text-slate-400 hover:text-white";
@@ -821,6 +825,10 @@ function updateCollectionUI() {
   const knownUnlocked = [...unlocked].filter(k => knownKeys.has(k)).length;
   const countEl = document.getElementById("collectionCount");
   if (countEl) countEl.textContent = `${knownUnlocked} / ${total}`;
+  const unlLabel = document.getElementById("collectionUnlockedLabel");
+  if (unlLabel) unlLabel.textContent = t.collectionUnlocked || (currentLang === "fr" ? "Débloqués" : "Unlocked");
+  const eraTitle = document.getElementById("strawhatEraTitle");
+  if (eraTitle) eraTitle.textContent = t.eraTitle || (currentLang === "fr" ? "Époque" : "Era");
 
   const raritySel = document.getElementById("collectionRarityFilter");
   const affSel = document.getElementById("collectionAffFilter");
@@ -830,6 +838,7 @@ function updateCollectionUI() {
       RARITY_LEVELS.map(r => `<option value="${r}">${rarityLabel(r, currentLang)}</option>`).join("");
     if ([...raritySel.options].some(o => o.value === prev)) raritySel.value = prev;
   }
+  if (typeof updateStrawhatEraToggle === "function") updateStrawhatEraToggle();
   if (affSel) {
     const prev = affSel.value || "all";
     const cats = (typeof COLLECTION_CATEGORIES !== "undefined" ? COLLECTION_CATEGORIES : [])
@@ -858,7 +867,10 @@ function updateStrawhatEraToggle() {
   if (track) track.classList.toggle("bg-slate-600", !post);
   if (knob) knob.style.transform = post ? "translateX(20px)" : "translateX(0)";
   if (label) {
-    label.textContent = post ? "Post-ellipse" : "Pré-ellipse";
+    const tt = TRANSLATIONS[currentLang] || {};
+    label.textContent = post
+      ? (tt.eraPost || (currentLang === "en" ? "Post-timeskip" : "Post-ellipse"))
+      : (tt.eraPre || (currentLang === "en" ? "Pre-timeskip" : "Pré-ellipse"));
     label.className = "text-[11px] font-bold w-[92px] " + (post ? "text-sky-300" : "text-amber-300");
   }
 }
@@ -2642,8 +2654,15 @@ function openVersusSetup() {
   const t = TRANSLATIONS[currentLang] || TRANSLATIONS.fr;
   const i1 = document.getElementById("versusName1");
   const i2 = document.getElementById("versusName2");
-  if (i1 && !i1.value) { i1.value = versusNames[0]; i1.placeholder = t.versusJ1 || "Joueur 1"; }
-  if (i2 && !i2.value) { i2.value = versusNames[1]; i2.placeholder = t.versusJ2 || "Joueur 2"; }
+  const defaults = ["Joueur 1", "Joueur 2", "Player 1", "Player 2"];
+  if (i1) {
+    if (!i1.value || defaults.includes(i1.value)) i1.value = t.versusJ1 || "Player 1";
+    i1.placeholder = t.versusJ1 || "Player 1";
+  }
+  if (i2) {
+    if (!i2.value || defaults.includes(i2.value)) i2.value = t.versusJ2 || "Player 2";
+    i2.placeholder = t.versusJ2 || "Player 2";
+  }
   const l1 = document.getElementById("versusPseudo1Label");
   const l2 = document.getElementById("versusPseudo2Label");
   if (l1) l1.textContent = t.versusPseudo1 || "Pseudo joueur 1";
@@ -5775,6 +5794,32 @@ function applyLanguageUI() {
     toggleLanguage(); // flips to want and updates labels
   }
   document.documentElement.lang = currentLang;
+  // Filtres du sélecteur d'avatar : reconstruits à la prochaine ouverture, dans
+  // la langue courante (ils étaient figés dans la langue du 1er affichage).
+  ["avatarSortSelect", "avatarCatFilter", "avatarRarityFilter"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) delete el.dataset.filled;
+  });
+  try { if (typeof updateCollectionUI === "function") updateCollectionUI(); } catch (e) {}
+  // Libellés statiques (légende des raretés, filtres du sélecteur d'avatar)
+  const tt = TRANSLATIONS[currentLang] || {};
+  document.querySelectorAll("[data-rarity-label]").forEach(el => {
+    el.textContent = rarityLabel(parseInt(el.dataset.rarityLabel, 10), currentLang);
+  });
+  const arf = document.getElementById("avatarRarityFilter");
+  if (arf) {
+    [...arf.options].forEach(o => {
+      if (o.value === "all") o.textContent = tt.allRarities || (currentLang === "fr" ? "Toutes raretés" : "All rarities");
+      else if (o.value) o.textContent = rarityLabel(parseInt(o.value, 10), currentLang);
+    });
+  }
+  const asel = document.getElementById("avatarSortSelect");
+  if (asel) {
+    [...asel.options].forEach(o => {
+      if (o.value === "rarity") o.textContent = tt.settingsRarity || "Rarity";
+      if (o.value === "category") o.textContent = tt.settingsCategory || "Category";
+    });
+  }
 }
 
 

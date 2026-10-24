@@ -913,7 +913,11 @@ function updateOnlineUI() {
   set("versusAutoBtn", t.versusAuto || "🔍 Trouver un adversaire");
   set("versusOnlineHint", t.versusOnlineHint || "Crée un salon et partage son code à un ami, ou rejoins un salon avec son code — ou laisse le jeu te trouver un adversaire.");
   const nameI = document.getElementById("versusOnlineName");
-  if (nameI && !nameI.value) nameI.placeholder = versusNames[0] || (t.versusJ1 || "");
+  if (nameI && !nameI.value) {
+    const defNames = ["Joueur 1", "Joueur 2", "Player 1", "Player 2"];
+    const nm = versusNames[0] || "";
+    nameI.placeholder = defNames.includes(nm) ? (t.versusJ1 || nm) : (nm || t.versusJ1 || "");
+  }
   const codeI = document.getElementById("versusRoomCode");
   if (codeI && !codeI.placeholder) codeI.placeholder = "CODE";
   const info = document.getElementById("versusRoomInfo");
