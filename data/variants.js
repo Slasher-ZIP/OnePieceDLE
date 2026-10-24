@@ -334,7 +334,7 @@ const CHARACTER_VARIANTS = [
     },
     aliases: [ "BUGGY EAST BLUE", "BUGGY LOGUETOWN", "BUGGY CAMOUFLE", "BUGGY COSTUME BUG", "BUGGY DISGUISED" ],
     image: "img/alt/Buggy_eastblue.webp",
-    stories: [ "eastblue" ],
+    stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
     // Tant que cet alt est dispo, la forme normale de Buggy ne sort plus :
     // la place libre revient aux autres alts du perso (l'enfant).
     excludesBase: true,
