@@ -4051,6 +4051,29 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+/* Migration unique (v1) : la quête « Marche vers Arlong Park » comptait avant les
+ * personnages TIRÉS. On retire seulement sa carte de quête (nami_walk) pour que
+ * la nouvelle règle (personnages possédés) s'applique. Les personnages/forms
+ * possédés ne sont PAS touchés : syncGearUnlocksFromWins revalide aussitôt la
+ * quête pour ceux qui ont déjà tout (ou laisse la progression partielle). */
+const ARLONG_RESET_KEY = "opdle_quest_arlong_reset_v1";
+function migrateArlongQuestReset() {
+  try { if (localStorage.getItem(ARLONG_RESET_KEY) === "1") return; } catch (e) { return; }
+  try {
+    let local = JSON.parse(localStorage.getItem("opdle_unlocked") || "[]");
+    if (Array.isArray(local) && local.includes("nami_walk")) {
+      local = local.filter(x => x !== "nami_walk");
+      localStorage.setItem("opdle_unlocked", JSON.stringify(local));
+    }
+  } catch (e) {}
+  if (typeof currentUser !== "undefined" && currentUser && Array.isArray(currentUser.unlocked) &&
+      currentUser.unlocked.includes("nami_walk")) {
+    currentUser.unlocked = currentUser.unlocked.filter(x => x !== "nami_walk");
+    if (typeof persistCurrentUser === "function") persistCurrentUser();
+  }
+  try { localStorage.setItem(ARLONG_RESET_KEY, "1"); } catch (e) {}
+}
+
 function syncGearUnlocksFromWins() {
   if (typeof CHARACTER_VARIANTS === "undefined") return;
   CHARACTER_VARIANTS.forEach(v => {
@@ -4067,6 +4090,7 @@ function syncGearUnlocksFromWins() {
 (async () => {
   await loadSession();
   if (typeof migrateUnlockIds === "function") migrateUnlockIds();
+  if (typeof migrateArlongQuestReset === "function") migrateArlongQuestReset();
   syncGearUnlocksFromWins();
   updateLanguageUI();
   updateProfileUI();
