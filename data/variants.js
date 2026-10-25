@@ -1499,7 +1499,8 @@ const CHARACTER_VARIANTS = [
     overrides: {}
   },
   {
-    // La Marche vers Arlong Park (ch. 95) : récompense de la quête des 10 tirés d'East Blue
+    // La Marche vers Arlong Park (ch. 95) : récompense quand les 10 personnages
+    // d'East Blue sont POSSÉDÉS (devinés), pas seulement tirés en mystère.
     // Instinct de Nami (lorsqu'elle veut protéger ses amis), pas un alt de Nami.
     id: "nami_walk",
     baseName: "Nami",
@@ -1513,7 +1514,11 @@ const CHARACTER_VARIANTS = [
     minStory: "eastblue",
     rarity: 4,
     isShiny: false,
-    unlock: { drawn: [ "luffy_pre", "nami_pre", "nami_young", "nojiko_old", "Belle-mère", "Genzo", "zoro_pre", "sanji_pre", "usopp_pre", "Arlong" ] },
+    unlock: {
+      // Formes (ids de variantes) + personnages de base : possession = deviné
+      hasVariants: [ "luffy_pre", "nami_pre", "nami_young", "nojiko_old", "zoro_pre", "sanji_pre", "usopp_pre" ],
+      hasCharacters: [ "Belle-mère", "Genzo", "Arlong" ]
+    },
     questName: {
       fr: "Marche vers Arlong Park",
       en: "Walk to Arlong Park"
