@@ -172,7 +172,7 @@ const COLLECTION_CATEGORIES = [
     order: 220,
     fr: "East Blue",
     en: "East Blue",
-    members: [ "buggy_eastblue", "Alvida", "Kuro", "Don Krieg", "Gin", "Axe Man Morgan", "Arlong", "Hachi", "Zeff", "Kaya", "Jango", "Curly Dadan", "helmeppo_pre", "coby_young", "Richie", "Mohji", "Cabaji", "Nojiko", "Genzo", "Belle-mère", "Kuina", "Gaimon"]
+    members: [ "buggy_eastblue", "Alvida", "Kuro", "Don Krieg", "Gin", "Axe Man Morgan", "Arlong", "Hachi", "Zeff", "Kaya", "Jango", "Curly Dadan", "helmeppo_pre", "coby_young", "Richie", "Mohji", "Cabaji", "Nojiko", "Genzo", "Belle-mère", "Kuina", "Gaimon", "Makino"]
   },
   {
     id: "supernatural",
@@ -201,7 +201,7 @@ const COLLECTION_CATEGORIES = [
     order: 45,
     fr: "Alliés",
     en: "Allies",
-    members: [ "Yamato", "Bartolomeo", "Cavendish", "Kin'emon", "Kozuki Momonosuke", "Inuarashi", "Nekomamushi", "Leo", "Kyros", "Rebecca", "Viola", "Riku Doldo III", "Hajrudin", "Sai", "Elizabello II", "Orlumbus", "Ideo", "Mansherry", "Don Chinjao" ]
+    members: [ "Yamato", "Bartolomeo", "Cavendish", "Kin'emon", "Kozuki Momonosuke", "Inuarashi", "Nekomamushi", "Leo", "Kyros", "Rebecca", "Viola", "Riku Doldo III", "Hajrudin", "Sai", "Elizabello II", "Orlumbus", "Ideo", "Mansherry", "Don Chinjao", "Laboon" ]
   },
   {
     id: "water7",

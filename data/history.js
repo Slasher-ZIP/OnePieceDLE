@@ -16834,5 +16834,13 @@ const CHARACTER_HISTORY = {
       titre: { fr: "Commandant, Equipage d'empereur", en: "Commander, Emperor's Crew" },
       affiliation: { fr: "Pirates de Barbe Blanche", en: "Whitebeard Pirates" }
     }
+  },
+  "Makino": {
+    eastblue: { age: 19 },
+    fishman: { age: 31 }
+  },
+  "Laboon": {
+    eastblue: { age: 51 },
+    fishman: { age: 53 }
   }
 };

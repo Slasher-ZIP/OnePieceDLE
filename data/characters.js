@@ -8641,6 +8641,49 @@ const CHARACTERS = [
     age: 42,
     height: 503,
     rarity: 3
+  },
+  {
+    name: "Makino",
+    image: "img/Makino.webp",
+    aliases: [
+      "MAKINO",
+      "MAKINO DU BAR",
+      "PATRONNE DU BAR",
+      "PARTYS BAR",
+      "BAR DE FUUSHA"
+    ],
+    gender: { fr: "Femme", en: "Female" },
+    affiliation: { fr: "Partys Bar (Village de Fuchsia)", en: "Partys Bar (Foosha Village)" },
+    fruit: { fr: "Aucun", en: "None" },
+    haki: { fr: "Aucun", en: "None" },
+    prime: 0,
+    arc: "Romance Dawn",
+    titre: { fr: "Patronne de bar", en: "Bar Owner" },
+    age: 31,
+    height: 166,
+    rarity: 1
+  },
+  {
+    name: "Laboon",
+    image: "img/Laboon.webp",
+    aliases: [
+      "LABOON",
+      "LA BALEINE",
+      "BALEINE DES ILES",
+      "ISLAND WHALE",
+      "LABOON LA BALEINE",
+      "BALEINE DE REVERSE MOUNTAIN"
+    ],
+    gender: { fr: "Homme", en: "Male" },
+    affiliation: { fr: "Pirates de Rumbar (ancien) · Crocus", en: "Rumbar Pirates (former) · Crocus" },
+    fruit: { fr: "Aucun", en: "None" },
+    haki: { fr: "Aucun", en: "None" },
+    prime: 0,
+    arc: "Reverse Mountain",
+    titre: { fr: "Aucun", en: "None" },
+    age: 53,
+    height: 40000,
+    rarity: 3
   }
 
 ];
