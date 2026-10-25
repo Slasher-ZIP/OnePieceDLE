@@ -2788,7 +2788,9 @@ function startGame() {
   updateStoryButtons();
   updateHeaderVisibility();
   closeModals();
-  console.log("🤫 Réponse mystère :", answer.name, "| Mode:", currentDifficulty, "| Histoire:", currentStory, "| Pool:", getAvailableCharacters().length);
+  if (typeof isAdmin === "function" && isAdmin()) {
+    console.log("🤫 Réponse mystère :", answer.name, "| Mode:", currentDifficulty, "| Histoire:", currentStory, "| Pool:", getAvailableCharacters().length);
+  }
 }
 
 function showToast(message) {
@@ -4600,7 +4602,7 @@ function adminRevealAnswer() {
   const pct = total ? ((100 * n) / total).toFixed(1) : "0";
   const shinyPct = total ? ((100 * shinyN) / total).toFixed(1) : "0";
   showToast(`🎯 ${name}${answer._isShiny ? " ✦" : ""} · ${n}/${total} (${pct}%) · shiny global ${shinyPct}%`);
-  console.log("[OPDLE admin]", answer);
+  if (typeof isAdmin === "function" && isAdmin()) console.log("[OPDLE admin]", answer);
 }
 
 function resolveAdminMysteryQuery(qRaw, forceShiny, forceAltId, forceAlt) {
