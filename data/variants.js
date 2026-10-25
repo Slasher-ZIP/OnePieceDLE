@@ -1573,7 +1573,7 @@ const CHARACTER_VARIANTS = [
       en: "Kyros"
     },
     aliases: [ "KYROS TOY", "SOLDAT DE JOUET", "TOY SOLDIER KYROS", "KYROS JOUET" ],
-    image: "img/alt/KyrosToy-min.webp",
+    image: "img/alt/KyrosToy.webp",
     stories: [ "dressrosa" ],
     onlyAsVariant: false,
     rarity: 4,
@@ -1618,7 +1618,7 @@ const CHARACTER_VARIANTS = [
       en: "Nefertari Vivi"
     },
     aliases: [ "MISS WEDNESDAY", "VIVI MISS WEDNESDAY", "WEDNESDAY", "VIVI ESPIONNE" ],
-    image: "img/alt/MissWednesay-min.webp",
+    image: "img/alt/MissWednesay.webp",
     stories: [ "alabasta" ],
     onlyAsVariant: false,
     rarity: 4,

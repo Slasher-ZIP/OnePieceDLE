@@ -2872,7 +2872,7 @@ const CHARACTERS = [
   },
   {
     name: "Loki",
-    image: "img/Loki-min.webp",
+    image: "img/Loki.webp",
     aliases: [
   "LOKI",
   "PRINCE LOKI",
