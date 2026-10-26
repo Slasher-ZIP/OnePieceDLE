@@ -3737,6 +3737,14 @@ function showVictoryModal() {
   } else {
     unlockNote.classList.add("hidden");
   }
+  // Thème « Jolly Roger » tout juste débloqué (album Barbe Noire complet)
+  const themeNote = document.getElementById("modalThemeNote");
+  if (themeNote) {
+    const tt = TRANSLATIONS[currentLang] || TRANSLATIONS.fr;
+    themeNote.textContent = tt.themeJollyUnlockedNote || "🎨 Nouveau thème débloqué : Jolly Roger";
+    themeNote.classList.toggle("hidden", !jollyThemeJustUnlocked);
+    jollyThemeJustUnlocked = false;
+  }
   if (versusMode && versusWinner >= 0) {
     const vt = TRANSLATIONS[currentLang] || TRANSLATIONS.fr;
     document.getElementById("modalWinTitle").textContent =
@@ -5396,16 +5404,19 @@ function jollyThemeLockText() {
   return (t.modeLockPrefix || "🔒 Locked") + " — " + (name ? name + "  " : "") + p.cur + " / " + p.total;
 }
 
-/** Annonce le déblocage du thème, une seule fois (après la victoire qui complète l'album). */
+/** Annonce le déblocage du thème, une seule fois (après la victoire qui complète l'album).
+ *  Le message est affiché dans la fenêtre de victoire (la note « toast » du bas
+ *  de page passe derrière la modale). */
+let jollyThemeJustUnlocked = false;
+
 function maybeAnnounceJollyTheme() {
-  if (!jollyThemeUnlocked()) return;
+  if (!jollyThemeUnlocked()) return false;
   let seen = false;
   try { seen = localStorage.getItem("opdle_jolly_theme_seen") === "1"; } catch (e) {}
-  if (seen) return;
+  if (seen) return false;
   try { localStorage.setItem("opdle_jolly_theme_seen", "1"); } catch (e) {}
-  const t = TRANSLATIONS[currentLang] || TRANSLATIONS.fr;
-  const msg = t.settingsThemeJollyUnlocked || "Thème débloqué : Jolly Roger";
-  setTimeout(() => { if (typeof showToast === "function") showToast(msg); }, 2000);
+  jollyThemeJustUnlocked = true;
+  return true;
 }
 
 function applyTheme(theme) {
