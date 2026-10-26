@@ -960,12 +960,20 @@ function renderCollectionGrid() {
       return keys.some(k => unlocked.has(k));
     }).length;
     const catLabel = lang === "en" ? (cat.en || cat.fr) : (cat.fr || cat.en);
+    // Page Barbe Noire : compléter l'album débloque le thème « Jolly Roger »
+    let themeHint = "";
+    if (cat.id === "blackbeard") {
+      themeHint = jollyThemeUnlocked()
+        ? `<p class="mb-2 text-[10px] sm:text-[11px] font-bold text-emerald-400">${lang === "fr" ? "🎨 Thème « Jolly Roger » débloqué ✔" : "🎨 “Jolly Roger” theme unlocked ✔"}</p>`
+        : `<p class="mb-2 text-[10px] sm:text-[11px] font-semibold text-amber-400/80">${lang === "fr" ? "🎨 Compléter cette page débloque le thème « Jolly Roger »" : "🎨 Complete this page to unlock the “Jolly Roger” theme"}</p>`;
+    }
 
     page.innerHTML = `
       <div class="flex items-center justify-between gap-2 mb-3 pb-2 border-b border-slate-700/70">
         <h3 class="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-amber-400/90">${catLabel}</h3>
         <span class="text-[10px] sm:text-xs text-slate-500 tabular-nums">${unlockedInGroup}/${members.length}</span>
       </div>
+      ${themeHint}
       <div class="album-slots grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-2"></div>
     `;
     const slots = page.querySelector(".album-slots");
@@ -3254,6 +3262,8 @@ function makeGuess(character) {
     persistCurrentUser();
     updateStatsUI();
     updateProfileUI();
+    // Album Barbe Noire complet → thème Jolly Roger (annonce unique)
+    if (typeof maybeAnnounceJollyTheme === "function") maybeAnnounceJollyTheme();
     setTimeout(() => {
       triggerConfetti();
       showVictoryModal();
@@ -3895,7 +3905,8 @@ document.getElementById("guessInput").addEventListener("keydown", (e) => {
 
 // Langue via menu réglages
 if (typeof setupSettings === "function") setupSettings();
-if (typeof applyTheme === "function") applyTheme(getTheme());
+// (le thème est appliqué en fin de fichier : le thème Jolly Roger dépend de
+//  l'album Barbe Noire, dont les données admin sont initialisées plus bas)
 document.getElementById("giveUpBtn").addEventListener("click", () => { if (versusMode) versusGiveUp(); else { if (!isGameOver && attemptsCount > 0 && typeof recordGameEnd === "function") recordGameEnd({ win: false, how: "abandon" }); showGiveUpModal(false); } });
 document.getElementById("versusBtn")?.addEventListener("click", () => {
   if (!versusMode) { openVersusSetup(); return; }
@@ -5348,21 +5359,67 @@ function tryAdminCodeFromAuthFields() { return false; }
 
 
 /* ========== Settings (thème, langue, son, compte) ========== */
-const THEME_KEY = "opdle_theme"; // "dark" | "light"
+const THEME_KEY = "opdle_theme"; // "dark" | "light" | "jolly"
 
 function getTheme() {
-  try { return localStorage.getItem(THEME_KEY) === "light" ? "light" : "dark"; } catch (e) { return "dark"; }
+  try {
+    const v = localStorage.getItem(THEME_KEY);
+    if (v === "jolly") return jollyThemeUnlocked() ? "jolly" : "dark";
+    return v === "light" ? "light" : "dark";
+  } catch (e) { return "dark"; }
+}
+
+/* ---------- Thème « Jolly Roger » : débloqué par l'album Barbe Noire ----------
+   Le thème reprend la DA de l'icône (crâne os sur encre + or). Il se débloque
+   quand toutes les cartes de la page « Pirates de Barbe Noire » sont réunies. */
+function jollyThemeProgress() {
+  const cats = (typeof COLLECTION_CATEGORIES !== "undefined" ? COLLECTION_CATEGORIES : []);
+  const cat = cats.find(c => c.id === "blackbeard");
+  if (!cat || !Array.isArray(cat.members) || !cat.members.length) {
+    return { done: false, cur: 0, total: 0, cat: null };
+  }
+  const unlocked = new Set(typeof getUnlockedNames === "function" ? getUnlockedNames() : []);
+  const rewards = typeof getAllCollectionRewardIds === "function" ? getAllCollectionRewardIds() : new Set();
+  const cur = cat.members.filter(m => rewards.has(m) || unlocked.has(m)).length;
+  return { done: cur >= cat.members.length, cur, total: cat.members.length, cat };
+}
+
+function jollyThemeUnlocked() { return jollyThemeProgress().done; }
+
+/** « 🔒 Verrouillé — Pirates de Barbe Noire  3 / 8 » */
+function jollyThemeLockText() {
+  const p = jollyThemeProgress();
+  const lang = (typeof currentLang !== "undefined" && currentLang) || "fr";
+  const t = (typeof TRANSLATIONS !== "undefined" && TRANSLATIONS[lang]) ? TRANSLATIONS[lang] : {};
+  const cat = p.cat;
+  const name = cat ? (lang === "en" ? (cat.en || cat.fr) : (cat.fr || cat.en)) : "";
+  return (t.modeLockPrefix || "🔒 Locked") + " — " + (name ? name + "  " : "") + p.cur + " / " + p.total;
+}
+
+/** Annonce le déblocage du thème, une seule fois (après la victoire qui complète l'album). */
+function maybeAnnounceJollyTheme() {
+  if (!jollyThemeUnlocked()) return;
+  let seen = false;
+  try { seen = localStorage.getItem("opdle_jolly_theme_seen") === "1"; } catch (e) {}
+  if (seen) return;
+  try { localStorage.setItem("opdle_jolly_theme_seen", "1"); } catch (e) {}
+  const t = TRANSLATIONS[currentLang] || TRANSLATIONS.fr;
+  const msg = t.settingsThemeJollyUnlocked || "Thème débloqué : Jolly Roger";
+  setTimeout(() => { if (typeof showToast === "function") showToast(msg); }, 2000);
 }
 
 function applyTheme(theme) {
-  const t = theme === "light" ? "light" : "dark";
+  const t = theme === "light" ? "light" : theme === "jolly" ? "jolly" : "dark";
   try { localStorage.setItem(THEME_KEY, t); } catch (e) {}
   const root = document.documentElement;
   if (t === "light") {
-    root.classList.remove("dark");
+    root.classList.remove("dark", "jolly");
     root.classList.add("light");
-  } else {
+  } else if (t === "jolly") {
     root.classList.remove("light");
+    root.classList.add("dark", "jolly");
+  } else {
+    root.classList.remove("light", "jolly");
     root.classList.add("dark");
   }
   updateSettingsUI();
@@ -5563,6 +5620,22 @@ function updateSettingsUI() {
   set("settingsThemeDark", "🌙 " + (t.settingsThemeDark || "Dark"));
   set("settingsThemeLight", "☀️ " + (t.settingsThemeLight || "Light"));
 
+  // Thème Jolly Roger : verrouillé tant que l'album Barbe Noire n'est pas complet
+  const jollyDone = jollyThemeUnlocked();
+  const jollyBtn = document.getElementById("settingsThemeJolly");
+  if (jollyBtn) {
+    jollyBtn.classList.toggle("is-active", theme === "jolly");
+    jollyBtn.disabled = !jollyDone;
+    jollyBtn.classList.toggle("opacity-40", !jollyDone);
+    jollyBtn.setAttribute("aria-disabled", jollyDone ? "false" : "true");
+  }
+  set("settingsThemeJolly", "💀 " + (t.settingsThemeJolly || "Jolly Roger"));
+  const jollyLock = document.getElementById("settingsThemeJollyLock");
+  if (jollyLock) {
+    jollyLock.classList.toggle("hidden", jollyDone);
+    jollyLock.textContent = jollyDone ? "" : jollyThemeLockText();
+  }
+
   document.getElementById("settingsLangFr")?.classList.toggle("is-active", currentLang === "fr");
   document.getElementById("settingsLangEn")?.classList.toggle("is-active", currentLang === "en");
 
@@ -5697,6 +5770,9 @@ async function settingsResetProgress() {
   if (typeof updateProfileUI === "function") updateProfileUI();
   if (typeof renderUnlockedGrid === "function") renderUnlockedGrid();
   if (typeof renderCollectionGrid === "function") renderCollectionGrid();
+  // Le thème Jolly Roger se reverrouille avec la collection Barbe Noire
+  if (!jollyThemeUnlocked() && document.documentElement.classList.contains("jolly")) applyTheme("dark");
+  if (typeof updateSettingsUI === "function") updateSettingsUI();
   showToast(t.settingsResetDone || "Reset");
 }
 
@@ -5756,6 +5832,11 @@ function setupSettings() {
   document.querySelectorAll(".settingsModalClose").forEach(b => b.addEventListener("click", closeSettingsModal));
   document.getElementById("settingsThemeDark")?.addEventListener("click", () => applyTheme("dark"));
   document.getElementById("settingsThemeLight")?.addEventListener("click", () => applyTheme("light"));
+  document.getElementById("settingsThemeJolly")?.addEventListener("click", () => {
+    if (!jollyThemeUnlocked()) { showToast(jollyThemeLockText()); return; }
+    applyTheme("jolly");
+    showToast((TRANSLATIONS[currentLang] || {}).settingsSaved || "OK");
+  });
   document.getElementById("settingsLangFr")?.addEventListener("click", () => {
     if (currentLang !== "fr") {
       currentLang = "fr";
@@ -5976,3 +6057,7 @@ function maybeShowOnboarding() {
     setTimeout(openOnboarding, 400);
   }
 }
+
+/* Thème : appliqué en tout dernier — le thème Jolly Roger vérifie l'album
+   Barbe Noire, qui dépend des données admin/collection initialisées plus haut. */
+if (typeof applyTheme === "function") applyTheme(getTheme());

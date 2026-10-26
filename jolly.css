@@ -1,0 +1,686 @@
+/* ============================================================================
+   OPDLE — Thème « Jolly Roger » (déblocable)
+   ----------------------------------------------------------------------------
+   Direction artistique reprise de l'icône du site : crâne os sur encre, or
+   unique en accent, formes arrondies, fort contraste.
+
+   Ce thème n'est actif que si <html> porte la classe « jolly »
+   (Réglages ▸ Thème ▸ Jolly Roger, débloqué en complétant l'album
+   « Pirates de Barbe Noire »). Sans cette classe, ce fichier ne change RIEN
+   au thème classique : les règles sont toutes préfixées par html.jolly.
+   ========================================================================== */
+
+/* ----------------------------------------------------------------------------
+   0. Éléments propres au thème, masqués dans les autres thèmes
+   -------------------------------------------------------------------------- */
+.brand-mark,
+.hero-mark,
+.hero-anchor,
+.hero-rule { display: none; }
+html.jolly .brand-mark,
+html.jolly .hero-mark { display: block; }
+html.jolly .hero-anchor { display: block; }
+html.jolly .hero-rule { display: flex; }
+html.jolly .brand-emoji,
+html.jolly .hero-emoji { display: none; }
+
+
+/* ============================================================================
+   OPDLE — Rebrand « Jolly Roger » (version de test)
+   ----------------------------------------------------------------------------
+   Direction artistique reprise de l'icône du site :
+     · crâne massif blanc cassé (os) sur noir profond
+     · or / ambre en accent unique
+     · formes généreuses et arrondies, contours francs, fort contraste
+   Cette feuille se charge APRÈS styles.css : elle ne modifie aucun script et
+   peut être retirée en supprimant simplement son <link>.
+   ========================================================================== */
+html.jolly {
+  --jr-ink: #04060b;
+  --jr-ink-2: #080d16;
+  --jr-panel: #0a0f18;
+  --jr-panel-2: #101724;
+  --jr-bone: #f6f1e6;
+  --jr-bone-2: #cfc7b5;
+  --jr-bone-3: #9d968a;
+  --jr-gold: #f6b21f;
+  --jr-gold-hi: #ffd873;
+  --jr-gold-deep: #a35c07;
+  --jr-red: #c62828;
+  --jr-line: rgba(246, 178, 31, 0.28);
+  --jr-line-soft: rgba(246, 178, 31, 0.14);
+  --jr-radius: 16px;
+}
+
+/* ----------------------------------------------------------------------------
+   1. Fond : encre profonde + halo or + crâne en filigrane
+   -------------------------------------------------------------------------- */
+html.jolly body[class] {
+  background-color: var(--jr-ink) !important;
+  background-image:
+    url("jolly-watermark.png"),
+    radial-gradient(1100px 480px at 50% -170px, rgba(246, 178, 31, 0.20), transparent 72%),
+    radial-gradient(950px 620px at 50% 116%, rgba(198, 40, 40, 0.10), transparent 70%),
+    linear-gradient(180deg, #0a1222 0%, #06090f 52%, #03050a 100%) !important;
+  background-repeat: no-repeat !important;
+  background-position: 50% 38%, 50% 0, 50% 100%, 50% 0 !important;
+  background-size: min(94vw, 660px) auto, auto, auto, auto !important;
+  background-attachment: fixed !important;
+  color: var(--jr-bone) !important;
+}
+html.jolly ::selection {
+  background: var(--jr-gold);
+  color: #120d04;
+}
+
+/* ----------------------------------------------------------------------------
+   2. Barre de navigation : plaque d'encre, filet d'or
+   -------------------------------------------------------------------------- */
+html.jolly #topNav {
+  background: linear-gradient(180deg, rgba(4, 6, 11, 0.97), rgba(4, 6, 11, 0.88)) !important;
+  border-bottom: 1px solid var(--jr-line) !important;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.62), 0 -1px 0 rgba(255, 255, 255, 0.04) inset !important;
+  backdrop-filter: blur(14px) saturate(1.1) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.1) !important;
+}
+html.jolly .brand-mark {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #05070c;
+  border: 1px solid rgba(246, 178, 31, 0.55);
+  box-shadow: 0 0 0 2px rgba(246, 178, 31, 0.10), 0 5px 14px rgba(0, 0, 0, 0.6);
+}
+html.jolly .op-title-nav {
+  background: linear-gradient(180deg, #fff7e2 4%, var(--jr-gold-hi) 32%, var(--jr-gold) 62%, #b26a09 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  letter-spacing: 0.05em;
+}
+html.jolly .nav-link {
+  color: var(--jr-bone-2) !important;
+  border-radius: 11px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+html.jolly .nav-link:hover {
+  background: rgba(246, 178, 31, 0.10) !important;
+  border-color: var(--jr-line) !important;
+  color: var(--jr-bone) !important;
+}
+html.jolly .icon-btn {
+  background: rgba(8, 13, 22, 0.92) !important;
+  border: 1px solid var(--jr-line-soft) !important;
+  color: var(--jr-bone-2) !important;
+}
+html.jolly .icon-btn:hover {
+  border-color: var(--jr-gold) !important;
+  color: var(--jr-bone) !important;
+}
+html.jolly .profile-pill {
+  background: rgba(8, 13, 22, 0.92) !important;
+  border: 1px solid var(--jr-line-soft) !important;
+}
+html.jolly .profile-pill:hover { border-color: var(--jr-gold) !important; }
+html.jolly #profileNameLabel { color: var(--jr-bone-2) !important; }
+html.jolly #profileAvatarMini { border-color: rgba(246, 178, 31, 0.55) !important; }
+
+/* ----------------------------------------------------------------------------
+   3. En-tête : le crâne du logo devient l'emblème du jeu
+   -------------------------------------------------------------------------- */
+html.jolly .hero-mark {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 13px;
+  background: #05070c;
+  border: 1px solid rgba(246, 178, 31, 0.5);
+  box-shadow: 0 0 0 3px rgba(246, 178, 31, 0.09), 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+html.jolly .hero-anchor {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  color: rgba(246, 178, 31, 0.75);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+}
+html.jolly .op-title {
+  background: linear-gradient(180deg, #fff8e6 0%, var(--jr-gold-hi) 30%, var(--jr-gold) 58%, #b26a09 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  filter: drop-shadow(0 3px 0 rgba(109, 22, 22, 0.95)) drop-shadow(0 8px 18px rgba(0, 0, 0, 0.65)) !important;
+}
+html.jolly #subTitleText {
+  color: var(--jr-bone-3) !important;
+  letter-spacing: 0.015em;
+}
+
+/* Filet doré à losange sous le titre */
+html.jolly .hero-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 9px auto 0;
+  width: min(240px, 70%);
+}
+html.jolly .hero-rule > span {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--jr-line));
+}
+html.jolly .hero-rule > span:last-child {
+  background: linear-gradient(90deg, var(--jr-line), transparent);
+}
+html.jolly .hero-rule > i {
+  width: 7px;
+  height: 7px;
+  background: var(--jr-gold);
+  transform: rotate(45deg);
+  box-shadow: 0 0 10px rgba(246, 178, 31, 0.7);
+}
+
+/* Pastilles de statut : ossature blanche du crâne */
+html.jolly header .bg-slate-800\/70 {
+  background: linear-gradient(180deg, #fdfaf0 0%, #efe7d5 100%) !important;
+  border: 1px solid rgba(246, 178, 31, 0.65) !important;
+  border-radius: 11px !important;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.55), inset 0 1px 0 #ffffff !important;
+}
+html.jolly header .bg-slate-800\/70 #streakCount,
+html.jolly header .bg-slate-800\/70 #winsCount,
+html.jolly header .bg-slate-800\/70 #attemptsLeftCount {
+  color: #14100a !important;
+}
+html.jolly header .bg-slate-800\/70 #labelAttemptsLeft { color: #7a4a00 !important; }
+
+/* Libellés Mode / Histoire */
+html.jolly #labelMode,
+html.jolly #labelStory {
+  color: var(--jr-bone-3) !important;
+  letter-spacing: 0.14em !important;
+}
+html.jolly .help-toggle { color: var(--jr-gold) !important; }
+html.jolly .help-toggle:hover { color: var(--jr-gold-hi) !important; }
+
+/* ----------------------------------------------------------------------------
+   4. Contrôles : sélecteurs, boutons, champ de recherche
+   -------------------------------------------------------------------------- */
+html.jolly #modeSelect,
+html.jolly #storySelect {
+  background-color: rgba(8, 13, 22, 0.95) !important;
+  border: 1px solid var(--jr-line) !important;
+  border-radius: 12px !important;
+  color: var(--jr-bone) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 3px 10px rgba(0, 0, 0, 0.4);
+}
+html.jolly #modeSelect:focus,
+html.jolly #storySelect:focus {
+  border-color: var(--jr-gold) !important;
+  box-shadow: 0 0 0 3px rgba(246, 178, 31, 0.18) !important;
+}
+html.jolly select option {
+  background: #0a0f18 !important;
+  color: var(--jr-bone) !important;
+}
+html.jolly #newGameBtn {
+  background: linear-gradient(180deg, #ffe29a 0%, var(--jr-gold) 52%, #d08706 100%) !important;
+  color: #120d04 !important;
+  border: 1px solid rgba(255, 216, 115, 0.9) !important;
+  border-radius: 12px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.055em;
+  box-shadow: 0 4px 0 #8a5206, 0 12px 26px rgba(246, 178, 31, 0.25) !important;
+}
+html.jolly #newGameBtn:hover {
+  background: linear-gradient(180deg, #fff0c2 0%, #ffc43d 55%, #e69b0b 100%) !important;
+  box-shadow: 0 4px 0 #8a5206, 0 14px 32px rgba(246, 178, 31, 0.4) !important;
+}
+html.jolly #newGameBtn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #8a5206, 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+html.jolly #giveUpBtn {
+  background: rgba(8, 13, 22, 0.9) !important;
+  border: 1px solid rgba(198, 40, 40, 0.45) !important;
+  border-radius: 12px !important;
+  color: #ff9d9d !important;
+}
+html.jolly #giveUpBtn:hover {
+  background: rgba(198, 40, 40, 0.18) !important;
+  border-color: rgba(198, 40, 40, 0.75) !important;
+  color: #ffc9c9 !important;
+}
+html.jolly #guessInput {
+  background: rgba(5, 8, 14, 0.96) !important;
+  border: 2px solid rgba(246, 178, 31, 0.32) !important;
+  border-radius: 15px !important;
+  color: var(--jr-bone) !important;
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.6), 0 12px 34px rgba(0, 0, 0, 0.5) !important;
+}
+html.jolly #guessInput:focus {
+  border-color: var(--jr-gold) !important;
+  box-shadow: 0 0 0 4px rgba(246, 178, 31, 0.16), 0 12px 34px rgba(0, 0, 0, 0.55) !important;
+}
+html.jolly #guessInput::placeholder { color: rgba(207, 199, 181, 0.55) !important; }
+html.jolly #suggestionsMenu {
+  background: #070b12 !important;
+  border: 1px solid var(--jr-line) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.7) !important;
+}
+html.jolly #suggestionsMenu .suggestion-item { color: var(--jr-bone) !important; }
+html.jolly #suggestionsMenu .suggestion-item:hover { background: rgba(246, 178, 31, 0.12) !important; }
+html.jolly #suggestionsMenu .divide-slate-700\/50 > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(246, 178, 31, 0.12) !important;
+}
+
+/* Légende */
+html.jolly .legend-chip {
+  background: rgba(8, 13, 22, 0.8) !important;
+  border: 1px solid var(--jr-line-soft) !important;
+  color: var(--jr-bone-2) !important;
+  border-radius: 999px !important;
+}
+html.jolly .legend-chip:hover { border-color: var(--jr-line) !important; }
+
+/* ----------------------------------------------------------------------------
+   5. Tableau de résultats
+   -------------------------------------------------------------------------- */
+html.jolly .results-header {
+  color: var(--jr-bone-3) !important;
+  border-bottom: 1px solid var(--jr-line-soft);
+  padding-bottom: 7px;
+}
+html.jolly .results-header .header-col { letter-spacing: 0.11em; }
+html.jolly .results-header .header-col:hover { color: var(--jr-gold) !important; }
+html.jolly .guess-cell {
+  border-radius: 13px !important;
+}
+html.jolly .guess-cell.bg-slate-700 {
+  background-color: #121926 !important;
+  border: 1px solid rgba(246, 241, 230, 0.10) !important;
+  color: var(--jr-bone-2) !important;
+}
+html.jolly .char-guess-img,
+html.jolly .character-avatar {
+  border-color: rgba(246, 178, 31, 0.55) !important;
+  box-shadow: 0 0 0 1px rgba(246, 178, 31, 0.25), 0 5px 14px rgba(0, 0, 0, 0.5);
+}
+
+/* Ligne de tentative (mobile) : carte encre cerclée d'or */
+@media (max-width: 960px) {
+html.jolly #results > .guess-row {
+    background: rgba(7, 11, 18, 0.82) !important;
+    border: 1px solid var(--jr-line-soft) !important;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45) !important;
+  }
+
+}
+
+/* Dock de saisie mobile */
+@media (max-width: 960px) {
+html.jolly .guess-input-dock {
+    background: linear-gradient(to top, #04060b 68%, rgba(4, 6, 11, 0.9) 100%) !important;
+    border-top: 1px solid var(--jr-line) !important;
+    box-shadow: 0 -12px 30px rgba(0, 0, 0, 0.6) !important;
+  }
+
+}
+
+/* ----------------------------------------------------------------------------
+   6. Fenêtres : panneaux d'encre, filet d'or, filigrane discret
+   -------------------------------------------------------------------------- */
+html.jolly #victoryModal > div,
+html.jolly #giveUpModal > div,
+html.jolly #collectionModal > div,
+html.jolly #questsModal > div,
+html.jolly #settingsModal > div,
+html.jolly #profileModal > div,
+html.jolly #versusModal > div,
+html.jolly #charDetailModal > div,
+html.jolly #confirmModal > div,
+html.jolly #onboardingModal > .onboard-card {
+  background: linear-gradient(180deg, #0a0f18 0%, #070b12 100%) !important;
+  border: 1px solid var(--jr-line) !important;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Filet doré en haut de chaque panneau */
+html.jolly #victoryModal > div::before,
+html.jolly #giveUpModal > div::before,
+html.jolly #collectionModal > div::before,
+html.jolly #questsModal > div::before,
+html.jolly #settingsModal > div::before,
+html.jolly #profileModal > div::before,
+html.jolly #versusModal > div::before,
+html.jolly #charDetailModal > div::before,
+html.jolly #confirmModal > div::before,
+html.jolly #onboardingModal > .onboard-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--jr-gold) 18%, var(--jr-gold-hi) 50%, var(--jr-gold) 82%, transparent);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Crâne en filigrane dans le coin des grands panneaux */
+html.jolly #collectionModal > div::after,
+html.jolly #questsModal > div::after,
+html.jolly #settingsModal > div::after,
+html.jolly #profileModal > div::after,
+html.jolly #charDetailModal > div::after {
+  content: "";
+  position: absolute;
+  right: -30px;
+  bottom: -30px;
+  width: 195px;
+  height: 195px;
+  background: url("jolly-watermark-strong.png") center / contain no-repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Les titres de fenêtres prennent la typo du logo */
+html.jolly #victoryModal h2,
+html.jolly #giveUpModal h2,
+html.jolly #collectionModal h2,
+html.jolly #questsModal h2,
+html.jolly #confirmModal h2,
+html.jolly #onboardTitle,
+html.jolly #collectionGrid h3,
+html.jolly #questsTitle {
+  color: var(--jr-gold) !important;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.55);
+}
+
+/* Boutons de fermeture */
+html.jolly .modalCloseBtn,
+html.jolly .collectionModalClose,
+html.jolly .settingsModalClose,
+html.jolly .questsModalClose {
+  background: rgba(246, 178, 31, 0.10) !important;
+  border: 1px solid var(--jr-line-soft);
+  border-radius: 999px;
+  color: var(--jr-bone-2) !important;
+}
+html.jolly .modalCloseBtn:hover,
+html.jolly .collectionModalClose:hover,
+html.jolly .settingsModalClose:hover,
+html.jolly .questsModalClose:hover {
+  background: rgba(246, 178, 31, 0.22) !important;
+  color: #120d04 !important;
+}
+
+/* ----------------------------------------------------------------------------
+   7. Album / collection
+   -------------------------------------------------------------------------- */
+html.jolly .album-page {
+  background: rgba(7, 11, 18, 0.9) !important;
+  border: 1px solid rgba(246, 178, 31, 0.22) !important;
+  border-radius: 18px !important;
+  box-shadow: inset 0 0 70px rgba(0, 0, 0, 0.65), 0 14px 34px rgba(0, 0, 0, 0.4) !important;
+}
+html.jolly .album-slot {
+  border-radius: 10px !important;
+  box-shadow: inset 0 0 0 1px rgba(246, 241, 230, 0.08), 0 3px 8px rgba(0, 0, 0, 0.45) !important;
+}
+html.jolly #collectionGrid h3 {
+  font-family: var(--op-font-display) !important;
+  letter-spacing: 0.05em;
+  color: var(--jr-gold) !important;
+}
+html.jolly #collectionGrid .album-page + .album-page { margin-top: 4px; }
+
+/* ----------------------------------------------------------------------------
+   8. Quêtes
+   -------------------------------------------------------------------------- */
+html.jolly #questsList > div {
+  background: rgba(7, 11, 18, 0.85) !important;
+  border: 1px solid var(--jr-line-soft) !important;
+  border-radius: 13px !important;
+}
+html.jolly #questsList > div:hover { border-color: var(--jr-line) !important; }
+html.jolly #questsList .bg-slate-800 {
+  background: rgba(246, 241, 230, 0.10) !important;
+}
+html.jolly #questsList .bg-amber-500 {
+  background: linear-gradient(90deg, var(--jr-gold-deep), var(--jr-gold) 55%, var(--jr-gold-hi)) !important;
+}
+html.jolly #questsList .bg-emerald-500 {
+  background: linear-gradient(90deg, #0f7a4a, #22c55e 60%, #6ee7a0) !important;
+}
+
+/* ----------------------------------------------------------------------------
+   9. Réglages / profil / versus
+   -------------------------------------------------------------------------- */
+html.jolly .settings-choice {
+  background: rgba(8, 13, 22, 0.85) !important;
+  border: 1px solid rgba(246, 241, 230, 0.12) !important;
+  color: var(--jr-bone-2) !important;
+  border-radius: 12px !important;
+}
+html.jolly .settings-choice:hover { border-color: var(--jr-line) !important; }
+html.jolly .settings-choice.is-active {
+  background: rgba(246, 178, 31, 0.14) !important;
+  border-color: var(--jr-gold) !important;
+  color: var(--jr-gold-hi) !important;
+  box-shadow: 0 0 0 1px rgba(246, 178, 31, 0.25) inset;
+}
+html.jolly #versusBanner {
+  background: rgba(8, 20, 32, 0.9) !important;
+  border: 1px solid rgba(56, 189, 248, 0.4) !important;
+  border-radius: 12px !important;
+}
+html.jolly #versusPickBar {
+  background: rgba(24, 12, 42, 0.9) !important;
+  border-color: rgba(167, 139, 250, 0.45) !important;
+  border-radius: 12px !important;
+}
+
+/* Cases à cocher / curseurs */
+html.jolly input[type="checkbox"] { accent-color: var(--jr-gold); }
+html.jolly input[type="range"] { accent-color: var(--jr-gold); }
+
+/* Barres de défilement */
+html.jolly ::-webkit-scrollbar-track { background: #0a0f18 !important; }
+html.jolly ::-webkit-scrollbar-thumb { background: #6b4a12 !important; border-radius: 999px; }
+html.jolly ::-webkit-scrollbar-thumb:hover { background: #a1701c !important; }
+
+/* Pied de page */
+html.jolly .op-footer {
+  color: rgba(207, 199, 181, 0.62) !important;
+  letter-spacing: 0.01em;
+  border-top: 1px solid var(--jr-line-soft);
+  margin-top: 6px;
+}
+
+/* Toast */
+html.jolly #toast {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55) !important;
+}
+
+
+/* ----------------------------------------------------------------------------
+   10. Ajustements mobiles du rebrand
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+html.jolly .hero-mark { width: 38px; height: 38px; border-radius: 11px; }
+html.jolly .hero-anchor { width: 26px; height: 26px; }
+html.jolly .hero-rule { margin-top: 6px; width: min(190px, 62%); }
+html.jolly header .bg-slate-800\/70 { border-radius: 9px !important; }
+
+}
+
+/* ----------------------------------------------------------------------------
+   11. Polissage : champs, cartes internes, actions dorées
+   -------------------------------------------------------------------------- */
+/* Champs à l'intérieur des fenêtres (filtres d'album, recherche, mot de passe…) */
+html.jolly #collectionSearch,
+html.jolly #collectionRarityFilter,
+html.jolly #collectionAffFilter,
+html.jolly #strawhatEraWrap,
+html.jolly #profilePseudoInput,
+html.jolly #versusPickInput,
+html.jolly #settingsDeletePassword,
+html.jolly #adminRaritySearch,
+html.jolly #adminRarityFilter,
+html.jolly #adminRarityDiff {
+  background-color: rgba(8, 13, 22, 0.92) !important;
+  border: 1px solid var(--jr-line-soft) !important;
+  color: var(--jr-bone) !important;
+  border-radius: 10px !important;
+}
+html.jolly #collectionSearch::placeholder,
+html.jolly #profilePseudoInput::placeholder,
+html.jolly #settingsDeletePassword::placeholder { color: rgba(207, 199, 181, 0.5) !important; }
+html.jolly #collectionSearch:focus,
+html.jolly #collectionRarityFilter:focus,
+html.jolly #collectionAffFilter:focus,
+html.jolly #profilePseudoInput:focus,
+html.jolly #settingsDeletePassword:focus {
+  border-color: var(--jr-gold) !important;
+  box-shadow: 0 0 0 3px rgba(246, 178, 31, 0.16) !important;
+}
+html.jolly #collectionModal div.bg-slate-800 {
+  background-color: rgba(246, 178, 31, 0.10) !important;
+  border-color: var(--jr-line) !important;
+}
+html.jolly #collectionCount { color: var(--jr-gold) !important; }
+html.jolly #collectionHint { color: var(--jr-bone-3) !important; }
+html.jolly #strawhatEraTrack { background: rgba(246, 241, 230, 0.18) !important; }
+html.jolly #strawhatEraLabel { color: var(--jr-gold) !important; }
+
+/* Fiche de fin de partie : bloc de stats en creux d'encre */
+html.jolly #victoryModal .bg-slate-800\/80,
+html.jolly #giveUpModal .bg-slate-800\/80 {
+  background-color: rgba(246, 178, 31, 0.055) !important;
+  border-color: var(--jr-line-soft) !important;
+  border-radius: 14px !important;
+}
+html.jolly #victoryModal .bg-slate-800\/80 .text-slate-400,
+html.jolly #giveUpModal .bg-slate-800\/80 .text-slate-400 { color: var(--jr-bone-3) !important; }
+html.jolly #victoryModal .bg-slate-800\/80 .text-slate-200,
+html.jolly #giveUpModal .bg-slate-800\/80 .text-slate-200 { color: var(--jr-bone) !important; }
+
+/* Cartes de statistiques (Réglages) */
+html.jolly #settingsStatsBox .bg-slate-800\/60 {
+  background-color: rgba(246, 178, 31, 0.055) !important;
+  border-color: var(--jr-line-soft) !important;
+  border-radius: 12px !important;
+}
+html.jolly #settingsStatsBox .text-white { color: var(--jr-bone) !important; }
+
+/* Actions principales dorées */
+html.jolly #modalNextBtn,
+html.jolly #settingsCloseBtn,
+html.jolly #onboardNext {
+  background: linear-gradient(180deg, #ffe29a 0%, var(--jr-gold) 52%, #d08706 100%) !important;
+  color: #120d04 !important;
+  border: 1px solid rgba(255, 216, 115, 0.9) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 0 #8a5206, 0 12px 26px rgba(246, 178, 31, 0.22) !important;
+}
+html.jolly #modalNextBtn:hover,
+html.jolly #settingsCloseBtn:hover,
+html.jolly #onboardNext:hover {
+  background: linear-gradient(180deg, #fff0c2 0%, #ffc43d 55%, #e69b0b 100%) !important;
+}
+html.jolly #modalNextBtn:active,
+html.jolly #settingsCloseBtn:active,
+html.jolly #onboardNext:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #8a5206 !important;
+}
+html.jolly #modalGiveUpRetryBtn {
+  background: linear-gradient(180deg, #e2564f 0%, #c62828 60%, #8f1d1d 100%) !important;
+  border: 1px solid rgba(255, 150, 140, 0.55) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 0 #6d1616, 0 12px 26px rgba(198, 40, 40, 0.25) !important;
+}
+
+/* Bouton « Forfait » et « Nouveau » : cibles tactiles + marge de sécurité */
+html.jolly #giveUpBtn,
+html.jolly #newGameBtn { min-height: 42px; }
+
+/* Loupe dorée (emoji teinté) */
+html.jolly #guessInput + span {
+  filter: grayscale(1) sepia(1) saturate(4.5) hue-rotate(-12deg) brightness(1.15);
+  opacity: 0.85;
+}
+
+/* État actif des liens de navigation au survol clavier */
+html.jolly .nav-link:focus-visible,
+html.jolly .icon-btn:focus-visible {
+  outline: 2px solid var(--jr-gold);
+  outline-offset: 2px;
+}
+
+/* Cellules de résultat : léger relief interne, sans toucher aux états shiny/alt */
+html.jolly #results > .guess-row > .guess-cell:not(.shiny-hit):not(.alt-hit) {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10);
+}
+
+/* Le personnage deviné garde son fond d'encre quand la case est « ratée »
+   (on ne touche pas aux états vert / violet / bleu) */
+html.jolly #results > .guess-row > .guess-cell.character-cell.bg-slate-700 {
+  background-color: #0d131f !important;
+  border: 1px solid rgba(246, 178, 31, 0.20) !important;
+}
+
+/* Icônes de navigation : emoji teintés or pour rester dans la palette du logo */
+html.jolly .nav-link > span:first-child {
+  /* teinte légère : on garde le dessin de l'icône (un filtre doré trop fort
+     transformait les emojis en simples pavés) */
+  filter: saturate(0.7) brightness(1.08) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6));
+  opacity: 0.95;
+}
+html.jolly .nav-link:hover > span:first-child { opacity: 1; }
+
+/* Bouton principal un peu plus lumineux */
+html.jolly #newGameBtn {
+  background: linear-gradient(180deg, #ffe9ae 0%, #ffc43d 46%, #e08f07 100%) !important;
+}
+
+/* Filigrane un peu plus discret sur papier */
+
+/* ----------------------------------------------------------------------------
+   12. Versus : la fenêtre de match passe à l'or (les bannières de manche
+   gardent leurs couleurs de camp)
+   -------------------------------------------------------------------------- */
+html.jolly #versusTitle { color: var(--jr-gold) !important; }
+html.jolly #versusModal .bg-slate-800 {
+  background-color: rgba(8, 13, 22, 0.92) !important;
+  border-color: var(--jr-line-soft) !important;
+}
+html.jolly #versusModal input[type="text"],
+html.jolly #versusModal select {
+  color: var(--jr-bone) !important;
+  border-radius: 10px !important;
+}
+html.jolly #versusModal input[type="text"]:focus,
+html.jolly #versusModal select:focus {
+  border-color: var(--jr-gold) !important;
+  box-shadow: 0 0 0 3px rgba(246, 178, 31, 0.16) !important;
+}
+html.jolly #versusModal .bg-sky-500 {
+  background: linear-gradient(180deg, #ffe29a 0%, var(--jr-gold) 52%, #d08706 100%) !important;
+  border-color: rgba(255, 216, 115, 0.9) !important;
+  color: #120d04 !important;
+  box-shadow: 0 3px 0 #8a5206 !important;
+}
+html.jolly #versusModal .bg-sky-500:hover {
+  background: linear-gradient(180deg, #fff0c2 0%, #ffc43d 55%, #e69b0b 100%) !important;
+}
+html.jolly #versusModal .text-sky-300 { color: var(--jr-gold) !important; }
+

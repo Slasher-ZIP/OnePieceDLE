@@ -80,6 +80,16 @@
     "author": { "@type": "Organization", "name": "OPDLE" }
   }
   </script>
+  <!-- Thème « Jolly Roger » (déblocable). Il ne s'active que si <html> porte
+       la classe « jolly » : sans elle, ce fichier ne change rien au thème. -->
+  <script>
+    try {
+      var _th = localStorage.getItem("opdle_theme");
+      if (_th === "jolly") document.documentElement.classList.add("jolly");
+      else if (_th === "light") { document.documentElement.classList.remove("dark"); document.documentElement.classList.add("light"); }
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="jolly.css">
 </head>
 
 <body class="min-h-screen flex flex-col items-center justify-start px-4 sm:px-6 pt-0 pb-4 sm:pb-6 bg-[#0b0f19] text-gray-100">
@@ -95,7 +105,8 @@
   <!-- Barre de navigation : logo + pages + compte -->
   <nav id="topNav" class="self-stretch -mx-4 sm:-mx-6 px-4 sm:px-6 sticky top-0 z-40 flex flex-wrap items-center gap-x-2 gap-y-2 py-2 mb-4">
     <div class="nav-brand flex items-center gap-2 mr-4 select-none">
-      <span class="text-[1.7rem] leading-none">☠️</span>
+      <span class="brand-emoji text-[1.7rem] leading-none">☠️</span>
+      <img src="icon-192.png" alt="" class="brand-mark" width="34" height="34" draggable="false">
       <span class="op-title-nav text-[1.7rem] leading-none font-extrabold tracking-wide">OPDLE</span>
     </div>
     <div class="flex items-center gap-2 order-3 sm:order-none w-full sm:w-auto justify-center">
@@ -129,14 +140,21 @@
   <header class="w-full max-w-3xl mb-5">
     <!-- Titre -->
     <div class="text-center mb-4">
-      <div class="inline-flex items-center gap-2.5">
-        <span class="text-2xl sm:text-3xl">☠️</span>
+      <div class="inline-flex items-center gap-2.5 sm:gap-3">
+        <span class="hero-emoji text-2xl sm:text-3xl">☠️</span>
+        <img src="icon-192.png" alt="" class="hero-mark" width="48" height="48" draggable="false">
         <h1 class="op-title text-3xl sm:text-5xl">
           ONE PIECE DLE
         </h1>
-        <span class="text-2xl sm:text-3xl">⚓</span>
+        <span class="hero-emoji text-2xl sm:text-3xl">⚓</span>
+        <svg class="hero-anchor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="5" r="3"></circle>
+          <line x1="12" y1="22" x2="12" y2="8"></line>
+          <path d="M5 12H2a10 10 0 0 0 20 0h-3"></path>
+        </svg>
       </div>
       <p id="subTitleText" class="text-slate-500 text-xs sm:text-sm mt-1">Devinez le personnage mystère de One Piece grâce aux indices !</p>
+      <div class="hero-rule" aria-hidden="true"><span></span><i></i><span></span></div>
     </div>
 
     <!-- Statut de partie -->
@@ -465,6 +483,8 @@
             <button type="button" id="settingsThemeDark" class="settings-choice flex-1 py-2.5 rounded-xl border text-xs font-semibold transition">🌙 Sombre</button>
             <button type="button" id="settingsThemeLight" class="settings-choice flex-1 py-2.5 rounded-xl border text-xs font-semibold transition">☀️ Clair</button>
           </div>
+          <button type="button" id="settingsThemeJolly" class="settings-choice w-full mt-2 py-2.5 rounded-xl border text-xs font-semibold transition">💀 Jolly Roger</button>
+          <p id="settingsThemeJollyLock" class="hidden text-[11px] text-amber-400 font-semibold leading-snug mt-1.5"></p>
         </section>
         <!-- Language -->
         <section>
