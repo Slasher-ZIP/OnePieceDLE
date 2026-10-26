@@ -1143,3 +1143,22 @@ html.light #storyHelpBtn.help-toggle[aria-expanded="true"] {
   #topNav .icon-btn { width: 40px; height: 40px; font-size: 1.05rem; }
   .guess-cell-label { font-size: 0.65rem !important; letter-spacing: 0.04em; }
 }
+
+/* Accessibilité : focus clavier visible + lien d'évitement */
+:focus-visible {
+  outline: 2px solid #f59e0b;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  padding: 10px 16px;
+  background: #f59e0b;
+  color: #0b0f19;
+  font-weight: 800;
+  border-radius: 0 0 12px 0;
+}
+.skip-link:focus { left: 0; }

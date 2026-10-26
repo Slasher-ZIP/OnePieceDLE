@@ -1,0 +1,4 @@
+﻿User-agent: *
+Allow: /
+
+Sitemap: https://slasher-zip.github.io/OnePieceDLE/sitemap.xml
