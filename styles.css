@@ -1080,3 +1080,66 @@ html.light #storyHelpBtn.help-toggle[aria-expanded="true"] {
     padding: 6px 10px;
   }
 }
+
+/* ============================================================================
+ * Ajustements responsive (mobile / tablette) — 2026-10
+ * Objectifs : cibles tactiles >= 40 px, en-tête plus compact, meilleure
+ * utilisation de la largeur sur tablette, libellés lisibles, modales en dvh.
+ * ========================================================================== */
+@media (min-width: 521px) and (max-width: 819px) {
+  #results > .guess-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+@media (min-width: 820px) and (max-width: 960px) {
+  #results > .guess-row {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+@media (max-width: 960px) {
+  #results > .guess-row > .guess-cell[data-key="char"],
+  #results > .guess-row > .guess-cell.character-cell {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 640px) {
+  #topNav .nav-link { min-height: 40px; }
+  #topNav .icon-btn { width: 40px; height: 40px; font-size: 1.05rem; }
+  #topNav { padding-top: 6px; padding-bottom: 6px; }
+  button, select, .nav-link, .icon-btn, .profile-pill { touch-action: manipulation; }
+  header { margin-bottom: 0.6rem !important; }
+  header > .text-center { margin-bottom: 0.6rem !important; }
+  header h1 { font-size: 1.3rem !important; }
+  #subTitleText { font-size: 0.68rem !important; margin-top: 2px !important; }
+  #modeSelect, #storySelect {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+  .guess-cell-label { font-size: 0.65rem !important; letter-spacing: 0.04em; }
+}
+@media (max-width: 360px) {
+  #modeSelect, #storySelect {
+    font-size: 0.78rem !important;
+    padding-left: 0.6rem !important;
+    padding-right: 1.7rem !important;
+  }
+  header h1 { font-size: 1.18rem !important; }
+}
+@supports (height: 100dvh) {
+  @media (max-width: 960px), (max-height: 700px) {
+    #collectionModal > div,
+    #questsModal > div,
+    #settingsModal > div,
+    #profileModal > div,
+    #versusModal > div,
+    #charDetailModal > div {
+      max-height: 92dvh;
+    }
+  }
+}
+
+@media (max-width: 960px) {
+  #topNav .nav-link { min-height: 40px; }
+  #topNav .icon-btn { width: 40px; height: 40px; font-size: 1.05rem; }
+  .guess-cell-label { font-size: 0.65rem !important; letter-spacing: 0.04em; }
+}
