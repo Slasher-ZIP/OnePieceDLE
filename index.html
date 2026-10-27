@@ -111,24 +111,24 @@
     </div>
     <div class="flex items-center gap-2 order-3 sm:order-none w-full sm:w-auto justify-center">
       <button id="collectionBtn" class="nav-link" type="button">
-        <span>🃏</span>
+        <span class="ico ico-card">🃏</span>
         <span id="labelCollection">Collection</span>
       </button>
       <button id="questsBtn" class="nav-link" type="button">
-        <span>🏆</span>
+        <span class="ico">🏆</span>
         <span id="labelQuests">Quêtes</span>
       </button>
       <button id="versusBtn" class="nav-link" type="button">
-        <span>⚔️</span>
+        <span class="ico">⚔️</span>
         <span id="labelVersus">Versus</span>
       </button>
     </div>
     <div class="flex items-center gap-2 ml-auto">
       <button id="onboardHelpBtn" type="button" title="Aide / Tutoriel" class="icon-btn" aria-label="Aide">
-        ❓
+        <span class="ico">❓</span>
       </button>
       <button id="settingsBtn" type="button" title="Réglages" class="icon-btn" aria-label="Settings">
-        ⚙️
+        <span class="ico">⚙️</span>
       </button>
       <button id="profileBtn" class="profile-pill" title="Compte" type="button">
         <span id="profileAvatarMini" class="w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center text-sm overflow-hidden shrink-0 border-2 border-amber-500/40">👤</span>
@@ -232,7 +232,7 @@
     <div id="versusPickBar" class="hidden w-full max-w-md mx-auto items-center gap-2 px-3 py-2 rounded-xl border border-violet-500/40 bg-violet-950/60 text-xs sm:text-sm">
       <span id="versusPickText" class="flex-1 font-bold text-violet-200 truncate"></span>
       <input id="versusPickInput" type="text" autocomplete="off" class="w-28 sm:w-40 min-w-0 bg-slate-800 border border-violet-500/40 text-white text-xs rounded-lg px-2 py-1 outline-none focus:border-violet-300" />
-      <button type="button" id="versusPickRandomBtn" class="px-2 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-bold shrink-0" title="Aléatoire">🎲</button>
+      <button type="button" id="versusPickRandomBtn" class="px-2 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-bold shrink-0" title="Aléatoire"><span class="ico">🎲</span></button>
       <button type="button" id="versusPickOkBtn" class="px-3 py-1 rounded-lg bg-violet-500 hover:bg-violet-400 text-slate-950 text-xs font-bold shrink-0">Valider</button>
     </div>
 
@@ -251,7 +251,7 @@
           placeholder="Écris un nom ou un alias (ex: Sanji, Pied Noir)..." 
           class="w-full bg-slate-800/90 border-2 border-slate-600 focus:border-amber-400 text-white placeholder-slate-400 px-4 py-3 rounded-2xl shadow-xl outline-none transition text-sm sm:text-base pr-12 disabled:opacity-50 disabled:cursor-not-allowed"
         />
-        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">🔍</span>
+        <span class="ico absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">🔍</span>
       </div>
 
       <div 
@@ -266,8 +266,8 @@
       <div class="legend-chip"><span class="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span> <span id="legCorrect">Correct</span></div>
       <div class="legend-chip"><span class="w-2.5 h-2.5 rounded-full bg-amber-600 inline-block"></span> <span id="legPartial">Partiel</span></div>
       <div class="legend-chip"><span class="w-2.5 h-2.5 rounded-full bg-slate-600 inline-block"></span> <span id="legIncorrect">Incorrect</span></div>
-      <div class="legend-chip text-sky-300">⬆️ <span id="legLower">Trop bas</span></div>
-      <div class="legend-chip text-rose-300">⬇️ <span id="legHigher">Trop haut</span></div>
+      <div class="legend-chip text-sky-300"><span class="ico">↑</span> <span id="legLower">Trop bas</span></div>
+      <div class="legend-chip text-rose-300"><span class="ico">↓</span> <span id="legHigher">Trop haut</span></div>
     </div>
 
     <div class="w-full overflow-x-auto overflow-y-visible pb-4 results-scroll">
@@ -318,7 +318,7 @@
   <div id="onboardingModal" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
     <div class="onboard-card relative max-w-md w-full rounded-3xl p-6 sm:p-8 text-center space-y-5">
       <button type="button" id="onboardSkip" class="absolute top-3 right-3 text-slate-500 hover:text-slate-300 text-sm px-2 py-1">Passer</button>
-      <div id="onboardIcon" class="onboard-icon">☠️</div>
+      <div id="onboardIcon" class="onboard-icon ico">☠️</div>
       <h2 id="onboardTitle" class="text-xl sm:text-2xl font-extrabold text-amber-400">Bienvenue sur OPDLE</h2>
       <p id="onboardBody" class="text-slate-300 text-sm sm:text-[15px] leading-relaxed"></p>
       <div class="flex justify-center gap-2 py-1">
@@ -345,7 +345,7 @@
     <div class="relative bg-slate-900 border-2 border-amber-500/50 rounded-3xl max-w-md w-full text-center shadow-2xl max-h-[92vh] flex flex-col overflow-hidden">
       <button class="modalCloseBtn absolute top-3 right-3 z-20 text-slate-400 hover:text-white text-xl font-bold p-2 transition bg-slate-900/80 rounded-full">✕</button>
       <div class="p-5 sm:p-6 space-y-2.5">
-        <div class="text-5xl">🎉</div>
+        <div class="text-5xl ico">🎉</div>
         <div id="modalWinnerAvatar" class="flex justify-center"></div>
         <div>
           <h2 id="modalWinTitle" class="text-2xl sm:text-3xl font-extrabold text-amber-400">Bravo !</h2>
@@ -356,12 +356,12 @@
           <span id="modalAttempts" class="font-bold text-amber-400"></span> <span id="modalWinDesc3">essai(s) !</span>
         </p>
         <div class="p-4 bg-slate-800/80 rounded-2xl border border-slate-700/60 text-left text-xs sm:text-sm space-y-2">
-          <div>⚓ <span id="modalWinAffLabel" class="text-slate-400">Affiliation :</span> <span id="modalWinnerAffiliation" class="font-semibold text-slate-200"></span></div>
-          <div>🍎 <span id="modalWinFruitLabel" class="text-slate-400">Fruit :</span> <span id="modalWinnerFruit" class="font-semibold text-slate-200"></span></div>
-          <div>💰 <span id="modalWinBountyLabel" class="text-slate-400">Prime :</span> <span id="modalWinnerBounty" class="font-semibold text-slate-200"></span></div>
-          <div>📖 <span id="modalWinArcLabel" class="text-slate-400">Première apparition :</span> <span id="modalWinnerArc" class="font-semibold text-slate-200"></span></div>
-          <div>🎂 <span id="modalWinAgeLabel" class="text-slate-400">Âge :</span> <span id="modalWinnerAge" class="font-semibold text-slate-200"></span></div>
-          <div>📏 <span id="modalWinHeightLabel" class="text-slate-400">Taille :</span> <span id="modalWinnerHeight" class="font-semibold text-slate-200"></span></div>
+          <div><span class="ico">⚓</span> <span id="modalWinAffLabel" class="text-slate-400">Affiliation :</span> <span id="modalWinnerAffiliation" class="font-semibold text-slate-200"></span></div>
+          <div><span class="ico">🍎</span> <span id="modalWinFruitLabel" class="text-slate-400">Fruit :</span> <span id="modalWinnerFruit" class="font-semibold text-slate-200"></span></div>
+          <div><span class="ico">💰</span> <span id="modalWinBountyLabel" class="text-slate-400">Prime :</span> <span id="modalWinnerBounty" class="font-semibold text-slate-200"></span></div>
+          <div><span class="ico">📖</span> <span id="modalWinArcLabel" class="text-slate-400">Première apparition :</span> <span id="modalWinnerArc" class="font-semibold text-slate-200"></span></div>
+          <div><span class="ico">🎂</span> <span id="modalWinAgeLabel" class="text-slate-400">Âge :</span> <span id="modalWinnerAge" class="font-semibold text-slate-200"></span></div>
+          <div><span class="ico">📏</span> <span id="modalWinHeightLabel" class="text-slate-400">Taille :</span> <span id="modalWinnerHeight" class="font-semibold text-slate-200"></span></div>
         </div>
         <p id="modalUnlockNote" class="text-xs text-emerald-400 font-semibold hidden"></p>
         <p id="modalThemeNote" class="text-xs text-amber-300 font-semibold hidden"></p>
@@ -376,7 +376,7 @@
     <div class="relative bg-slate-900 border-2 border-rose-500/50 rounded-3xl max-w-md w-full text-center shadow-2xl max-h-[92vh] flex flex-col overflow-hidden">
       <button class="modalCloseBtn absolute top-3 right-3 z-20 text-slate-400 hover:text-white text-xl font-bold p-2 transition bg-slate-900/80 rounded-full">✕</button>
       <div class="p-5 sm:p-6 space-y-2.5">
-        <div class="text-5xl">💀</div>
+        <div class="text-5xl ico">💀</div>
         <div id="modalGiveUpAvatar" class="flex justify-center"></div>
         <div>
           <h2 id="modalGiveUpTitle" class="text-2xl sm:text-3xl font-extrabold text-rose-500">Forfait !</h2>
@@ -385,16 +385,16 @@
         <h3 id="modalGiveUpName" class="text-xl font-bold text-amber-400"></h3>
 
         <div class="p-4 bg-slate-800/80 rounded-2xl border border-slate-700/60 text-left text-xs sm:text-sm space-y-2">
-          <div>⚓ <span id="mGUAff" class="text-slate-400">Affiliation :</span> <span id="modalGiveUpAffiliation" class="font-semibold text-slate-200"></span></div>
-          <div>🍎 <span id="mGUFruit" class="text-slate-400">Fruit :</span> <span id="modalGiveUpFruit" class="font-semibold text-slate-200"></span></div>
-          <div>💰 <span id="mGUBounty" class="text-slate-400">Prime :</span> <span id="modalGiveUpBounty" class="font-semibold text-slate-200"></span></div>
-          <div>📖 <span id="mGUArc" class="text-slate-400">Première apparition :</span> <span id="modalGiveUpArc" class="font-semibold text-slate-200"></span></div>
-          <div>🎂 <span id="mGUAge" class="text-slate-400">Âge :</span> <span id="modalGiveUpAge" class="font-semibold text-slate-200"></span></div>
-          <div>📏 <span id="mGUHeight" class="text-slate-400">Taille :</span> <span id="modalGiveUpHeight" class="font-semibold text-slate-200"></span></div>
+          <div><span class="ico">⚓</span> <span id="mGUAff" class="text-slate-400">Affiliation :</span> <span id="modalGiveUpAffiliation" class="font-semibold text-slate-200"></span></div>
+          <div><span class="ico">🍎</span> <span id="mGUFruit" class="text-slate-400">Fruit :</span> <span id="modalGiveUpFruit" class="font-semibold text-slate-200"></span></div>
+          <div><span class="ico">💰</span> <span id="mGUBounty" class="text-slate-400">Prime :</span> <span id="modalGiveUpBounty" class="font-semibold text-slate-200"></span></div>
+          <div><span class="ico">📖</span> <span id="mGUArc" class="text-slate-400">Première apparition :</span> <span id="modalGiveUpArc" class="font-semibold text-slate-200"></span></div>
+          <div><span class="ico">🎂</span> <span id="mGUAge" class="text-slate-400">Âge :</span> <span id="modalGiveUpAge" class="font-semibold text-slate-200"></span></div>
+          <div><span class="ico">📏</span> <span id="mGUHeight" class="text-slate-400">Taille :</span> <span id="modalGiveUpHeight" class="font-semibold text-slate-200"></span></div>
         </div>
 
         <button id="modalGiveUpRetryBtn" class="w-full bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700 hover:to-rose-800 text-white font-extrabold py-3 rounded-xl text-base transition shadow-lg shadow-rose-600/20 active:scale-95">
-          <span id="modalGiveUpBtnText">Recommencer une partie 🔄</span>
+          <span class="ico">🔄</span> <span id="modalGiveUpBtnText">Recommencer une partie</span>
         </button>
       </div>
     </div>
@@ -406,7 +406,7 @@
   <div id="confirmModal" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[95] flex items-center justify-center p-4">
     <div class="relative bg-slate-900 border-2 border-amber-500/40 rounded-3xl max-w-sm w-full text-center shadow-2xl overflow-hidden">
       <div class="p-6 space-y-4">
-        <div id="confirmIcon" class="text-4xl">⚠️</div>
+        <div id="confirmIcon" class="text-4xl ico">⚠️</div>
         <div>
           <h2 id="confirmTitle" class="text-lg sm:text-xl font-extrabold text-amber-400">Confirmation</h2>
           <p id="confirmDesc" class="text-xs text-slate-400 leading-relaxed mt-1.5"></p>
@@ -480,11 +480,14 @@
         <!-- Theme -->
         <section>
           <h3 id="settingsThemeLabel" class="text-[11px] uppercase tracking-wider text-slate-500 font-bold mb-2">Thème</h3>
-          <div class="flex gap-2">
-            <button type="button" id="settingsThemeDark" class="settings-choice flex-1 py-2.5 rounded-xl border text-xs font-semibold transition">🌙 Sombre</button>
-            <button type="button" id="settingsThemeLight" class="settings-choice flex-1 py-2.5 rounded-xl border text-xs font-semibold transition">☀️ Clair</button>
+          <div class="flex items-center gap-2.5">
+            <button type="button" id="settingsThemeDark" class="theme-swatch theme-swatch-dark" aria-label="Sombre" aria-pressed="true" title="Sombre"></button>
+            <button type="button" id="settingsThemeLight" class="theme-swatch theme-swatch-light" aria-label="Clair" aria-pressed="false" title="Clair"></button>
+            <button type="button" id="settingsThemeJolly" class="theme-swatch theme-swatch-jolly" aria-label="Jolly Roger" aria-pressed="false" title="Jolly Roger">
+              <img src="icon-192.png" alt="" width="28" height="28" draggable="false">
+              <span class="theme-swatch-lock" aria-hidden="true">🔒</span>
+            </button>
           </div>
-          <button type="button" id="settingsThemeJolly" class="settings-choice w-full mt-2 py-2.5 rounded-xl border text-xs font-semibold transition">💀 Jolly Roger</button>
           <p id="settingsThemeJollyLock" class="hidden text-[11px] text-amber-400 font-semibold leading-snug mt-1.5"></p>
         </section>
         <!-- Language -->
@@ -643,8 +646,8 @@
       <button type="button" class="versusModalClose absolute top-3 right-3 text-slate-400 hover:text-white text-lg font-bold p-1">✕</button>
       <h2 id="versusTitle" class="text-lg font-extrabold text-sky-300">Affrontement 1v1</h2>
       <div class="grid grid-cols-2 gap-2">
-        <button type="button" id="versusModeLocalBtn" class="py-2 rounded-xl text-xs font-bold border bg-sky-500 text-slate-950 border-sky-500">📍 Local</button>
-        <button type="button" id="versusModeOnlineBtn" class="py-2 rounded-xl text-xs font-bold border bg-slate-800 text-slate-300 border-slate-600">🌐 <span id="versusModeOnlineLabel">En ligne</span></button>
+        <button type="button" id="versusModeLocalBtn" class="py-2 rounded-xl text-xs font-bold border bg-sky-500 text-slate-950 border-sky-500"><span class="ico">📍</span> Local</button>
+        <button type="button" id="versusModeOnlineBtn" class="py-2 rounded-xl text-xs font-bold border bg-slate-800 text-slate-300 border-slate-600"><span class="ico">🌐</span> <span id="versusModeOnlineLabel">En ligne</span></button>
       </div>
       <div id="versusLocalPanel" class="space-y-2">
         <label class="block space-y-1">
@@ -655,7 +658,7 @@
           <span id="versusPseudo2Label" class="text-[11px] text-slate-400">Pseudo joueur 2</span>
           <input id="versusName2" maxlength="16" class="w-full bg-slate-800 border border-slate-600/70 text-white text-sm font-medium rounded-lg px-3 py-2 outline-none focus:border-sky-400/70" />
         </label>
-        <button id="versusStartBtn" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 text-sm font-bold py-2.5 rounded-xl transition">Commencer ⚔️</button>
+        <button id="versusStartBtn" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 text-sm font-bold py-2.5 rounded-xl transition">Commencer <span class="ico">⚔️</span></button>
       </div>
       <div id="versusOnlinePanel" class="hidden space-y-2">
         <input id="versusOnlineName" maxlength="16" class="w-full bg-slate-800 border border-slate-600/70 text-white text-sm font-medium rounded-lg px-3 py-2 outline-none focus:border-sky-400/70" />
@@ -713,7 +716,7 @@
           <button id="versusJoinBtn" class="px-4 bg-slate-700 hover:bg-slate-600 text-white text-sm font-bold py-2 rounded-xl transition">Rejoindre</button>
         </div>
         <div class="flex items-center gap-1.5">
-          <button id="versusAutoBtn" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white text-sm font-bold py-2.5 rounded-xl transition">🔍 Trouver un adversaire</button>
+          <button id="versusAutoBtn" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white text-sm font-bold py-2.5 rounded-xl transition"><span class="ico">🔍</span> Trouver un adversaire</button>
           <button type="button" id="versusAutoHelpBtn" data-help-for="versusAutoHelpText" class="help-toggle text-[10px] font-semibold text-sky-400 hover:text-sky-300 underline-offset-2 hover:underline" title="Aide" aria-expanded="false">?</button>
         </div>
         <p id="versusAutoHelpText" class="hidden help-text text-[10px] text-slate-400 leading-relaxed px-0.5 whitespace-pre-line"></p>
@@ -735,7 +738,7 @@
   <div id="questRewardModal" class="hidden fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[80] flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-amber-500/40 rounded-2xl max-w-md w-full p-6 relative shadow-2xl shadow-amber-500/10">
       <button class="questRewardModalClose absolute top-3 right-3 text-slate-400 hover:text-white text-lg font-bold p-1 bg-slate-950/80 rounded-full">✕</button>
-      <p class="text-center text-2xl mb-1">🏆</p>
+      <p class="text-center text-2xl mb-1 ico">🏆</p>
       <h2 id="questRewardTitle" class="text-xl font-bold text-amber-400 text-center mb-1">Quête accomplie !</h2>
       <p id="questRewardDesc" class="text-slate-400 text-sm text-center mb-5">Nouvelle image débloquée dans ta collection.</p>
       <div id="questRewardList" class="flex flex-wrap justify-center gap-4 mb-6"></div>

@@ -1682,7 +1682,7 @@ function updateLanguageUI() {
   const versusTitle = document.getElementById("versusTitle");
   if (versusTitle) versusTitle.textContent = t.versusTitle || "1v1";
   const versusStartBtn = document.getElementById("versusStartBtn");
-  if (versusStartBtn) versusStartBtn.textContent = t.versusStart || "Start";
+  if (versusStartBtn) versusStartBtn.innerHTML = (t.versusStart || "Start") + ' <span class="ico">⚔️</span>';
   if (typeof updateVersusBanner === "function") updateVersusBanner();
   const questsTitle = document.getElementById("questsTitle");
   if (questsTitle) questsTitle.textContent = t.questsTitle || (currentLang === "fr" ? "Quêtes" : "Quests");
@@ -3654,7 +3654,7 @@ function renderQuestsList() {
     const name = qn ? (isDone ? joinQuestName(baseName, qn) : qn) : baseName;
     const img = v.image
       ? `<img src="${v.image}" alt="" draggable="false" class="w-full h-full object-cover" style="object-position:center top;${isDone ? "" : "filter:brightness(0.55) opacity(0.6);"}" onerror="this.style.display='none'" />`
-      : `<span class="text-2xl">🏆</span>`;
+      : `<span class="ico text-2xl">🏆</span>`;
     const conds = prog.parts.map(p => {
       const pct = p.need > 0 ? Math.min(100, Math.round((p.cur / p.need) * 100)) : 100;
       return `<div class="mt-1">
@@ -5611,6 +5611,18 @@ function modeLockText(questId) {
 function updateSettingsUI() {
   const t = (TRANSLATIONS[currentLang] || TRANSLATIONS.fr);
   const set = (id, text) => { const el = document.getElementById(id); if (el && text != null) el.textContent = text; };
+  // Libellé avec icône : l'emoji est isolé dans un <span class="ico"> pour que le
+  // thème Jolly Roger puisse le teinter en or sans toucher au texte.
+  const setIcon = (id, icon, text) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = "";
+    const sp = document.createElement("span");
+    sp.className = icon === "🃏" ? "ico ico-card" : "ico";
+    sp.textContent = icon;
+    el.appendChild(sp);
+    el.appendChild(document.createTextNode(" " + (text || "")));
+  };
   set("settingsTitle", t.settingsTitle);
   set("settingsThemeLabel", t.settingsTheme);
   set("settingsLangLabel", t.settingsLang);
@@ -5626,10 +5638,20 @@ function updateSettingsUI() {
   if (pw) pw.placeholder = t.settingsPassword || "Password";
 
   const theme = getTheme();
-  document.getElementById("settingsThemeDark")?.classList.toggle("is-active", theme === "dark");
-  document.getElementById("settingsThemeLight")?.classList.toggle("is-active", theme === "light");
-  set("settingsThemeDark", "🌙 " + (t.settingsThemeDark || "Dark"));
-  set("settingsThemeLight", "☀️ " + (t.settingsThemeLight || "Light"));
+  const themeLabels = {
+    dark: t.settingsThemeDark || "Dark",
+    light: t.settingsThemeLight || "Light",
+    jolly: t.settingsThemeJolly || "Jolly Roger"
+  };
+  // Pastilles de thème : pas de texte visible, mais libellés pour l'accessibilité
+  [["settingsThemeDark", "dark"], ["settingsThemeLight", "light"]].forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.toggle("is-active", theme === key);
+    el.setAttribute("aria-pressed", theme === key ? "true" : "false");
+    el.setAttribute("aria-label", themeLabels[key]);
+    el.title = themeLabels[key];
+  });
 
   // Thème Jolly Roger : verrouillé tant que l'album Barbe Noire n'est pas complet
   const jollyDone = jollyThemeUnlocked();
@@ -5637,10 +5659,12 @@ function updateSettingsUI() {
   if (jollyBtn) {
     jollyBtn.classList.toggle("is-active", theme === "jolly");
     jollyBtn.disabled = !jollyDone;
-    jollyBtn.classList.toggle("opacity-40", !jollyDone);
+    jollyBtn.classList.toggle("is-locked", !jollyDone);
     jollyBtn.setAttribute("aria-disabled", jollyDone ? "false" : "true");
+    jollyBtn.setAttribute("aria-pressed", theme === "jolly" ? "true" : "false");
+    jollyBtn.setAttribute("aria-label", themeLabels.jolly);
+    jollyBtn.title = themeLabels.jolly;
   }
-  set("settingsThemeJolly", "💀 " + (t.settingsThemeJolly || "Jolly Roger"));
   const jollyLock = document.getElementById("settingsThemeJollyLock");
   if (jollyLock) {
     jollyLock.classList.toggle("hidden", jollyDone);
@@ -5653,15 +5677,15 @@ function updateSettingsUI() {
   const soundOn = isSoundEnabled();
   document.getElementById("settingsSoundOn")?.classList.toggle("is-active", soundOn);
   document.getElementById("settingsSoundOff")?.classList.toggle("is-active", !soundOn);
-  set("settingsSoundOn", "🔊 " + (t.settingsSoundOn || "On"));
-  set("settingsSoundOff", "🔇 " + (t.settingsSoundOff || "Off"));
+  setIcon("settingsSoundOn", "🔊", t.settingsSoundOn || "On");
+  setIcon("settingsSoundOff", "🔇", t.settingsSoundOff || "Off");
 
   const collectOn = isCollectMode();
   document.getElementById("settingsCollectOn")?.classList.toggle("is-active", collectOn);
   document.getElementById("settingsCollectOff")?.classList.toggle("is-active", !collectOn);
   set("settingsCollectLabel", t.settingsCollect);
-  set("settingsCollectOn", "🃏 " + (t.settingsCollectOn || "Collect"));
-  set("settingsCollectOff", "🎲 " + (t.settingsCollectOff || "Normal"));
+  setIcon("settingsCollectOn", "🃏", t.settingsCollectOn || "Collect");
+  setIcon("settingsCollectOff", "🎲", t.settingsCollectOff || "Normal");
   set("settingsCollectHint", t.settingsCollectHint);
   setModeLock("settingsCollectOn", "settingsCollectLock", collectModeUnlocked(), modeLockText("whitebeard_reveal"));
 
@@ -5669,8 +5693,8 @@ function updateSettingsUI() {
   document.getElementById("settingsSpecialOn")?.classList.toggle("is-active", specialOn);
   document.getElementById("settingsSpecialOff")?.classList.toggle("is-active", !specialOn);
   set("settingsSpecialLabel", t.settingsSpecial);
-  set("settingsSpecialOn", "✨ " + (t.settingsSpecialOn || "Alt/Shiny"));
-  set("settingsSpecialOff", "🎲 " + (t.settingsSpecialOff || "Normal"));
+  setIcon("settingsSpecialOn", "✨", t.settingsSpecialOn || "Alt/Shiny");
+  setIcon("settingsSpecialOff", "🎲", t.settingsSpecialOff || "Normal");
   set("settingsSpecialHint", t.settingsSpecialHint);
   setModeLock("settingsSpecialOn", "settingsSpecialLock", specialModeUnlocked(), modeLockText("roger_shiny"));
 
@@ -5702,7 +5726,10 @@ function showConfirmModal(opts) {
   const okBtn = document.getElementById("confirmOkBtn");
   const cancelBtn = document.getElementById("confirmCancelBtn");
 
-  if (iconEl) iconEl.textContent = o.icon || "⚠️";
+  if (iconEl) {
+    iconEl.textContent = o.icon || "⚠️";
+    iconEl.classList.toggle("ico-card", (o.icon || "") === "🃏");
+  }
   if (titleEl) titleEl.textContent = o.title || t.confirmDefaultTitle || "Confirmation";
   if (descEl) descEl.textContent = o.desc || "";
   if (cancelBtn) cancelBtn.textContent = o.cancelLabel || t.confirmDefaultCancel || "Annuler";

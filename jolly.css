@@ -613,11 +613,7 @@ html.jolly #modalGiveUpRetryBtn {
 html.jolly #giveUpBtn,
 html.jolly #newGameBtn { min-height: 42px; }
 
-/* Loupe dorée (emoji teinté) */
-html.jolly #guessInput + span {
-  filter: grayscale(1) sepia(1) saturate(4.5) hue-rotate(-12deg) brightness(1.15);
-  opacity: 0.85;
-}
+/* Loupe dorée → toutes les icônes passent par .ico (voir plus bas) */
 
 /* État actif des liens de navigation au survol clavier */
 html.jolly .nav-link:focus-visible,
@@ -638,14 +634,64 @@ html.jolly #results > .guess-row > .guess-cell.character-cell.bg-slate-700 {
   border: 1px solid rgba(246, 178, 31, 0.20) !important;
 }
 
-/* Icônes de navigation : emoji teintés or pour rester dans la palette du logo */
-html.jolly .nav-link > span:first-child {
-  /* teinte légère : on garde le dessin de l'icône (un filtre doré trop fort
-     transformait les emojis en simples pavés) */
-  filter: saturate(0.7) brightness(1.08) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6));
-  opacity: 0.95;
+/* Icônes de l'interface : emoji teintés or (même filtre que la loupe d'origine).
+   Le rendu reste un emoji (donc net), simplement passé en or. */
+html.jolly .ico {
+  filter: grayscale(1) sepia(1) saturate(4.5) hue-rotate(-12deg) brightness(1.15);
+  opacity: 0.92;
 }
-html.jolly .nav-link:hover > span:first-child { opacity: 1; }
+html.jolly .nav-link:hover .ico { opacity: 1; }
+
+/* Carte de collection : le filtre or remplit la carte en pavé. On dessine donc
+   un pique doré (même famille visuelle, lisible) à la place, uniquement ici. */
+html.jolly #collectionBtn .ico-card {
+  filter: none;
+  font-size: 0;
+}
+html.jolly #collectionBtn .ico-card::before {
+  content: "♠";
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--jr-gold);
+}
+
+/* Carte de collection ailleurs (réglages, confirmations) : inversion du filtre
+   pour ne garder que le dessin du joker, en or sur l'encre. */
+html.jolly .ico-card {
+  filter: grayscale(1) invert(1) sepia(1) saturate(5) hue-rotate(-10deg) brightness(1.2);
+}
+
+/* Pastilles d'en-tête posées sur l'os : icônes en encre (l'or y serait illisible) */
+html.jolly #labelStreak,
+html.jolly #labelWins {
+  filter: grayscale(1) brightness(0.3) sepia(0.4);
+}
+
+/* Icônes posées sur les boutons dorés : encre pour rester lisibles */
+html.jolly #versusModal .bg-sky-500 .ico {
+  filter: grayscale(1) brightness(0.16) sepia(0.3);
+  opacity: 1;
+}
+
+/* Légende : texte en os, seules les flèches restent dorées */
+html.jolly .legend-chip > span:not(.ico):not([class*="bg-"]) {
+  color: var(--jr-bone-2) !important;
+}
+
+/* Pastilles de thème */
+html.jolly .theme-swatch {
+  border-color: rgba(246, 241, 230, 0.22);
+}
+html.jolly .theme-swatch.is-active {
+  border-color: var(--jr-gold);
+  box-shadow: 0 0 0 3px rgba(246, 178, 31, 0.22);
+}
+html.jolly .theme-swatch-jolly { border-color: rgba(246, 178, 31, 0.5); }
+html.jolly .theme-swatch.is-locked { border-color: rgba(246, 241, 230, 0.12); }
+html.jolly .theme-swatch-lock {
+  background: #080d16;
+  border-color: var(--jr-line);
+}
 
 /* Bouton principal un peu plus lumineux */
 html.jolly #newGameBtn {
