@@ -7766,8 +7766,9 @@ const CHARACTERS = [
       fr: "Merci Merry",
       en: "Thank you Merry"
     },
-    // Récompense de quête : les 8 Mugiwara pré-ellipse possédés (formes pre)
-    unlock: { hasVariants: [ "zoro_pre", "nami_pre", "franky_pre", "sanji_pre", "chopper_pre", "brook_pre", "luffy_pre", "usopp_pre" ] },
+    // Récompense de quête : l'équipage Mugiwara au complet en PRÉ-time-skip
+    // (les 9 membres d'avant l'ellipse : Jinbe n'a rejoint qu'après)
+    unlock: { hasVariants: [ "luffy_pre", "zoro_pre", "nami_pre", "usopp_pre", "sanji_pre", "chopper_pre", "robin_pre", "franky_pre", "brook_pre" ] },
     notGuessable: true
   },
   {
