@@ -16,15 +16,15 @@
 .tl-drop {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  min-height: 64px;
-  padding: 6px;
+  gap: 5px;
+  min-height: 52px;
+  padding: 5px;
   border: 1.5px dashed rgba(148, 163, 184, 0.35);
   border-radius: 10px;
   background: rgba(15, 23, 42, 0.55);
   transition: border-color 0.15s, background 0.15s;
 }
-.tl-drop.tl-pool { min-height: 84px; max-height: 210px; overflow-y: auto; }
+.tl-drop.tl-pool { min-height: 70px; max-height: 170px; overflow-y: auto; }
 .tl-drop.tl-dragover {
   border-color: #fbbf24;
   background: rgba(251, 191, 36, 0.10);
@@ -38,7 +38,7 @@
 }
 
 .tl-row { display: flex; align-items: stretch; gap: 6px; }
-.tl-row .tl-drop { flex: 1; min-height: 64px; }
+.tl-row .tl-drop { flex: 1; min-height: 52px; }
 .tl-label {
   flex: 0 0 40px;
   display: flex;
@@ -136,5 +136,18 @@
   .tl-card img, .tl-card .tl-avatar-fallback { width: 46px; height: 46px; }
   .tl-card .tl-name { font-size: 8.5px; }
   .tl-label { flex: 0 0 32px; font-size: 13px; }
+  .tl-label.tl-bench { font-size: 9px; }
+}
+
+/* Écrans peu hauts (laptops) : on compacte encore pour que l'en-tête et le
+   pied de la modale restent visibles et que le corps défile. */
+@media (max-height: 720px) {
+  .tl-drop { min-height: 44px; padding: 4px; }
+  .tl-row .tl-drop { min-height: 44px; }
+  .tl-drop.tl-pool { max-height: 120px; }
+  .tl-card { width: 54px; }
+  .tl-card img, .tl-card .tl-avatar-fallback { width: 46px; height: 46px; }
+  .tl-card .tl-name { font-size: 8.5px; }
+  .tl-label { flex: 0 0 34px; font-size: 13px; }
   .tl-label.tl-bench { font-size: 9px; }
 }
