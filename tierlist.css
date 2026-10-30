@@ -1,8 +1,6 @@
 /* ================================================================
-   Mode Tier List — classement des personnages par rang
+   Mode Tier List — rangs personnalisables + pool
    ================================================================ */
-#tierListModal .tl-body { }
-
 .tl-section-title {
   font-size: 10px;
   letter-spacing: 0.12em;
@@ -39,24 +37,55 @@
 
 .tl-row { display: flex; align-items: stretch; gap: 6px; }
 .tl-row .tl-drop { flex: 1; min-height: 52px; }
-.tl-label {
-  flex: 0 0 40px;
+
+/* En-tête de rang : nom personnalisable + couleur + suppression */
+.tl-tier-head {
+  flex: 0 0 76px;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  border-radius: 10px;
+  background: var(--tier-color, #64748b);
+  padding: 4px;
+  color: #0b0f19;
+  user-select: none;
+}
+.tl-tier-name {
+  font-weight: 900;
+  font-size: 15px;
+  text-align: center;
+  outline: none;
+  min-height: 1.1em;
+  word-break: break-word;
+  line-height: 1.1;
+}
+.tl-tier-name:focus { background: rgba(255, 255, 255, 0.3); border-radius: 4px; }
+.tl-tier-tools { display: flex; align-items: center; justify-content: center; gap: 4px; }
+.tl-tier-color {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.tl-tier-del {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.28);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 900;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
-  font-weight: 900;
-  font-size: 16px;
-  color: #0b0f19;
-  letter-spacing: 0.02em;
+  cursor: pointer;
 }
-.tl-label.tl-S { background: linear-gradient(180deg, #fca5a5, #ef4444); }
-.tl-label.tl-A { background: linear-gradient(180deg, #fdba74, #f97316); }
-.tl-label.tl-B { background: linear-gradient(180deg, #fde68a, #f59e0b); }
-.tl-label.tl-C { background: linear-gradient(180deg, #a7f3d0, #10b981); }
-.tl-label.tl-D { background: linear-gradient(180deg, #bfdbfe, #3b82f6); }
-.tl-label.tl-bench { background: linear-gradient(180deg, #cbd5e1, #64748b); font-size: 11px; }
 
+/* Carte */
 .tl-card {
   position: relative;
   width: 62px;
@@ -87,6 +116,12 @@
   background: #1e293b;
   display: block;
 }
+.tl-card .tl-avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
 .tl-card .tl-name {
   width: 100%;
   font-size: 9.5px;
@@ -100,18 +135,26 @@
   -webkit-box-orient: vertical;
   word-break: break-word;
 }
-.tl-card .tl-rarity {
+.tl-card-remove {
   position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 8px;
+  top: -5px;
+  right: -5px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ef4444;
+  color: #fff;
+  font-size: 11px;
   line-height: 1;
-  padding: 1px 3px;
-  border-radius: 6px 0 6px 0;
-  background: rgba(2, 6, 23, 0.85);
-  color: #fcd34d;
-  font-weight: 800;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  z-index: 2;
+  cursor: pointer;
 }
+.tl-card:hover .tl-card-remove { display: inline-flex; }
+@media (hover: none) { .tl-card-remove { display: inline-flex; opacity: 0.75; } }
 
 .tl-filter-btn {
   padding: 4px 9px;
@@ -135,12 +178,11 @@
   .tl-card { width: 52px; }
   .tl-card img, .tl-card .tl-avatar-fallback { width: 46px; height: 46px; }
   .tl-card .tl-name { font-size: 8.5px; }
-  .tl-label { flex: 0 0 32px; font-size: 13px; }
-  .tl-label.tl-bench { font-size: 9px; }
+  .tl-tier-head { flex: 0 0 58px; }
+  .tl-tier-name { font-size: 12px; }
 }
 
-/* Écrans peu hauts (laptops) : on compacte encore pour que l'en-tête et le
-   pied de la modale restent visibles et que le corps défile. */
+/* Écrans peu hauts (laptops) : compactage pour garder l'en-tête et le pied visibles */
 @media (max-height: 720px) {
   .tl-drop { min-height: 44px; padding: 4px; }
   .tl-row .tl-drop { min-height: 44px; }
@@ -148,6 +190,12 @@
   .tl-card { width: 54px; }
   .tl-card img, .tl-card .tl-avatar-fallback { width: 46px; height: 46px; }
   .tl-card .tl-name { font-size: 8.5px; }
-  .tl-label { flex: 0 0 34px; font-size: 13px; }
-  .tl-label.tl-bench { font-size: 9px; }
+  .tl-tier-head { flex: 0 0 58px; padding: 3px; }
+  .tl-tier-name { font-size: 12px; }
 }
+
+/* Garanties de hauteur (les classes Tailwind arbitraires ne sont pas générées
+   dans le tailwind.css précompilé) : la modale est plafonnée et le corps défile. */
+#tierListModal > div { max-height: 92vh; }
+#tierListBody { min-height: 0; }
+#tierVariantModal > div { max-height: 80vh; }

@@ -41,11 +41,11 @@ body[class] {
 }
 
 /* Boutons d'en-tête : bois sombre + liseré or au survol */
-#collectionBtn, #questsBtn, #versusBtn, #profileBtn, #onboardHelpBtn, #settingsBtn, #giveUpBtn {
+#collectionBtn, #questsBtn, #versusBtn, #tierListBtn, #profileBtn, #onboardHelpBtn, #settingsBtn, #giveUpBtn {
   background: rgba(13, 28, 52, 0.9) !important;
   border: 1px solid rgba(251, 191, 36, 0.22) !important;
 }
-#collectionBtn:hover, #questsBtn:hover, #versusBtn:hover, #profileBtn:hover,
+#collectionBtn:hover, #questsBtn:hover, #versusBtn:hover, #tierListBtn:hover, #profileBtn:hover,
 #onboardHelpBtn:hover, #settingsBtn:hover, #giveUpBtn:hover {
   border-color: rgba(251, 191, 36, 0.65) !important;
 }

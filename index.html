@@ -741,15 +741,25 @@
     </div>
   </div>
 
-  <!-- Tier List : classement des personnages par rang (S/A/B/C/D) -->
+  <!-- Tier List : classement des personnages par rang (personnalisable) -->
   <div id="tierListModal" class="hidden fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[70] flex items-center justify-center p-2 sm:p-4">
     <div class="relative bg-slate-900 border border-amber-500/40 rounded-2xl w-full max-w-5xl max-h-[94vh] flex flex-col overflow-hidden shadow-2xl">
-      <button type="button" class="tierListClose absolute top-2 right-2 z-10 text-slate-400 hover:text-white text-lg font-bold p-1">✕</button>
-      <div class="p-3 sm:p-4 border-b border-slate-700/60 flex flex-wrap items-center gap-2 pr-10 shrink-0">
-        <h2 id="tierListTitle" class="text-base sm:text-lg font-extrabold text-amber-400">Tier List</h2>
-        <div id="tierListFilters" class="flex flex-wrap gap-1.5 sm:ml-2"></div>
+      <button type="button" class="tierListClose absolute top-2 right-2 z-20 text-slate-400 hover:text-white text-lg font-bold p-1">✕</button>
+      <div class="p-3 sm:p-4 border-b border-slate-700/60 shrink-0 space-y-2 pr-10">
+        <div class="flex flex-wrap items-center gap-2">
+          <h2 id="tierListTitle" class="text-base sm:text-lg font-extrabold text-amber-400">Tier List</h2>
+          <div id="tierListFilters" class="flex flex-wrap gap-1.5 sm:ml-2"></div>
+        </div>
+        <div id="tierListCollections" class="hidden flex-wrap gap-1.5 max-h-28 overflow-y-auto pt-0.5"></div>
       </div>
-      <div id="tierListBody" class="p-2 sm:p-3 overflow-y-auto flex-1 min-h-0 space-y-2"></div>
+      <div id="tierListBody" class="p-2 sm:p-3 overflow-y-auto flex-1 min-h-0 space-y-2">
+        <div class="relative">
+          <input id="tierListSearch" type="text" autocomplete="off" placeholder="Ajouter un perso…" class="w-full bg-slate-800 border border-slate-600 text-white text-xs rounded-lg px-3 py-2 outline-none focus:border-amber-400 pr-8" />
+          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm pointer-events-none">＋</span>
+          <div id="tierListSearchMenu" class="hidden absolute left-0 right-0 top-full mt-1 z-30 bg-slate-900 border border-slate-600 rounded-xl shadow-2xl max-h-56 overflow-y-auto"></div>
+        </div>
+        <div id="tierListTiers" class="space-y-2"></div>
+      </div>
       <div class="p-2 sm:p-3 border-t border-slate-700/60 flex flex-wrap items-center gap-2 shrink-0">
         <label class="text-[11px] text-slate-400 flex items-center gap-1">
           <span id="tierListSortLabel">Trier</span>
@@ -760,8 +770,21 @@
           </select>
         </label>
         <span id="tierListCount" class="text-[11px] text-slate-500"></span>
-        <button id="tierListReset" class="ml-auto px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold">Réinitialiser</button>
+        <span id="tierListHint" class="text-[10px] text-slate-500 hidden sm:inline">Double-clic : variantes</span>
+        <button id="tierListAddTier" class="ml-auto px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold">+ Rang</button>
+        <button id="tierListReset" class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold">Réinitialiser</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Variantes d'un personnage (double-clic dans la Tier List) -->
+  <div id="tierVariantModal" class="hidden fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[80] flex items-center justify-center p-4">
+    <div class="relative bg-slate-900 border border-violet-500/40 rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col overflow-hidden shadow-2xl">
+      <button type="button" class="tierVariantClose absolute top-2 right-2 z-10 text-slate-400 hover:text-white text-lg font-bold p-1">✕</button>
+      <div class="p-4 border-b border-slate-700/60 pr-10">
+        <h3 id="tierVariantTitle" class="text-base font-extrabold text-violet-300">Variantes</h3>
+      </div>
+      <div id="tierVariantList" class="p-4 overflow-y-auto flex flex-wrap gap-3 justify-center"></div>
     </div>
   </div>
 
