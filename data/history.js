@@ -16842,5 +16842,17 @@ const CHARACTER_HISTORY = {
   "Laboon": {
     eastblue: { age: 51 },
     fishman: { age: 53 }
+  },
+  "Sanjuan Wolf": {
+    marineford: { prime: null, affiliation: { fr: "Pirates de Barbe Noire", en: "Blackbeard Pirates" }, titre: { fr: "Commandant, Equipage d'empereur", en: "Commander, Emperor's Crew" }, haki: { fr: "Inconnu", en: "Unknown" }, fruit: { fr: "Aucun", en: "None" }, height: 18000 },
+    all: { prime: null, affiliation: { fr: "Pirates de Barbe Noire", en: "Blackbeard Pirates" }, titre: { fr: "Commandant, Equipage d'empereur", en: "Commander, Emperor's Crew" }, haki: { fr: "Inconnu", en: "Unknown" }, fruit: { fr: "Aucun", en: "None" }, height: 18000 }
+  },
+  "Vasco Shot": {
+    marineford: { prime: null, affiliation: { fr: "Pirates de Barbe Noire", en: "Blackbeard Pirates" }, titre: { fr: "Commandant, Equipage d'empereur", en: "Commander, Emperor's Crew" }, haki: { fr: "Inconnu", en: "Unknown" }, fruit: { fr: "Aucun", en: "None" } },
+    all: { prime: null, affiliation: { fr: "Pirates de Barbe Noire", en: "Blackbeard Pirates" }, titre: { fr: "Commandant, Equipage d'empereur", en: "Commander, Emperor's Crew" }, haki: { fr: "Inconnu", en: "Unknown" }, fruit: { fr: "Aucun", en: "None" } }
+  },
+  "Avalo Pizarro": {
+    marineford: { prime: null, affiliation: { fr: "Pirates de Barbe Noire", en: "Blackbeard Pirates" }, titre: { fr: "Commandant, Equipage d'empereur", en: "Commander, Emperor's Crew" }, haki: { fr: "Inconnu", en: "Unknown" }, fruit: { fr: "Aucun", en: "None" } },
+    all: { prime: null, affiliation: { fr: "Pirates de Barbe Noire", en: "Blackbeard Pirates" }, titre: { fr: "Commandant, Equipage d'empereur", en: "Commander, Emperor's Crew" }, haki: { fr: "Inconnu", en: "Unknown" }, fruit: { fr: "Aucun", en: "None" } }
   }
 };

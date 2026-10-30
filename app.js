@@ -3517,32 +3517,32 @@ function questProgress(variant) {
   }
   const fr = (lang !== "en");
   if (u.winsW7mhe != null) {
-    parts.push({ label: fr ? "Victoires (post Water 7 · Moyen/Difficile/Extrême)" : "Wins (post Water 7 · Medium/Hard/Extreme)", cur: qGet(Q_W7MHE_KEY), need: u.winsW7mhe });
+    parts.push({ label: fr ? "Victoires Water 7+ · Moyen+" : "Water 7+ wins · Medium+", cur: qGet(Q_W7MHE_KEY), need: u.winsW7mhe });
   }
   if (u.winsDRhe != null) {
-    parts.push({ label: fr ? "Victoires (post Dressrosa · Difficile/Extrême)" : "Wins (post Dressrosa · Hard/Extreme)", cur: qGet(Q_DRHE_KEY), need: u.winsDRhe });
+    parts.push({ label: fr ? "Victoires Dressrosa+ · Difficile+" : "Dressrosa+ wins · Hard+", cur: qGet(Q_DRHE_KEY), need: u.winsDRhe });
   }
   if (u.winsWChec != null) {
-    parts.push({ label: fr ? "Victoires (post Whole Cake · Difficile/Extrême)" : "Wins (post Whole Cake · Hard/Extreme)", cur: qGet(Q_WCHE_KEY), need: u.winsWChec });
+    parts.push({ label: fr ? "Victoires Whole Cake+ · Difficile+" : "Whole Cake+ wins · Hard+", cur: qGet(Q_WCHE_KEY), need: u.winsWChec });
   }
   if (u.winsWanoEx != null) {
-    parts.push({ label: fr ? "Victoires (post Wano · Extrême)" : "Wins (post Wano · Extreme)", cur: qGet(Q_WANOEX_KEY), need: u.winsWanoEx });
+    parts.push({ label: fr ? "Victoires Wano+ · Extrême" : "Wano+ wins · Extreme", cur: qGet(Q_WANOEX_KEY), need: u.winsWanoEx });
   }
   if (u.winsEBex != null) {
-    parts.push({ label: fr ? "Victoires (East Blue · Extrême)" : "Wins (East Blue · Extreme)", cur: qGet(Q_EBEX_KEY), need: u.winsEBex });
+    parts.push({ label: fr ? "Victoires East Blue · Extrême" : "East Blue wins · Extreme", cur: qGet(Q_EBEX_KEY), need: u.winsEBex });
   }
   if (u.streakW7he != null) {
-    parts.push({ label: fr ? "Série de victoires (Water 7 · Difficile/Extrême)" : "Win streak (Water 7 · Hard/Extreme)", cur: Math.min(qGet(Q_BEST_KEY), u.streakW7he), need: u.streakW7he });
+    parts.push({ label: fr ? "Série Water 7+ · Difficile+" : "Water 7+ streak · Hard+", cur: Math.min(qGet(Q_BEST_KEY), u.streakW7he), need: u.streakW7he });
   }
   if (u.firstTryW7 != null) {
-    parts.push({ label: fr ? "Victoire au 1er coup (post Water 7)" : "First-try win (post Water 7)", cur: Math.min(qGet(Q_FIRSTTRY_KEY), u.firstTryW7), need: u.firstTryW7 });
+    parts.push({ label: fr ? "1er coup Water 7+" : "Water 7+ first try", cur: Math.min(qGet(Q_FIRSTTRY_KEY), u.firstTryW7), need: u.firstTryW7 });
   }
   if (Array.isArray(u.drawn)) {
     let stats = {};
     try { stats = JSON.parse(localStorage.getItem(PICK_STATS_KEY) || "{}"); } catch (e) {}
     const cur = u.drawn.filter(k => (Number(stats[k]) || 0) > 0).length;
     parts.push({
-      label: fr ? "Personnages d'East Blue tirés en mystère (chacun compte une fois)" : "East Blue characters drawn as mystery (each counts once)",
+      label: fr ? "Persos East Blue tirés" : "East Blue mysteries drawn",
       cur, need: u.drawn.length
     });
   }
@@ -3550,13 +3550,13 @@ function questProgress(variant) {
     let un = [];
     try { un = getUnlockedNames(); } catch (e) {}
     const cur = u.hasVariants.filter(id => un.includes(id)).length;
-    parts.push({ label: fr ? "Formes possédées" : "Forms owned", cur, need: u.hasVariants.length });
+    parts.push({ label: fr ? "Formes" : "Forms", cur, need: u.hasVariants.length });
   }
   if (Array.isArray(u.hasCharacters)) {
     let un = [];
     try { un = getUnlockedNames(); } catch (e) {}
     const cur = u.hasCharacters.filter(n => un.includes(n)).length;
-    parts.push({ label: fr ? "Personnages possédés" : "Characters owned", cur, need: u.hasCharacters.length });
+    parts.push({ label: fr ? "Personnages" : "Characters", cur, need: u.hasCharacters.length });
   }
   if (u.collectionComplete) {
     const cat = (typeof COLLECTION_CATEGORIES !== "undefined" ? COLLECTION_CATEGORIES : []).find(c => c.id === u.collectionComplete);

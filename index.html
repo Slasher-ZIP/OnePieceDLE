@@ -90,6 +90,7 @@
     } catch (e) {}
   </script>
   <link rel="stylesheet" href="jolly.css">
+<link rel="stylesheet" href="tierlist.css">
 </head>
 
 <body class="min-h-screen flex flex-col items-center justify-start px-4 sm:px-6 pt-0 pb-4 sm:pb-6 bg-[#0b0f19] text-gray-100">
@@ -121,6 +122,10 @@
       <button id="versusBtn" class="nav-link" type="button">
         <span class="ico">⚔️</span>
         <span id="labelVersus">Versus</span>
+      </button>
+      <button id="tierListBtn" class="nav-link" type="button">
+        <span class="ico">🏅</span>
+        <span id="labelTierList">Tier List</span>
       </button>
     </div>
     <div class="flex items-center gap-2 ml-auto">
@@ -252,7 +257,7 @@
           id="guessInput" 
           type="text" 
           autocomplete="off"
-          placeholder="Écris un nom ou un alias (ex: Sanji, Pied Noir)..." 
+          placeholder="Écris un nom ou un alias (ex: Sanji, Mugiwara)..." 
           class="w-full bg-slate-800/90 border-2 border-slate-600 focus:border-amber-400 text-white placeholder-slate-400 px-4 py-3 rounded-2xl shadow-xl outline-none transition text-sm sm:text-base pr-12 disabled:opacity-50 disabled:cursor-not-allowed"
         />
         <span class="ico absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">🔍</span>
@@ -736,6 +741,30 @@
     </div>
   </div>
 
+  <!-- Tier List : classement des personnages par rang (S/A/B/C/D) -->
+  <div id="tierListModal" class="hidden fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[70] flex items-center justify-center p-2 sm:p-4">
+    <div class="relative bg-slate-900 border border-amber-500/40 rounded-2xl w-full max-w-5xl max-h-[94vh] flex flex-col overflow-hidden shadow-2xl">
+      <button type="button" class="tierListClose absolute top-2 right-2 z-10 text-slate-400 hover:text-white text-lg font-bold p-1">✕</button>
+      <div class="p-3 sm:p-4 border-b border-slate-700/60 flex flex-wrap items-center gap-2 pr-10">
+        <h2 id="tierListTitle" class="text-base sm:text-lg font-extrabold text-amber-400">Tier List</h2>
+        <div id="tierListFilters" class="flex flex-wrap gap-1.5 sm:ml-2"></div>
+      </div>
+      <div id="tierListBody" class="p-2 sm:p-3 overflow-y-auto flex-1 space-y-2"></div>
+      <div class="p-2 sm:p-3 border-t border-slate-700/60 flex flex-wrap items-center gap-2">
+        <label class="text-[11px] text-slate-400 flex items-center gap-1">
+          <span id="tierListSortLabel">Trier</span>
+          <select id="tierListSort" class="bg-slate-800 border border-slate-600 text-white text-xs rounded-lg px-2 py-1">
+            <option value="name">Nom</option>
+            <option value="rarity">Rareté</option>
+            <option value="prime">Prime</option>
+          </select>
+        </label>
+        <span id="tierListCount" class="text-[11px] text-slate-500"></span>
+        <button id="tierListReset" class="ml-auto px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold">Réinitialiser</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Character Detail Modal (from collection) -->
 
   <!-- Quest reward (collection-only unlocks e.g. Luffy Gears) -->
@@ -794,5 +823,6 @@
   <script src="data/collection.js"></script>
   <script src="app.js"></script>
   <script src="online.js"></script>
+<script src="tierlist.js"></script>
 </body>
 </html>

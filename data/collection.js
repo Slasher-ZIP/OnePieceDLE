@@ -85,7 +85,7 @@ const COLLECTION_CATEGORIES = [
     order: 100,
     fr: "Pirates de Barbe Noire",
     en: "Blackbeard Pirates",
-    members: [ "Marshall D. Teach", "Jesus Burgess", "Shiryu", "Lafitte", "Kuzan", "Doc Q", "Catarina Devon", "Van Augur"]
+    members: [ "Marshall D. Teach", "Jesus Burgess", "Shiryu", "Lafitte", "Kuzan", "Doc Q", "Catarina Devon", "Van Augur", "Sanjuan Wolf", "Vasco Shot", "Avalo Pizarro" ]
   },
   {
     id: "donquixote",

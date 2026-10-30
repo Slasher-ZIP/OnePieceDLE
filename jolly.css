@@ -642,16 +642,12 @@ html.jolly .ico {
 }
 html.jolly .nav-link:hover .ico { opacity: 1; }
 
-/* Carte de collection : le filtre or remplit la carte en pavé. On dessine donc
-   un pique doré (même famille visuelle, lisible) à la place, uniquement ici. */
+/* Carte de collection : on garde le MÊME joker que les autres thèmes, mais
+   dessiné en or. `font-variant-emoji: text` rend le glyphe monochrome, que
+   l'on colore en or → carte encre, joker doré. */
 html.jolly #collectionBtn .ico-card {
   filter: none;
-  font-size: 0;
-}
-html.jolly #collectionBtn .ico-card::before {
-  content: "♠";
-  font-size: 1rem;
-  line-height: 1;
+  font-variant-emoji: text;
   color: var(--jr-gold);
 }
 

@@ -931,7 +931,8 @@ const CHARACTERS = [
   "YONKO",
   "QUATRE EMPEREURS",
   "L HOMME AUX DEUX FRUITS",
-  "LE CELIBATAIRE"
+  "LE CELIBATAIRE",
+  "BLACK BEARD",
 ],
     gender: {
       fr: "Homme",
@@ -1325,7 +1326,8 @@ const CHARACTERS = [
   "BARBE NOIRE",
   "EQUIPAGE DE TEACH",
   "LE FAISAN BLEU",
-  "BLUE PHEASANT"
+  "BLUE PHEASANT",
+  "BLACK BEARD",
 ],
     gender: {
       fr: "Homme",
@@ -2358,7 +2360,8 @@ const CHARACTERS = [
   "CHASSEUR DE PIRATES",
   "DAME DE FER",
   "MARTEAU",
-  "LA PLUS BELLE"
+  "LA PLUS BELLE",
+  "BUGGY",
 ],
     gender: {
       fr: "Femme",
@@ -2445,7 +2448,8 @@ const CHARACTERS = [
   "JESUS BURGESS",
   "CHAMPION",
   "BARBE NOIRE",
-  "EQUIPAGE DE TEACH"
+  "EQUIPAGE DE TEACH",
+  "BLACK BEARD",
 ],
     gender: {
       fr: "Homme",
@@ -2557,7 +2561,8 @@ const CHARACTERS = [
   "CHASSEUR DE PIRATES",
   "MR3",
   "CIRE",
-  "BOUGIE"
+  "BOUGIE",
+  "BUGGY",
 ],
     gender: {
       fr: "Homme",
@@ -2696,7 +2701,8 @@ const CHARACTERS = [
   "GARLING",
   "FIGARLAND GARLING, GOROSEI",
   "CHEVALIER DU TRONE",
-  "PRESIDENT DE LA TABLE"
+  "PRESIDENT DE LA TABLE",
+  "GOROSEI",
 ],
     gender: {
       fr: "Homme",
@@ -2877,7 +2883,8 @@ const CHARACTERS = [
   "LOKI",
   "PRINCE LOKI",
   "PRINCE D ELBAF",
-  "LE DIEU DU SOLEIL"
+  "LE DIEU DU SOLEIL",
+  "PRINCE",
 ],
     gender: {
       fr: "Homme",
@@ -5954,7 +5961,8 @@ const CHARACTERS = [
   "BARBE NOIRE",
   "EQUIPAGE DE TEACH",
   "CAPITAINE DES BARBES NOIRES",
-  "EIL AFRAME"
+  "EIL AFRAME",
+  "BLACK BEARD",
 ],
     gender: {
       fr: "Homme",
@@ -6077,7 +6085,8 @@ const CHARACTERS = [
   "LAFITTE",
   "LAFFITTE",
   "BARBE NOIRE",
-  "EQUIPAGE DE TEACH"
+  "EQUIPAGE DE TEACH",
+  "BLACK BEARD",
 ],
     gender: {
       fr: "Homme",
@@ -7250,7 +7259,8 @@ const CHARACTERS = [
   "GUILDE CROISEE",
   "CHASSEUR DE PIRATES",
   "CHIEN DE KRIEG",
-  "LE CHIEN"
+  "LE CHIEN",
+  "BUGGY",
 ],
     gender: { fr: "Homme", en: "Male" },
     affiliation: { fr: "Cross Guild", en: "Cross Guild" },
@@ -7272,7 +7282,8 @@ const CHARACTERS = [
   "GUILDE CROISEE",
   "CHASSEUR DE PIRATES",
   "DOMBEUR DE BETES",
-  "LE LION BLANC"
+  "LE LION BLANC",
+  "BUGGY",
 ],
     gender: { fr: "Homme", en: "Male" },
     affiliation: { fr: "Cross Guild", en: "Cross Guild" },
@@ -7294,7 +7305,8 @@ const CHARACTERS = [
   "GUILDE CROISEE",
   "CHASSEUR DE PIRATES",
   "CASCADEUR",
-  "ACROBATE"
+  "ACROBATE",
+  "BUGGY",
 ],
     gender: { fr: "Homme", en: "Male" },
     affiliation: { fr: "Cross Guild", en: "Cross Guild" },
@@ -7563,7 +7575,8 @@ const CHARACTERS = [
   "DOCQ",
   "DEATH GOD",
   "BARBE NOIRE",
-  "EQUIPAGE DE TEACH"
+  "EQUIPAGE DE TEACH",
+  "BLACK BEARD",
 ],
     gender: { fr: "Homme", en: "Male" },
     affiliation: { fr: "Pirates de Barbe Noire", en: "Blackbeard Pirates" },
@@ -7585,7 +7598,8 @@ const CHARACTERS = [
   "CATARINA DEVON",
   "BARBE NOIRE",
   "EQUIPAGE DE TEACH",
-  "CHASSEUSE DE BEAUX HOMMES"
+  "CHASSEUSE DE BEAUX HOMMES",
+  "BLACK BEARD",
 ],
     gender: { fr: "Femme", en: "Female" },
     affiliation: { fr: "Pirates de Barbe Noire", en: "Blackbeard Pirates" },
@@ -7606,7 +7620,8 @@ const CHARACTERS = [
   "AUGUR",
   "VANAUGUR",
   "BARBE NOIRE",
-  "EQUIPAGE DE TEACH"
+  "EQUIPAGE DE TEACH",
+  "BLACK BEARD",
 ],
     gender: { fr: "Homme", en: "Male" },
     affiliation: { fr: "Pirates de Barbe Noire", en: "Blackbeard Pirates" },
@@ -8659,7 +8674,7 @@ const CHARACTERS = [
     haki: { fr: "Aucun", en: "None" },
     prime: 0,
     arc: "Romance Dawn",
-    titre: { fr: "Patronne de bar", en: "Bar Owner" },
+    titre: { fr: "Aucun", en: "None" },
     age: 31,
     height: 166,
     rarity: 1
@@ -8686,7 +8701,79 @@ const CHARACTERS = [
     height: 40000,
     rarity: 3
   }
-
+,
+  {
+    name: "Sanjuan Wolf",
+    image: "img/SanjuanWolf.webp",
+    aliases: [
+      "SANJUAN WOLF",
+      "SANJUAN",
+      "WOLF",
+      "LE VAISSEAU COLOSSAL",
+      "COLOSSAL BATTLESHIP",
+      "BLACK BEARD",
+      "BARBE NOIRE",
+      "EQUIPAGE DE TEACH"
+    ],
+    gender: { fr: "Homme", en: "Male" },
+    affiliation: { fr: "Pirates de Barbe Noire", en: "Blackbeard Pirates" },
+    fruit: { fr: "Aucun", en: "None" },
+    haki: { fr: "Inconnu", en: "Unknown" },
+    prime: null,
+    arc: "Impel Down",
+    titre: { fr: "Commandant, Equipage d'empereur", en: "Commander, Emperor's Crew" },
+    age: null,
+    height: 18000,
+    rarity: 4
+  },
+  {
+    name: "Vasco Shot",
+    image: "img/VascoShot.webp",
+    aliases: [
+      "VASCO SHOT",
+      "VASCO",
+      "SHOT",
+      "LE BUVEUR",
+      "HEAVY DRINKER",
+      "BLACK BEARD",
+      "BARBE NOIRE",
+      "EQUIPAGE DE TEACH"
+    ],
+    gender: { fr: "Homme", en: "Male" },
+    affiliation: { fr: "Pirates de Barbe Noire", en: "Blackbeard Pirates" },
+    fruit: { fr: "Aucun", en: "None" },
+    haki: { fr: "Inconnu", en: "Unknown" },
+    prime: null,
+    arc: "Impel Down",
+    titre: { fr: "Commandant, Equipage d'empereur", en: "Commander, Emperor's Crew" },
+    age: null,
+    height: null,
+    rarity: 3
+  },
+  {
+    name: "Avalo Pizarro",
+    image: "img/AvaloPizarro.webp",
+    aliases: [
+      "AVALO PIZARRO",
+      "AVALO",
+      "PIZARRO",
+      "LE ROI CORROMPU",
+      "CORRUPT KING",
+      "BLACK BEARD",
+      "BARBE NOIRE",
+      "EQUIPAGE DE TEACH"
+    ],
+    gender: { fr: "Homme", en: "Male" },
+    affiliation: { fr: "Pirates de Barbe Noire", en: "Blackbeard Pirates" },
+    fruit: { fr: "Aucun", en: "None" },
+    haki: { fr: "Inconnu", en: "Unknown" },
+    prime: null,
+    arc: "Impel Down",
+    titre: { fr: "Commandant, Equipage d'empereur", en: "Commander, Emperor's Crew" },
+    age: null,
+    height: null,
+    rarity: 3
+  }
 ];
 
 if (typeof applyRarityToCharacters === "function") applyRarityToCharacters(CHARACTERS);

@@ -1,0 +1,140 @@
+/* ================================================================
+   Mode Tier List — classement des personnages par rang
+   ================================================================ */
+#tierListModal .tl-body { }
+
+.tl-section-title {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  font-weight: 700;
+  margin: 0 0 4px 2px;
+}
+.tl-section-title b { color: #fbbf24; }
+
+.tl-drop {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 64px;
+  padding: 6px;
+  border: 1.5px dashed rgba(148, 163, 184, 0.35);
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.55);
+  transition: border-color 0.15s, background 0.15s;
+}
+.tl-drop.tl-pool { min-height: 84px; max-height: 210px; overflow-y: auto; }
+.tl-drop.tl-dragover {
+  border-color: #fbbf24;
+  background: rgba(251, 191, 36, 0.10);
+}
+.tl-drop:empty::after {
+  content: "Dépose ici";
+  font-size: 10px;
+  color: #64748b;
+  align-self: center;
+  margin: auto;
+}
+
+.tl-row { display: flex; align-items: stretch; gap: 6px; }
+.tl-row .tl-drop { flex: 1; min-height: 64px; }
+.tl-label {
+  flex: 0 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-weight: 900;
+  font-size: 16px;
+  color: #0b0f19;
+  letter-spacing: 0.02em;
+}
+.tl-label.tl-S { background: linear-gradient(180deg, #fca5a5, #ef4444); }
+.tl-label.tl-A { background: linear-gradient(180deg, #fdba74, #f97316); }
+.tl-label.tl-B { background: linear-gradient(180deg, #fde68a, #f59e0b); }
+.tl-label.tl-C { background: linear-gradient(180deg, #a7f3d0, #10b981); }
+.tl-label.tl-D { background: linear-gradient(180deg, #bfdbfe, #3b82f6); }
+.tl-label.tl-bench { background: linear-gradient(180deg, #cbd5e1, #64748b); font-size: 11px; }
+
+.tl-card {
+  position: relative;
+  width: 62px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: grab;
+  user-select: none;
+  border-radius: 8px;
+  padding: 2px;
+  transition: transform 0.1s, box-shadow 0.15s;
+}
+.tl-card:hover { transform: translateY(-1px); }
+.tl-card.is-selected {
+  box-shadow: 0 0 0 2px #fbbf24;
+  background: rgba(251, 191, 36, 0.14);
+}
+.tl-card:active { cursor: grabbing; }
+.tl-card img,
+.tl-card .tl-avatar-fallback {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: #1e293b;
+  display: block;
+}
+.tl-card .tl-name {
+  width: 100%;
+  font-size: 9.5px;
+  line-height: 1.1;
+  text-align: center;
+  color: #e2e8f0;
+  font-weight: 600;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
+.tl-card .tl-rarity {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 8px;
+  line-height: 1;
+  padding: 1px 3px;
+  border-radius: 6px 0 6px 0;
+  background: rgba(2, 6, 23, 0.85);
+  color: #fcd34d;
+  font-weight: 800;
+}
+
+.tl-filter-btn {
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(30, 41, 59, 0.8);
+  color: #cbd5e1;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tl-filter-btn:hover { border-color: #fbbf24; color: #fff; }
+.tl-filter-btn.is-active {
+  background: rgba(251, 191, 36, 0.2);
+  border-color: #f59e0b;
+  color: #fcd34d;
+}
+
+@media (max-width: 640px) {
+  .tl-card { width: 52px; }
+  .tl-card img, .tl-card .tl-avatar-fallback { width: 46px; height: 46px; }
+  .tl-card .tl-name { font-size: 8.5px; }
+  .tl-label { flex: 0 0 32px; font-size: 13px; }
+  .tl-label.tl-bench { font-size: 9px; }
+}
