@@ -40,6 +40,7 @@
 
 /* En-tête de rang : nom personnalisable + couleur + suppression */
 .tl-tier-head {
+  position: relative;
   flex: 0 0 76px;
   display: flex;
   flex-direction: column;
@@ -59,31 +60,28 @@
   min-height: 1.1em;
   word-break: break-word;
   line-height: 1.1;
+  padding-right: 14px;
 }
 .tl-tier-name:focus { background: rgba(255, 255, 255, 0.3); border-radius: 4px; }
-.tl-tier-tools { display: flex; align-items: center; justify-content: center; gap: 4px; }
-.tl-tier-color {
-  width: 16px;
-  height: 16px;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-.tl-tier-del {
-  width: 16px;
-  height: 16px;
-  border-radius: 4px;
+.tl-tier-menu {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
   background: rgba(0, 0, 0, 0.28);
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1;
   font-weight: 900;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
 }
+.tl-tier-menu:hover { background: rgba(0, 0, 0, 0.45); }
+.tl-tier-bench { justify-content: center; }
 
 /* Carte */
 .tl-card {
@@ -199,3 +197,100 @@
 #tierListModal > div { max-height: 92vh; }
 #tierListBody { min-height: 0; }
 #tierVariantModal > div { max-height: 80vh; }
+
+/* ---------- Popover (menu de rang / sélecteur de formes) ---------- */
+.tl-popover {
+  position: fixed;
+  z-index: 200;
+  background: #0f172a;
+  border: 1px solid #475569;
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
+  padding: 4px;
+  min-width: 150px;
+  max-width: 260px;
+}
+.tl-pop-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 6px;
+  color: #e2e8f0;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.tl-pop-item:hover { background: #1e293b; }
+.tl-pop-item.danger { color: #fda4af; }
+.tl-pop-item.danger:hover { background: rgba(190, 18, 60, 0.25); }
+.tl-pop-item:disabled { opacity: 0.4; cursor: not-allowed; }
+.tl-hidden-color { position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none; }
+
+.tl-forms-grid { display: flex; flex-wrap: wrap; gap: 6px; max-width: 240px; }
+.tl-form-item {
+  width: 54px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.tl-form-item:hover { background: #1e293b; }
+.tl-form-item.is-active { box-shadow: 0 0 0 2px #fbbf24; background: rgba(251, 191, 36, 0.12); }
+.tl-form-item img {
+  width: 46px;
+  height: 46px;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 6px;
+  border: 1px solid #475569;
+  display: block;
+}
+.tl-form-item span {
+  font-size: 8.5px;
+  text-align: center;
+  color: #cbd5e1;
+  line-height: 1.1;
+  max-width: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.tl-form-fallback {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #475569;
+  border-radius: 6px;
+  font-size: 18px;
+}
+
+/* Bouton « formes » révélé au survol (toujours visible sur tactile) */
+.tl-forms-toggle {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #7c3aed;
+  color: #fff;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 900;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  cursor: pointer;
+}
+.tl-card:hover .tl-forms-toggle { display: inline-flex; }
+@media (hover: none) { .tl-forms-toggle { display: inline-flex; opacity: 0.8; } }

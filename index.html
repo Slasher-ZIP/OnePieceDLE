@@ -770,21 +770,28 @@
           </select>
         </label>
         <span id="tierListCount" class="text-[11px] text-slate-500"></span>
-        <span id="tierListHint" class="text-[10px] text-slate-500 hidden sm:inline">Double-clic : variantes</span>
-        <button id="tierListAddTier" class="ml-auto px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold">+ Rang</button>
+        <span id="tierListHint" class="text-[10px] text-slate-500 hidden sm:inline">Survol : changer de forme</span>
+        <button id="tierListSaveBtn" class="ml-auto px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold">Mes listes</button>
+        <button id="tierListAddTier" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold">+ Rang</button>
         <button id="tierListReset" class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold">Réinitialiser</button>
       </div>
     </div>
   </div>
 
-  <!-- Variantes d'un personnage (double-clic dans la Tier List) -->
-  <div id="tierVariantModal" class="hidden fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[80] flex items-center justify-center p-4">
-    <div class="relative bg-slate-900 border border-violet-500/40 rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col overflow-hidden shadow-2xl">
-      <button type="button" class="tierVariantClose absolute top-2 right-2 z-10 text-slate-400 hover:text-white text-lg font-bold p-1">✕</button>
+  <!-- Sauvegarde / chargement de tier lists -->
+  <div id="tierSaveModal" class="hidden fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[85] flex items-center justify-center p-4">
+    <div class="relative bg-slate-900 border border-sky-500/40 rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col overflow-hidden shadow-2xl">
+      <button type="button" class="tierSaveClose absolute top-2 right-2 z-10 text-slate-400 hover:text-white text-lg font-bold p-1">✕</button>
       <div class="p-4 border-b border-slate-700/60 pr-10">
-        <h3 id="tierVariantTitle" class="text-base font-extrabold text-violet-300">Variantes</h3>
+        <h3 id="tierSaveTitle" class="text-base font-extrabold text-sky-300">Mes tier lists</h3>
       </div>
-      <div id="tierVariantList" class="p-4 overflow-y-auto flex flex-wrap gap-3 justify-center"></div>
+      <div class="p-4 space-y-3 overflow-y-auto">
+        <div class="flex gap-2">
+          <input id="tierSaveName" type="text" maxlength="40" placeholder="Nom de la liste" class="flex-1 min-w-0 bg-slate-800 border border-slate-600 text-white text-sm rounded-lg px-3 py-2 outline-none focus:border-sky-400" />
+          <button id="tierSaveBtn" class="px-3 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold shrink-0">Sauvegarder</button>
+        </div>
+        <div id="tierSaveList" class="space-y-2"></div>
+      </div>
     </div>
   </div>
 
