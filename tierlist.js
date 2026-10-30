@@ -371,6 +371,59 @@
     save(); closePopover(); render();
   }
 
+  function openResetMenu(anchor) {
+    const html =
+      `<button type="button" class="tl-pop-item" data-act="list">🔄 ${L("Réinitialiser la tier list", "Reset tier list")}</button>` +
+      `<button type="button" class="tl-pop-item" data-act="chars">👥 ${L("Réinitialiser les personnages", "Reset characters")}</button>` +
+      `<button type="button" class="tl-pop-item danger" data-act="all">♻️ ${L("Tout réinitialiser", "Reset everything")}</button>`;
+    showPopover(anchor, html, (pop) => {
+      pop.querySelectorAll(".tl-pop-item").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const act = btn.dataset.act;
+          if (act === "list") resetTierList();
+          else if (act === "chars") resetCharacters();
+          else if (act === "all") resetAll();
+        });
+      });
+    });
+  }
+
+  /** Réinitialise la structure de la tier list : rangs S/A/B/C/D + placements vides.
+   *  Conserve la sélection de personnages (collections / ajouts / exclusions / formes). */
+  function resetTierList() {
+    const keep = {
+      collections: state.collections.slice(),
+      custom: state.custom.slice(),
+      exclude: state.exclude.slice(),
+      forms: Object.assign({}, state.forms)
+    };
+    state = defaults();
+    state.collections = keep.collections;
+    state.custom = keep.custom;
+    state.exclude = keep.exclude;
+    state.forms = keep.forms;
+    selectedId = null;
+    save(); closePopover(); render();
+  }
+
+  /** Réinitialise la sélection de personnages : toutes les collections, aucun
+   *  ajout/exclusion, formes de base. Conserve les rangs et les placements. */
+  function resetCharacters() {
+    state.collections = [];
+    state.custom = [];
+    state.exclude = [];
+    state.forms = {};
+    selectedId = null;
+    save(); closePopover(); renderCollections(); render();
+  }
+
+  function resetAll() {
+    state = defaults();
+    selectedId = null;
+    save(); closePopover(); renderCollections(); render();
+  }
+
   function renderTiers() {
     const body = document.getElementById("tierListTiers");
     if (!body) return;
@@ -579,13 +632,7 @@
     if (addBtn) addBtn.addEventListener("click", () => addTierAt(state.tiers.length));
 
     const reset = document.getElementById("tierListReset");
-    if (reset) reset.addEventListener("click", () => {
-      // Réinitialisation COMPLÈTE : rangs par défaut S/A/B/C/D + placements vides.
-      state = defaults();
-      selectedId = null;
-      closePopover();
-      save(); renderCollections(); render();
-    });
+    if (reset) reset.addEventListener("click", (e) => { e.stopPropagation(); openResetMenu(reset); });
 
     const saveBtn = document.getElementById("tierListSaveBtn");
     if (saveBtn) saveBtn.addEventListener("click", openSaveModal);
