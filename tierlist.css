@@ -60,9 +60,31 @@
   min-height: 1.1em;
   word-break: break-word;
   line-height: 1.1;
-  padding-right: 14px;
+  padding: 0 16px;
 }
 .tl-tier-name:focus { background: rgba(255, 255, 255, 0.3); border-radius: 4px; }
+.tl-tier-grip {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.22);
+  color: #fff;
+  font-size: 13px;
+  line-height: 1;
+  cursor: grab;
+  z-index: 2;
+  user-select: none;
+}
+.tl-tier-grip:hover { background: rgba(0, 0, 0, 0.4); }
+.tl-tier-grip:active { cursor: grabbing; }
+.tl-tier-head.tl-tier-dragging { opacity: 0.45; }
+.tl-row-dropover { outline: 2px dashed #fbbf24; outline-offset: 1px; border-radius: 10px; }
 .tl-tier-menu {
   position: absolute;
   top: 2px;

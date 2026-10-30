@@ -27,6 +27,7 @@
   let state = load();
   let sortMode = "name";
   let selectedId = null;
+  let dragTierId = null;
 
   /* ---------- utilitaires ---------- */
   function isEn() { return (typeof currentLang !== "undefined" && currentLang === "en"); }
@@ -277,9 +278,15 @@
     zone.className = "tl-drop" + (tier === POOL ? " tl-pool" : "");
     zone.dataset.tier = tier;
     sortCards(cards).forEach(c => zone.appendChild(cardEl(c)));
-    zone.addEventListener("dragover", (e) => { e.preventDefault(); e.dataTransfer.dropEffect = "move"; zone.classList.add("tl-dragover"); });
+    zone.addEventListener("dragover", (e) => {
+      if (dragTierId) return; // glisser d'un rang : la ligne gère
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      zone.classList.add("tl-dragover");
+    });
     zone.addEventListener("dragleave", () => zone.classList.remove("tl-dragover"));
     zone.addEventListener("drop", (e) => {
+      if (dragTierId) return; // glisser d'un rang : la ligne gère
       e.preventDefault();
       zone.classList.remove("tl-dragover");
       let id = "";
@@ -297,8 +304,21 @@
     head.className = "tl-tier-head";
     head.style.setProperty("--tier-color", tier.color);
     head.innerHTML =
+      `<span class="tl-tier-grip" draggable="true" title="${L("Glisser pour déplacer le rang", "Drag to move this tier")}">⠿</span>` +
       `<div class="tl-tier-name" contenteditable="true" spellcheck="false" title="${L("Renommer", "Rename")}">${esc(tier.name)}</div>` +
       `<button type="button" class="tl-tier-menu" title="${L("Options du rang", "Tier options")}">⋮</button>`;
+    const grip = head.querySelector(".tl-tier-grip");
+    grip.addEventListener("dragstart", (e) => {
+      dragTierId = tier.id;
+      try { e.dataTransfer.setData("text/plain", "tier:" + tier.id); } catch (err) {}
+      e.dataTransfer.effectAllowed = "move";
+      head.classList.add("tl-tier-dragging");
+    });
+    grip.addEventListener("dragend", () => {
+      dragTierId = null;
+      head.classList.remove("tl-tier-dragging");
+      document.querySelectorAll(".tl-row-dropover").forEach(r => r.classList.remove("tl-row-dropover"));
+    });
     const nameEl = head.querySelector(".tl-tier-name");
     nameEl.addEventListener("blur", () => {
       const v = (nameEl.textContent || "").trim() || tier.name;
@@ -371,6 +391,20 @@
     save(); closePopover(); render();
   }
 
+  /** Déplace un rang vers l'index cible (glisser-déposer).
+   *  insertAfter : insère après le rang cible (sinon avant). */
+  function moveTierTo(id, targetIndex, insertAfter) {
+    const from = state.tiers.findIndex(t => t.id === id);
+    if (from < 0 || targetIndex < 0) return;
+    const base = targetIndex - (from < targetIndex ? 1 : 0);
+    let to = base + (insertAfter ? 1 : 0);
+    to = Math.max(0, Math.min(to, state.tiers.length));
+    if (to === from) return;
+    const [t] = state.tiers.splice(from, 1);
+    state.tiers.splice(to, 0, t);
+    save(); render();
+  }
+
   function openResetMenu(anchor) {
     const html =
       `<button type="button" class="tl-pop-item" data-act="list">🔄 ${L("Réinitialiser la tier list", "Reset tier list")}</button>` +
@@ -439,6 +473,25 @@
       row.appendChild(tierHead(tier, index));
       const tierCards = state.assign[tier.id].filter(id => visibleSet.has(id)).map(id => byId[id]).filter(Boolean);
       row.appendChild(dropZone(tier.id, tierCards));
+      // Glisser-déposer d'un rang sur un autre pour le réordonner
+      row.addEventListener("dragover", (e) => {
+        if (!dragTierId) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+        row.classList.add("tl-row-dropover");
+      });
+      row.addEventListener("dragleave", () => row.classList.remove("tl-row-dropover"));
+      row.addEventListener("drop", (e) => {
+        if (!dragTierId) return;
+        e.preventDefault();
+        row.classList.remove("tl-row-dropover");
+        const rect = row.getBoundingClientRect();
+        const insertAfter = e.clientY > rect.top + rect.height / 2;
+        const targetIndex = state.tiers.findIndex(t => t.id === tier.id);
+        const dragged = dragTierId;
+        dragTierId = null;
+        moveTierTo(dragged, targetIndex, insertAfter);
+      });
       body.appendChild(row);
     });
 
