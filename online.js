@@ -11,7 +11,7 @@ const online = {
   active: false, code: null, isHost: false, myIdx: 0, myKey: null,
   seed: null, chan: null, started: false, lastRoomRound: 0,
   applyingRemote: false, lobbyChan: null, lobbyTimer: null, lobbyKey: null,
-  pendingName: null, tab: "local",
+  pendingName: null, tab: "local", viaAuto: false,
   // Options de salon (hôte) : timer/s (0 = illimité), bridage, mode mystère
   turnSecs: 0, bridled: false, mmode: "shared",
   // Timer de tour (mes tours uniquement, pas de synchro d'horloge)
@@ -405,35 +405,101 @@ function onlinePickIntercept(character) {
   return true;
 }
 
+function hidePickSuggestions() {
+  const menu = document.getElementById("versusPickSuggestions");
+  if (menu) { menu.classList.add("hidden"); menu.innerHTML = ""; }
+}
+
+/** Liste de suggestions (comme le champ de devinette) pour le choix du perso. */
+function renderPickSuggestions(query) {
+  const menu = document.getElementById("versusPickSuggestions");
+  if (!menu) return;
+  if (!online.active || online.phase !== "pick" || online.myPick) { hidePickSuggestions(); return; }
+  const q = typeof cleanString === "function" ? cleanString(query || "") : (query || "").trim().toLowerCase();
+  if (!q) { hidePickSuggestions(); return; }
+  let pool = [];
+  try { pool = getAvailableCharacters(); } catch (e) {}
+  const matches = pool.filter(c => {
+    const n = typeof cleanString === "function" ? cleanString(c.name) : c.name.toLowerCase();
+    if (n.includes(q)) return true;
+    return (c.aliases || []).some(a => (typeof cleanString === "function" ? cleanString(a) : a.toLowerCase()).includes(q));
+  }).slice(0, 8);
+  if (!matches.length) { hidePickSuggestions(); return; }
+  const lang = (typeof currentLang !== "undefined" && currentLang) || "fr";
+  menu.innerHTML = "";
+  matches.forEach(char => {
+    const displayChar = typeof forceOnlyAsVariantIfNeeded === "function" ? forceOnlyAsVariantIfNeeded(char, currentStory) : char;
+    const sugName = (displayChar._variantDisplay && (displayChar._variantDisplay[lang] || displayChar._variantDisplay.fr || displayChar._variantDisplay.en)) || displayChar.name;
+    const item = document.createElement("div");
+    item.className = "p-2.5 hover:bg-violet-800/60 cursor-pointer flex items-center gap-3 text-sm text-white transition pick-suggestion-item";
+    item.innerHTML = (typeof avatarHTML === "function" ? avatarHTML(displayChar, "w-8 h-8") : "") + '<span class="font-semibold">' + sugName + '</span>';
+    // mousedown + preventDefault : évite que le blur du champ ne ferme la liste avant le clic
+    item.addEventListener("mousedown", (e) => { e.preventDefault(); selectPickSuggestion(char, sugName); });
+    menu.appendChild(item);
+  });
+  menu.classList.remove("hidden");
+}
+
+/** Sélection (non confirmée) d'un perso depuis la liste de suggestions. */
+function selectPickSuggestion(char, label) {
+  if (!online.active || online.phase !== "pick" || online.myPick) return;
+  online.pendingPick = char.name;
+  const input = document.getElementById("versusPickInput");
+  if (input) input.value = label || char.name;
+  hidePickSuggestions();
+  renderVersusPickbar();
+}
+
 function renderVersusPickbar() {
   const bar = document.getElementById("versusPickBar");
   if (!bar) return;
   const show = online.active && online.mmode === "own" && online.phase === "pick";
   bar.classList.toggle("hidden", !show);
   bar.classList.toggle("flex", show);
-  if (!show) return;
+  if (!show) { hidePickSuggestions(); return; }
   const t = onlineT() || {};
+  const confirmed = !!online.myPick;
+  const chosen = online.myPick || online.pendingPick || "";
   const el = document.getElementById("versusPickText");
   if (el) {
-    const pick = online.pendingPick || online.myPick;
-    el.textContent = (t.versusPickPrompt || "Choisis ton mystère !") +
-      (pick ? " — " + pick : "") +
-      (online.myPick && !online.oppPick ? " (" + (t.versusPickWaiting || "…") + ")" : "");
+    el.textContent = confirmed
+      ? (t.versusPickWaiting || "En attente du mystère adverse…")
+      : (t.versusPickPrompt || "Choisis ton mystère !");
+  }
+  const chosenEl = document.getElementById("versusPickChosen");
+  if (chosenEl) {
+    chosenEl.classList.toggle("hidden", !chosen);
+    chosenEl.textContent = chosen ? (confirmed ? "✓ " + chosen : chosen) : "";
+    chosenEl.classList.toggle("text-emerald-300", confirmed);
+    chosenEl.classList.toggle("text-amber-300", !confirmed);
+  }
+  const inp = document.getElementById("versusPickInput");
+  if (inp) {
+    inp.placeholder = t.versusPickInputPh || "Nom du perso…";
+    inp.disabled = confirmed;
+    if (confirmed) { inp.value = online.myPick; hidePickSuggestions(); }
   }
   const ok = document.getElementById("versusPickOkBtn");
-  if (ok) ok.textContent = t.versusPickOk || "Valider";
-  const inp = document.getElementById("versusPickInput");
-  if (inp) inp.placeholder = t.versusPickInputPh || "Nom du perso…";
+  if (ok) {
+    ok.textContent = confirmed ? "✓ " + (t.versusPickConfirmed || "Confirmé") : (t.versusPickOk || "Valider");
+    ok.disabled = confirmed;
+    ok.classList.toggle("opacity-60", confirmed);
+    ok.classList.toggle("cursor-not-allowed", confirmed);
+  }
+  const rand = document.getElementById("versusPickRandomBtn");
+  if (rand) rand.disabled = confirmed;
 }
 
 function onlinePickRandom() {
-  if (!online.active || online.phase !== "pick") return;
+  if (!online.active || online.phase !== "pick" || online.myPick) return;
   let pool = [];
   try { pool = getAvailableCharacters(); } catch (e) {}
   if (!pool.length) return;
-  online.pendingPick = pool[Math.floor(Math.random() * pool.length)].name;
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  online.pendingPick = pick.name;
   const input = document.getElementById("versusPickInput");
-  if (input) input.value = "";
+  if (input) input.value = pick.name;
+  hidePickSuggestions();
   renderVersusPickbar();
 }
 
@@ -448,7 +514,7 @@ function onlinePickByName(text) {
 }
 
 function onlinePickConfirm() {
-  if (!online.active || online.phase !== "pick") return;
+  if (!online.active || online.phase !== "pick" || online.myPick) return;
   const input = document.getElementById("versusPickInput");
   const typed = input ? input.value.trim() : "";
   if (typed) {
@@ -459,6 +525,7 @@ function onlinePickConfirm() {
   if (!online.pendingPick) return;
   online.myPick = online.pendingPick;
   onlineSend({ t: "mymyst", by: online.myIdx, name: online.myPick });
+  hidePickSuggestions();
   renderVersusPickbar();
   onlineMaybeBegin();
 }
@@ -501,6 +568,10 @@ function onlineRemoteGuess(p) {
 function onlineApplyStart(round, story, difficulty, opts) {
   versusRound = round;
   online.mystSeq = 0; // catégories bridées : séquence remise à zéro à chaque manche
+  // La manche démarre : on n'est plus en « attente de salon », le plateau
+  // redevient visible.
+  document.body.classList.remove("vs-room-waiting");
+  online.viaAuto = false;
   if (story && story !== currentStory && typeof STORY_POINTS !== "undefined" && STORY_POINTS[story]) {
     currentStory = story;
     try { localStorage.setItem("opdle_story", story); } catch (e) {}
@@ -765,12 +836,14 @@ async function onlineOpenRoom(code, asHost, explicitName) {
   try { await online.chan.track({ name: me, idx: online.myIdx, joinedAt: online.myJoinedAt }); } catch (e) {}
   if (tok !== online.roomTok) return false;
   online.connecting = false;
-  startGame(); // startGame appelle closeModals() : on rouvre la modale du
-  // salon juste après, pour que le CODE et les réglages restent visibles
-  // en attendant l'adversaire (c'est le panneau « en attente »).
+  // Pas de startGame() ici : il rendait un plateau jouable DERRIÈRE la modale
+  // (légende « Trop bas / Too low », champ de saisie…) alors qu'on attend
+  // simplement un adversaire. La vraie manche démarre plus tard, via
+  // onlineApplyStart(). On masque aussi le plateau pendant l'attente.
   updateOnlineUI();
   onlineSwitchTab("online");
   document.getElementById("versusModal")?.classList.remove("hidden");
+  document.body.classList.add("vs-room-waiting");
   return true;
 }
 
@@ -779,6 +852,7 @@ function onlineLeaveRoom(silent) {
   // reprendrait après une fermeture ne doit pas ressusciter l'ancien état.
   online.roomTok = (online.roomTok || 0) + 1;
   online.connecting = false;
+  document.body.classList.remove("vs-room-waiting");
   onlineIdleStop();
   if (online.chan) {
     try {
@@ -797,11 +871,25 @@ function onlineLeaveRoom(silent) {
 /** Fin de session en ligne SANS relancer de partie (la modale de victoire reste visible). */
 function onlineEndSession() {
   online.active = false;
+  online.viaAuto = false;
   onlineLeaveRoom(true);
   versusMode = false;
   versusWinner = -1;
   updateVersusBanner();
   closeVersusModal();
+  updateOnlineUI();
+}
+
+/** Fermeture de la modale pendant l'attente d'un salon : on quitte proprement. */
+function onlineCancelWaiting() {
+  if (online.chan && !online.active) {
+    onlineLeaveRoom(true);
+    if (typeof versusMode !== "undefined") versusMode = false;
+    if (typeof updateVersusBanner === "function") updateVersusBanner();
+  }
+  online.viaAuto = false;
+  document.body.classList.remove("vs-room-waiting");
+  if (typeof closeVersusModal === "function") closeVersusModal();
   updateOnlineUI();
 }
 
@@ -823,6 +911,7 @@ async function onlineAuto() {
   if (!onlineNeedNet()) return;
   onlineLobbyLeave();
   online.myKey = onlineNewKey();
+  online.viaAuto = true;
   const me = (document.getElementById("versusOnlineName")?.value || "").trim().slice(0, 16) || versusNames[0] || "Joueur";
   online.pendingName = me;
   onlineStatus((onlineT() || {}).versusSearching || "…");
@@ -836,7 +925,7 @@ async function onlineAuto() {
     onlineLobbyLeave();
     versusNames = ["?", me];
     onlineOpenRoom(code, false, me).then(ok => {
-      if (ok) { onlineStatus(""); updateOnlineUI(); } // modale ouverte : code visible
+      if (ok) { if (!online.viaAuto) onlineStatus(""); updateOnlineUI(); } // auto : garde « Recherche… »
     });
   });
   ch.on("presence", { event: "sync" }, () => {
@@ -865,7 +954,7 @@ async function onlineAuto() {
       } catch (e) {}
       onlineLobbyLeave();
       onlineOpenRoom(code, true, myName).then(ok => {
-        if (ok) { onlineStatus(""); updateOnlineUI(); } // modale ouverte : code visible
+        if (ok) { if (!online.viaAuto) onlineStatus(""); updateOnlineUI(); } // auto : garde « Recherche… »
       });
     }
     // Sinon : j'attends l'invitation de l'autre
@@ -883,6 +972,7 @@ async function onlineAuto() {
   try { await ch.track({ name: me }); } catch (e) {}
   online.lobbyTimer = setTimeout(() => {
     onlineLobbyLeave();
+    online.viaAuto = false;
     onlineStatus((onlineT() || {}).versusNobodyFound || "Personne");
   }, 60000);
 }
@@ -903,21 +993,25 @@ function updateOnlineUI() {
   set("versusAutoBtn", t.versusAuto || "🔍 Trouver un adversaire");
   set("versusOnlineHint", t.versusOnlineHint || "Crée un salon et partage son code à un ami, ou rejoins un salon avec son code — ou laisse le jeu te trouver un adversaire.");
   const nameI = document.getElementById("versusOnlineName");
-  if (nameI && !nameI.value) {
-    const defNames = ["Joueur 1", "Joueur 2", "Player 1", "Player 2"];
-    const nm = versusNames[0] || "";
-    nameI.placeholder = defNames.includes(nm) ? (t.versusJ1 || nm) : (nm || t.versusJ1 || "");
-  }
+  if (nameI) nameI.placeholder = t.versusNamePh || "ex. Luffy340";
   const codeI = document.getElementById("versusRoomCode");
   if (codeI && !codeI.placeholder) codeI.placeholder = "CODE";
   const info = document.getElementById("versusRoomInfo");
-  if (info) info.classList.toggle("hidden", !(online.code && online.chan));
-  if (online.code && online.chan) {
+  // En matchmaking auto : PAS de code de salon à afficher (l'adversaire est
+  // trouvé automatiquement) ; on masque le panneau « Salon ».
+  const showRoom = !!(online.code && online.chan && !online.viaAuto);
+  if (info) info.classList.toggle("hidden", !showRoom);
+  if (showRoom) {
     set("versusRoomCodeBig", online.code);
     const mem = onlineMembers().filter(m => m.key !== online.myKey);
     const peer = mem.length ? mem[0].name : (t.versusWaiting || "…");
     set("versusRoomPeer", mem.length ? peer : (t.versusWaiting || "…"));
     set("versusRoomOpts", onlineOptsLine());
+  }
+  // Auto : conserve un statut « Recherche… » tant que la manche n'a pas démarré
+  if (online.viaAuto && online.chan && !online.started) {
+    const st = document.getElementById("versusOnlineStatus");
+    if (st && !st.textContent) st.textContent = t.versusSearching || "Recherche d'adversaire…";
   }
   const ms = document.getElementById("modeSelect");
   const ss = document.getElementById("storySelect");
@@ -1001,6 +1095,7 @@ function setupOnlineUI() {
   document.getElementById("versusModeOnlineBtn")?.addEventListener("click", () => onlineSwitchTab("online"));
   document.getElementById("versusCreateBtn")?.addEventListener("click", async () => {
     if (!onlineNeedNet()) return;
+    online.viaAuto = false;
     const me = (document.getElementById("versusOnlineName")?.value || "").trim().slice(0, 16) || versusNames[0];
     document.getElementById("versusName1").value = me;
     const opts = onlineReadHostOpts();
@@ -1027,6 +1122,7 @@ function setupOnlineUI() {
   });
   document.getElementById("versusJoinBtn")?.addEventListener("click", async () => {
     if (!onlineNeedNet()) return;
+    online.viaAuto = false;
     const code = (document.getElementById("versusRoomCode")?.value || "").trim().toUpperCase().replace(/[^A-Z]/g, "");
     if (code.length !== 4) { onlineStatus("CODE ?"); return; }
     const me = (document.getElementById("versusOnlineName")?.value || "").trim().slice(0, 16) || versusNames[1];
@@ -1040,14 +1136,26 @@ function setupOnlineUI() {
   document.getElementById("versusAutoBtn")?.addEventListener("click", () => onlineAuto());
   document.getElementById("versusPickRandomBtn")?.addEventListener("click", () => onlinePickRandom());
   document.getElementById("versusPickOkBtn")?.addEventListener("click", () => onlinePickConfirm());
-  document.getElementById("versusPickInput")?.addEventListener("keydown", e => { if (e.key === "Enter") onlinePickConfirm(); });
+  const pickInput = document.getElementById("versusPickInput");
+  if (pickInput) {
+    pickInput.addEventListener("input", () => renderPickSuggestions(pickInput.value));
+    pickInput.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") { hidePickSuggestions(); return; }
+      if (e.key !== "Enter") return;
+      const menu = document.getElementById("versusPickSuggestions");
+      const first = (menu && !menu.classList.contains("hidden")) ? menu.querySelector(".pick-suggestion-item") : null;
+      if (first) { first.dispatchEvent(new MouseEvent("mousedown", { bubbles: true })); return; }
+      onlinePickConfirm();
+    });
+    pickInput.addEventListener("blur", () => setTimeout(hidePickSuggestions, 120));
+  }
   document.getElementById("versusLeaveBtn")?.addEventListener("click", () => {
     // endVersus envoie le "quit" AVANT de couper le canal : sinon l'autre
     // joueur ne remarque le départ qu'au timeout de présence.
     // Confirmation (comme le bouton Versus en jeu) : le code partagé sera perdu.
     const t = onlineT() || {};
     showConfirmModal({
-      icon: "🚪",
+      icon: "⚔️",
       title: t.versusQuitTitle || (currentLang === "fr" ? "Quitter le versus ?" : "Leave the versus?"),
       desc: t.versusQuitRoomDesc || (currentLang === "fr" ? "Le salon se ferme et son code n'est plus valable." : "The room closes and its code is no longer valid."),
       okLabel: t.versusQuitOk || (currentLang === "fr" ? "Quitter" : "Leave"),

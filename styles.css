@@ -1220,3 +1220,11 @@ html.light #storyHelpBtn.help-toggle[aria-expanded="true"] {
   border: 1px solid #334155;
 }
 .theme-swatch.is-locked .theme-swatch-lock { display: block; }
+
+/* ================================================================
+   Salon / matchmaking en attente
+   Le plateau de jeu est masqué tant qu'un adversaire n'est pas trouvé,
+   pour éviter tout élément parasite (légende « Trop bas / Too low »,
+   champ de saisie…) visible derrière la modale Versus.
+   ================================================================ */
+body.vs-room-waiting main { display: none !important; }

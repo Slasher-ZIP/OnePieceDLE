@@ -175,18 +175,30 @@ async function loadSession() {
   }
 }
 
-async function persistCurrentUser() {
-  if (!supabaseClient || !currentUser?.id) return;
+let persistSeq = Promise.resolve();
+function persistCurrentUser() {
+  if (!supabaseClient || !currentUser?.id) return Promise.resolve();
   currentUser.streak = streak;
   currentUser.wins = wins;
-  const { error } = await supabaseClient.from("profiles").update({
-    unlocked: currentUser.unlocked || [],
+  // Snapshot au moment de l'appel + écritures SÉRIALISÉES : la dernière
+  // demande gagne. Sans cela, un reset pouvait être écrasé par une écriture
+  // antérieure plus lente → les cartes réapparaissaient à la synchro suivante.
+  const snapshot = {
+    unlocked: Array.isArray(currentUser.unlocked) ? currentUser.unlocked.slice() : [],
     avatar: currentUser.avatar || null,
     streak: streak,
     wins: wins,
     updated_at: new Date().toISOString()
-  }).eq("id", currentUser.id);
-  if (error) console.warn("persistCurrentUser", error.message);
+  };
+  const uid = currentUser.id;
+  const sb = supabaseClient;
+  const next = persistSeq.catch(() => {}).then(async () => {
+    if (!sb) return;
+    const { error } = await sb.from("profiles").update(snapshot).eq("id", uid);
+    if (error) console.warn("persistCurrentUser", error.message);
+  });
+  persistSeq = next;
+  return next;
 }
 
 async function registerAccount(username, email, password) {
@@ -2680,6 +2692,7 @@ function openVersusSetup() {
 
 function closeVersusModal() {
   document.getElementById("versusModal")?.classList.add("hidden");
+  document.body.classList.remove("vs-room-waiting");
 }
 
 function startVersusFromModal() {
@@ -2712,6 +2725,8 @@ function endVersus(sendQuit) {
   recordVersusMatch();
   versusMode = false;
   versusWinner = -1;
+  if (typeof online !== "undefined") online.viaAuto = false;
+  document.body.classList.remove("vs-room-waiting");
   updateVersusBanner();
   closeVersusModal();
   if (typeof updateOnlineUI === "function") updateOnlineUI();
@@ -3916,6 +3931,17 @@ if (typeof setupSettings === "function") setupSettings();
 // (le thème est appliqué en fin de fichier : le thème Jolly Roger dépend de
 //  l'album Barbe Noire, dont les données admin sont initialisées plus bas)
 document.getElementById("giveUpBtn").addEventListener("click", () => { if (versusMode) versusGiveUp(); else { if (!isGameOver && attemptsCount > 0 && typeof recordGameEnd === "function") recordGameEnd({ win: false, how: "abandon" }); showGiveUpModal(false); } });
+/** Confirmation commune avant de quitter une partie versus (envoie un forfait). */
+function confirmQuitVersus() {
+  const t = TRANSLATIONS[currentLang] || {};
+  showConfirmModal({
+    icon: "⚔️",
+    title: t.versusQuitTitle || (currentLang === "fr" ? "Quitter le versus ?" : "Leave the versus?"),
+    desc: t.versusQuitDesc || (currentLang === "fr" ? "La partie en cours se termine et le salon est fermé : l'adversaire remporte la manche par forfait." : "The current game ends and the room closes: your opponent wins the round by forfeit."),
+    okLabel: t.versusQuitOk || (currentLang === "fr" ? "Quitter" : "Leave"),
+    danger: true
+  }).then(yes => { if (yes) endVersus(); });
+}
 document.getElementById("versusBtn")?.addEventListener("click", () => {
   if (!versusMode) { openVersusSetup(); return; }
   // Salon en attente (pas encore de partie) : rouvrir la modale pour
@@ -3928,19 +3954,20 @@ document.getElementById("versusBtn")?.addEventListener("click", () => {
   }
   // En partie (ou local) : le bouton Versus QUITTE la partie,
   // avec confirmation explicite (envoi d'un forfait à l'adversaire).
-  const t = TRANSLATIONS[currentLang] || {};
-  showConfirmModal({
-    icon: "⚔️",
-    title: t.versusQuitTitle || (currentLang === "fr" ? "Quitter le versus ?" : "Leave the versus?"),
-    desc: t.versusQuitDesc || (currentLang === "fr" ? "La partie en cours se termine et le salon est fermé : l'adversaire remporte la manche par forfait." : "The current game ends and the room closes: your opponent wins the round by forfeit."),
-    okLabel: t.versusQuitOk || (currentLang === "fr" ? "Quitter" : "Leave"),
-    danger: true
-  }).then(yes => { if (yes) endVersus(); });
+  confirmQuitVersus();
 });
-document.getElementById("versusQuitBtn")?.addEventListener("click", () => endVersus());
+document.getElementById("versusQuitBtn")?.addEventListener("click", confirmQuitVersus);
 document.getElementById("versusDrawBtn")?.addEventListener("click", () => versusAskDraw());
 document.getElementById("versusStartBtn")?.addEventListener("click", () => startVersusFromModal());
-document.querySelectorAll(".versusModalClose").forEach(b => b.addEventListener("click", closeVersusModal));
+document.querySelectorAll(".versusModalClose").forEach(b => b.addEventListener("click", () => {
+  // Fermeture pendant l'attente d'un salon : on quitte proprement le salon
+  // (sinon il resterait « fantôme » et le plateau resterait masqué).
+  if (typeof online !== "undefined" && online.chan && !online.active && typeof onlineCancelWaiting === "function") {
+    onlineCancelWaiting();
+    return;
+  }
+  closeVersusModal();
+}));
 document.getElementById("newGameBtn").addEventListener("click", requestNewRound);
 document.getElementById("profileBtn").addEventListener("click", openProfileModal);
 (function bindCollectionUI() {
@@ -5775,6 +5802,24 @@ async function settingsResetProgress() {
     danger: true
   });
   if (!confirmed) return;
+  // IMPORTANT : vider d'abord l'état EN MÉMOIRE (compte + compteurs) avant
+  // resetQuestProgressAll(). Celui-ci déclenche un persistCurrentUser()
+  // asynchrone ; s'il lisait encore l'ancienne liste, il réécrirait les cartes
+  // dans le cloud APRÈS notre vidage → elles « reviendraient » à la synchro
+  // suivante. En remettant tout à zéro d'abord, toutes les écritures sont vides.
+  streak = 0;
+  wins = 0;
+  bestStreak = 0;
+  gamesTotal = 0;
+  hardExtremeWins = 0;
+  extremeWins = 0;
+  if (currentUser) {
+    currentUser.unlocked = [];
+    currentUser.avatar = null;
+    currentUser.streak = 0;
+    currentUser.wins = 0;
+    currentUser.bestStreak = 0;
+  }
   try {
     localStorage.setItem("opdle_unlocked", "[]");
     localStorage.setItem("opdle_streak", "0");
@@ -5790,18 +5835,7 @@ async function settingsResetProgress() {
     // les raretés/poids/variantes réglés via le menu admin sont conservés.
     try { localStorage.removeItem(PICK_STATS_KEY); } catch (e) {}
   } catch (e) {}
-  streak = 0;
-  wins = 0;
-  bestStreak = 0;
-  gamesTotal = 0;
-  hardExtremeWins = 0;
-  extremeWins = 0;
   if (currentUser) {
-    currentUser.unlocked = [];
-    currentUser.avatar = null;
-    currentUser.streak = 0;
-    currentUser.wins = 0;
-    currentUser.bestStreak = 0;
     if (typeof persistCurrentUser === "function") await persistCurrentUser();
   }
   if (typeof updateStatsUI === "function") updateStatsUI();
