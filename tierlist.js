@@ -6,7 +6,10 @@
  * - Filtre multi-collections (dédoublonné par personnage de base).
  * - Ajout/retrait de personnages précis.
  * - Survol d'une carte : changement rapide de forme (base / alt / shiny).
- * - Glisser-déposer + clic-sélection puis clic-rang (mobile).
+ * - Glisser-déposer : entre les rangs, et à l'intérieur d'un rang (insertion
+ *   avant/après la carte survolée). Le roster reste épinglé sous les rangs
+ *   (repliable) et les rangs défilent tout seuls près des bords.
+ * - Clic-sélection puis clic-rang (mobile).
  * ========================================================================== */
 (function () {
   if (typeof document === "undefined") return;
@@ -28,6 +31,9 @@
   let sortMode = "name";
   let selectedId = null;
   let dragTierId = null;
+  let dragCardId = null;
+  let poolCollapsed = false;
+  try { poolCollapsed = localStorage.getItem("opdle_tl_pool_collapsed") === "1"; } catch (e) {}
 
   /* ---------- utilitaires ---------- */
   function isEn() { return (typeof currentLang !== "undefined" && currentLang === "en"); }
@@ -36,6 +42,7 @@
     return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
   function clean(s) { return (typeof cleanString === "function") ? cleanString(s || "") : String(s || "").toLowerCase(); }
+  function thumb(src) { return (typeof window.thumbSrc === "function") ? window.thumbSrc(src) : src; }
   function baseChars() { return (typeof CHARACTERS !== "undefined" ? CHARACTERS : []).filter(c => c && c.name && !c.notGuessable); }
   function baseMap() { const m = {}; baseChars().forEach(c => { m[c.name] = c; }); return m; }
   function variantBaseMap() {
@@ -76,7 +83,7 @@
     const assign = {};
     tiers.forEach(t => { assign[t.id] = []; });
     assign[BENCH] = [];
-    return { tiers, assign, collections: [], custom: [], exclude: [], forms: {} };
+    return { tiers, assign, collections: [], custom: [], exclude: [], forms: {}, source: "chars" };
   }
   function sanitize(raw) {
     raw = raw || {};
@@ -94,6 +101,7 @@
     }
     return {
       tiers, assign, forms,
+      source: raw.source === "fruits" ? "fruits" : "chars",
       collections: Array.isArray(raw.collections) ? raw.collections.filter(x => typeof x === "string") : [],
       custom: Array.isArray(raw.custom) ? raw.custom.filter(x => typeof x === "string") : [],
       exclude: Array.isArray(raw.exclude) ? raw.exclude.filter(x => typeof x === "string") : []
@@ -119,22 +127,44 @@
   function setSaves(s) { try { localStorage.setItem(SAVES_KEY, JSON.stringify(s)); } catch (e) {} }
 
   /* ---------- cartes visibles ---------- */
-  function visibleCards() {
-    const byName = baseMap();
-    const vmap = variantBaseMap();
-    const names = new Set();
-    const cats = (typeof COLLECTION_CATEGORIES !== "undefined" ? COLLECTION_CATEGORIES : []);
-    if (state.collections.length) {
-      state.collections.forEach(cid => {
-        const cat = cats.find(c => c.id === cid);
-        ((cat && cat.members) || []).forEach(m => { const b = resolveBase(m, byName, vmap); if (b) names.add(b); });
-      });
-    } else {
-      Object.keys(byName).forEach(n => names.add(n));
+  function sourceItems() {
+    if (state.source === "fruits") {
+      const list = (typeof DEVIL_FRUITS !== "undefined" ? DEVIL_FRUITS : []);
+      return list.map(f => ({
+        id: "fruit:" + f.id,
+        name: f.name,
+        image: f.image,
+        rarity: f.rarity || 1,
+        prime: null,
+        aliases: [f.name, f.nameFr, f.nameEn].concat(f.aliases || []).filter(Boolean)
+      }));
     }
-    state.custom.forEach(m => { const b = resolveBase(m, byName, vmap); if (b) names.add(b); });
-    state.exclude.forEach(m => { const b = resolveBase(m, byName, vmap); if (b) names.delete(b); });
-    return [...names].map(n => byName[n]).filter(Boolean).map(c => ({ id: c.name, name: c.name, image: c.image, rarity: c.rarity, prime: c.prime }));
+    return baseChars().map(c => ({ id: c.name, name: c.name, image: c.image, rarity: c.rarity, prime: c.prime, aliases: c.aliases || [] }));
+  }
+
+  function visibleCards() {
+    const items = sourceItems();
+    const byId = {};
+    items.forEach(it => { byId[it.id] = it; });
+    const ids = new Set();
+    if (state.source === "fruits") {
+      items.forEach(it => ids.add(it.id));
+    } else {
+      const byName = baseMap();
+      const vmap = variantBaseMap();
+      const cats = (typeof COLLECTION_CATEGORIES !== "undefined" ? COLLECTION_CATEGORIES : []);
+      if (state.collections.length) {
+        state.collections.forEach(cid => {
+          const cat = cats.find(c => c.id === cid);
+          ((cat && cat.members) || []).forEach(m => { const b = resolveBase(m, byName, vmap); if (b) ids.add(b); });
+        });
+      } else {
+        Object.keys(byName).forEach(n => ids.add(n));
+      }
+    }
+    state.custom.forEach(id => { if (byId[id]) ids.add(id); });
+    state.exclude.forEach(id => { ids.delete(id); });
+    return [...ids].map(id => byId[id]).filter(Boolean).map(it => ({ id: it.id, name: it.name, image: it.image, rarity: it.rarity, prime: it.prime }));
   }
 
   function sortCards(cards) {
@@ -165,13 +195,24 @@
     return POOL;
   }
 
-  function place(id, tier) {
+  function place(id, tier, index) {
     if (!id) return;
+    let sameTier = false, oldIndex = -1;
     for (const k of Object.keys(state.assign)) {
       const i = state.assign[k].indexOf(id);
-      if (i >= 0) state.assign[k].splice(i, 1);
+      if (i >= 0) {
+        if (k === tier) { sameTier = true; oldIndex = i; }
+        state.assign[k].splice(i, 1);
+      }
     }
-    if (tier && tier !== POOL && state.assign[tier]) state.assign[tier].push(id);
+    if (tier && tier !== POOL && state.assign[tier]) {
+      const list = state.assign[tier];
+      let at = (typeof index === "number" && index >= 0) ? index : list.length;
+      // Même rang : le retrait décale l'index d'une position.
+      if (sameTier && oldIndex >= 0 && oldIndex < at) at--;
+      at = Math.max(0, Math.min(at, list.length));
+      list.splice(at, 0, id);
+    }
     save(); selectedId = null; render();
   }
   function excludeCard(id) {
@@ -211,8 +252,12 @@
     return pop;
   }
 
+  function clearInsertMarks() {
+    document.querySelectorAll(".tl-insert-before, .tl-insert-after").forEach(x => x.classList.remove("tl-insert-before", "tl-insert-after"));
+  }
+
   /* ---------- rendu des cartes ---------- */
-  function cardEl(card) {
+  function cardEl(card, tier) {
     const disp = displayFor(card);
     const el = document.createElement("div");
     el.className = "tl-card" + (selectedId === card.id ? " is-selected" : "") + (disp.isVariant ? " has-variant" : "");
@@ -220,17 +265,47 @@
     el.dataset.id = card.id;
     el.title = disp.name + (disp.isVariant ? " · " + disp.label : "");
     const img = disp.image
-      ? `<img src="${disp.image}" alt="" loading="lazy" draggable="false" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tl-avatar-fallback" style="display:none">👤</span>`
+      ? `<img src="${thumb(disp.image)}" alt="" loading="lazy" decoding="async" draggable="false" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tl-avatar-fallback" style="display:none">👤</span>`
       : `<span class="tl-avatar-fallback">👤</span>`;
     const hasForms = variantsFor(card.id).length > 0;
     const formsBtn = hasForms
       ? `<button type="button" class="tl-forms-toggle" draggable="false" title="${L("Changer de forme (alt/shiny)", "Switch form (alt/shiny)")}">${disp.isVariant ? "✦" : "◇"}</button>`
       : "";
-    el.innerHTML = `${img}<span class="tl-name">${esc(disp.name)}</span>${formsBtn}<button type="button" class="tl-card-remove" draggable="false" title="${L("Retirer", "Remove")}">×</button>`;
+    el.innerHTML = `${img}<span class="tl-name">${esc(disp.name)}</span>${formsBtn}<button type="button" class="tl-card-remove" draggable="false" title="${L("Retirer", "Remove")}" aria-label="${L("Retirer", "Remove")}"></button>`;
 
     el.addEventListener("dragstart", (e) => {
+      dragCardId = card.id;
       try { e.dataTransfer.setData("text/plain", card.id); } catch (err) {}
       e.dataTransfer.effectAllowed = "move";
+      el.classList.add("is-dragging");
+    });
+    el.addEventListener("dragend", () => {
+      dragCardId = null;
+      el.classList.remove("is-dragging");
+      clearInsertMarks();
+    });
+    // Déposer SUR une carte = insérer avant/après elle (réordonnancement fin).
+    el.addEventListener("dragover", (e) => {
+      if (dragTierId) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const rect = el.getBoundingClientRect();
+      const after = e.clientX > rect.left + rect.width / 2;
+      el.classList.toggle("tl-insert-after", after);
+      el.classList.toggle("tl-insert-before", !after);
+    });
+    el.addEventListener("dragleave", () => el.classList.remove("tl-insert-before", "tl-insert-after"));
+    el.addEventListener("drop", (e) => {
+      if (dragTierId) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const rect = el.getBoundingClientRect();
+      const after = e.clientX > rect.left + rect.width / 2;
+      const siblings = el.parentNode ? Array.from(el.parentNode.children) : [];
+      const idx = siblings.indexOf(el) + (after ? 1 : 0);
+      const id = dragCardId || selectedId;
+      clearInsertMarks();
+      place(id, tier, idx);
     });
     el.addEventListener("click", (e) => {
       if (e.target.closest(".tl-card-remove") || e.target.closest(".tl-forms-toggle")) return;
@@ -257,7 +332,7 @@
     const activeFid = state.forms[baseId] || "";
     const html = `<div class="tl-forms-grid">` + forms.map(f => {
       const img = f.image
-        ? `<img src="${f.image}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`
+        ? `<img src="${thumb(f.image)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`
         : `<span class="tl-form-fallback">👤</span>`;
       return `<button type="button" class="tl-form-item${f.id === activeFid ? " is-active" : ""}" data-fid="${esc(f.id)}">${img}<span>${esc(f.name)}</span></button>`;
     }).join("") + `</div>`;
@@ -277,24 +352,29 @@
     const zone = document.createElement("div");
     zone.className = "tl-drop" + (tier === POOL ? " tl-pool" : "");
     zone.dataset.tier = tier;
-    sortCards(cards).forEach(c => zone.appendChild(cardEl(c)));
+    // Le roster (« À classer ») reste trié ; les rangs conservent l'ordre choisi.
+    const ordered = (tier === POOL) ? sortCards(cards) : cards;
+    ordered.forEach(c => zone.appendChild(cardEl(c, tier)));
     zone.addEventListener("dragover", (e) => {
       if (dragTierId) return; // glisser d'un rang : la ligne gère
       e.preventDefault();
       e.dataTransfer.dropEffect = "move";
-      zone.classList.add("tl-dragover");
+      // On ne souligne pas la zone si le curseur est sur une carte (elle gère).
+      if (!e.target.closest(".tl-card")) zone.classList.add("tl-dragover");
     });
     zone.addEventListener("dragleave", () => zone.classList.remove("tl-dragover"));
     zone.addEventListener("drop", (e) => {
       if (dragTierId) return; // glisser d'un rang : la ligne gère
       e.preventDefault();
       zone.classList.remove("tl-dragover");
-      let id = "";
-      try { id = e.dataTransfer.getData("text/plain"); } catch (err) {}
-      if (!id) id = selectedId;
+      clearInsertMarks();
+      const id = dragCardId || selectedId;
       place(id, tier);
     });
-    zone.addEventListener("click", () => { if (selectedId) place(selectedId, tier); });
+    zone.addEventListener("click", (e) => {
+      if (e.target.closest(".tl-card")) return;
+      if (selectedId) place(selectedId, tier);
+    });
     return zone;
   }
 
@@ -430,13 +510,15 @@
       collections: state.collections.slice(),
       custom: state.custom.slice(),
       exclude: state.exclude.slice(),
-      forms: Object.assign({}, state.forms)
+      forms: Object.assign({}, state.forms),
+      source: state.source
     };
     state = defaults();
     state.collections = keep.collections;
     state.custom = keep.custom;
     state.exclude = keep.exclude;
     state.forms = keep.forms;
+    state.source = keep.source || "chars";
     selectedId = null;
     save(); closePopover(); render();
   }
@@ -506,14 +588,33 @@
     benchRow.appendChild(dropZone(BENCH, benchCards));
     body.appendChild(benchRow);
 
-    const poolSec = document.createElement("div");
-    const poolTitle = document.createElement("div");
-    poolTitle.className = "tl-section-title";
-    const poolCards = cards.filter(c => tierOf(c.id) === POOL);
-    poolTitle.innerHTML = L("À classer", "To rank") + " (<b>" + poolCards.length + "</b>)";
-    poolSec.appendChild(poolTitle);
-    poolSec.appendChild(dropZone(POOL, poolCards));
-    body.appendChild(poolSec);
+    const poolWrap = document.getElementById("tierListPool");
+    if (poolWrap) {
+      poolWrap.innerHTML = "";
+      const poolCards = cards.filter(c => tierOf(c.id) === POOL);
+      const head = document.createElement("div");
+      head.className = "tl-pool-head";
+      const poolTitle = document.createElement("div");
+      poolTitle.className = "tl-section-title";
+      poolTitle.innerHTML = L("À classer", "To rank") + " (<b>" + poolCards.length + "</b>) · " +
+        L("glisse une carte vers un rang", "drag a card to a tier");
+      const toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.id = "tierListPoolToggle";
+      toggle.className = "tl-pool-toggle";
+      toggle.title = poolCollapsed ? L("Afficher le roster", "Show roster") : L("Réduire le roster", "Collapse roster");
+      toggle.textContent = poolCollapsed ? "▸ " + L("Afficher", "Show") : "▾ " + L("Réduire", "Collapse");
+      toggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        poolCollapsed = !poolCollapsed;
+        try { localStorage.setItem("opdle_tl_pool_collapsed", poolCollapsed ? "1" : "0"); } catch (err) {}
+        renderTiers();
+      });
+      head.appendChild(poolTitle);
+      head.appendChild(toggle);
+      poolWrap.appendChild(head);
+      if (!poolCollapsed) poolWrap.appendChild(dropZone(POOL, poolCards));
+    }
 
     const placed = cards.filter(c => tierOf(c.id) !== POOL).length;
     const count = document.getElementById("tierListCount");
@@ -524,22 +625,38 @@
     const box = document.getElementById("tierListFilters");
     if (!box) return;
     box.innerHTML = "";
-    const allBtn = document.createElement("button");
-    allBtn.type = "button";
-    allBtn.className = "tl-filter-btn" + (state.collections.length ? "" : " is-active");
-    allBtn.textContent = L("Toutes", "All");
-    allBtn.addEventListener("click", () => { state.collections = []; save(); renderCollections(); render(); });
-    box.appendChild(allBtn);
 
-    const colBtn = document.createElement("button");
-    colBtn.type = "button";
-    colBtn.className = "tl-filter-btn" + (state.collections.length ? " is-active" : "");
-    colBtn.textContent = L("Collections", "Collections") + (state.collections.length ? " (" + state.collections.length + ")" : "");
-    colBtn.addEventListener("click", () => {
+    // Bascule Personnages / Fruits
+    const fruitBtn = document.createElement("button");
+    fruitBtn.type = "button";
+    fruitBtn.className = "tl-filter-btn" + (state.source === "fruits" ? " is-active" : "");
+    fruitBtn.textContent = "🍇 " + L("Fruits", "Fruits");
+    fruitBtn.addEventListener("click", () => {
+      state.source = state.source === "fruits" ? "chars" : "fruits";
       const panel = document.getElementById("tierListCollections");
-      if (panel) panel.classList.toggle("hidden");
+      if (panel) panel.classList.add("hidden");
+      save(); render();
     });
-    box.appendChild(colBtn);
+    box.appendChild(fruitBtn);
+
+    if (state.source !== "fruits") {
+      const allBtn = document.createElement("button");
+      allBtn.type = "button";
+      allBtn.className = "tl-filter-btn" + (state.collections.length ? "" : " is-active");
+      allBtn.textContent = L("Toutes", "All");
+      allBtn.addEventListener("click", () => { state.collections = []; save(); renderCollections(); render(); });
+      box.appendChild(allBtn);
+
+      const colBtn = document.createElement("button");
+      colBtn.type = "button";
+      colBtn.className = "tl-filter-btn" + (state.collections.length ? " is-active" : "");
+      colBtn.textContent = L("Collections", "Collections") + (state.collections.length ? " (" + state.collections.length + ")" : "");
+      colBtn.addEventListener("click", () => {
+        const panel = document.getElementById("tierListCollections");
+        if (panel) panel.classList.toggle("hidden");
+      });
+      box.appendChild(colBtn);
+    }
   }
 
   function renderCollections() {
@@ -613,14 +730,14 @@
     input.addEventListener("input", () => {
       const q = clean(input.value);
       if (!q) { close(); return; }
-      const matches = baseChars().filter(c => clean(c.name).includes(q) || (c.aliases || []).some(a => clean(a).includes(q))).slice(0, 8);
+      const matches = sourceItems().filter(it => clean(it.name).includes(q) || (it.aliases || []).some(a => clean(a).includes(q))).slice(0, 8);
       if (!matches.length) { close(); return; }
       menu.innerHTML = "";
-      matches.forEach(c => {
+      matches.forEach(it => {
         const item = document.createElement("div");
         item.className = "flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-slate-800 text-sm text-white";
-        item.innerHTML = `<img src="${c.image || ""}" alt="" class="w-7 h-7 rounded object-cover" onerror="this.style.visibility='hidden'"><span class="font-semibold">${esc(c.name)}</span>`;
-        item.addEventListener("mousedown", (e) => { e.preventDefault(); addCustom(c.name); input.value = ""; close(); });
+        item.innerHTML = `<img src="${thumb(it.image || "")}" alt="" class="w-7 h-7 rounded object-cover" onerror="this.style.visibility='hidden'"><span class="font-semibold">${esc(it.name)}</span>`;
+        item.addEventListener("mousedown", (e) => { e.preventDefault(); addCustom(it.id); input.value = ""; close(); });
         menu.appendChild(item);
       });
       menu.classList.remove("hidden");
@@ -637,9 +754,9 @@
     if (title) title.textContent = "Tier List";
     const sortSel = document.getElementById("tierListSort");
     const sl = document.getElementById("tierListSortLabel");
-    if (sl) sl.textContent = L("Trier", "Sort");
+    if (sl) sl.textContent = L("Trier le roster", "Sort roster");
     const hint = document.getElementById("tierListHint");
-    if (hint) hint.textContent = L("Survol : changer de forme", "Hover: switch form");
+    if (hint) hint.textContent = L("Glisse les cartes entre les rangs · survol : forme", "Drag cards between tiers · hover: form");
     if (sortSel) {
       const opts = sortSel.querySelectorAll("option");
       if (opts[0]) opts[0].textContent = L("Nom", "Name");
@@ -680,6 +797,18 @@
 
     const sortSel = document.getElementById("tierListSort");
     if (sortSel) sortSel.addEventListener("change", () => { sortMode = sortSel.value; render(); });
+
+    // Défilement automatique des rangs quand on glisse une carte près du bord.
+    const tierBody = document.getElementById("tierListBody");
+    if (tierBody) {
+      tierBody.addEventListener("dragover", (e) => {
+        if (dragTierId) return;
+        const rect = tierBody.getBoundingClientRect();
+        const edge = 58;
+        if (e.clientY < rect.top + edge) tierBody.scrollTop -= 14;
+        else if (e.clientY > rect.bottom - edge) tierBody.scrollTop += 14;
+      });
+    }
 
     const addBtn = document.getElementById("tierListAddTier");
     if (addBtn) addBtn.addEventListener("click", () => addTierAt(state.tiers.length));

@@ -11,12 +11,12 @@ const ARCS_DATA = [
   },
   {
     id: "Orange",
-    fr: "Orange",
+    fr: "Orange Town",
     en: "Orange Town"
   },
   {
     id: "Syrup",
-    fr: "Syrup",
+    fr: "Syrup Village",
     en: "Syrup Village"
   },
   {

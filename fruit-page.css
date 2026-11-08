@@ -1,0 +1,209 @@
+/* ============================================================================
+   Page Fruit du Démon — DA du site (slate / ambre, Plus Jakarta Sans)
+   ========================================================================== */
+#topNav .nav-link.is-active {
+  background: rgba(245, 158, 11, 0.18) !important;
+  border-color: #f59e0b !important;
+  color: #fcd34d !important;
+}
+
+#fpInput {
+  flex: 1;
+  min-width: 0;
+  background: rgba(30, 41, 59, 0.9);
+  border: 1.5px solid rgba(71, 85, 105, 0.8);
+  color: #fff;
+  border-radius: 12px;
+  padding: 11px 14px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+#fpInput:focus { border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18); }
+#fpInput::placeholder { color: #64748b; }
+#fpInput.is-error { border-color: #fb7185 !important; animation: fp-shake 0.3s; }
+@keyframes fp-shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+#fpGuessBtn {
+  background: linear-gradient(180deg, #fcd34d, #d97706);
+  color: #0b0f19;
+  border: none;
+  border-radius: 12px;
+  padding: 11px 22px;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(217, 119, 6, 0.3);
+  white-space: nowrap;
+}
+#fpGuessBtn:hover { filter: brightness(1.06); }
+#fpGuessBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.fp-suggestions {
+  position: relative;
+  margin-top: 8px;
+  background: #0f172a;
+  border: 1px solid rgba(71, 85, 105, 0.8);
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 30;
+  max-height: 260px;
+  overflow-y: auto;
+}
+.fp-sug {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #e2e8f0;
+  border-bottom: 1px solid rgba(71, 85, 105, 0.35);
+}
+.fp-sug:last-child { border-bottom: none; }
+.fp-sug:hover { background: rgba(245, 158, 11, 0.12); color: #fcd34d; }
+.fp-sug img { width: 30px; height: 30px; object-fit: cover; object-position: center top; border-radius: 6px; }
+
+.fp-fruit-img {
+  width: 96px;
+  height: 144px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid rgba(245, 158, 11, 0.45);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  margin: 12px auto 0;
+  display: block;
+  background: #0b0f19;
+}
+
+.fp-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 10px 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(71, 85, 105, 0.7);
+  background: rgba(30, 41, 59, 0.6);
+  min-height: 92px;
+  justify-content: center;
+}
+.fp-hint-ico { font-size: 20px; line-height: 1; }
+.fp-hint-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8; }
+.fp-hint-val { font-size: 12px; color: #e2e8f0; font-weight: 600; line-height: 1.25; }
+.fp-hint.is-open { border-color: #f59e0b; background: rgba(245, 158, 11, 0.1); }
+.fp-hint.is-open .fp-hint-val { color: #fcd34d; }
+.fp-hint.is-locked .fp-hint-val { color: #475569; }
+
+.fp-msg {
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.45;
+  scroll-margin-top: 96px;
+}
+#fpMessage { scroll-margin-top: 96px; }
+/* Résultat (victoire/défaite) toujours visible, même sans défiler. */
+#fpMessage:not(:empty) {
+  position: fixed;
+  left: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: min(760px, calc(100vw - 24px));
+  z-index: 60;
+}
+#fpMessage:not(:empty) .fp-msg {
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+}
+.fp-result { display: flex; align-items: center; gap: 12px; }
+.fp-result-img {
+  width: 86px;
+  height: 86px;
+  flex: 0 0 86px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
+}
+.fp-result-noimg {
+  width: 86px;
+  height: 86px;
+  flex: 0 0 86px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  color: #64748b;
+  font-size: 26px;
+  font-weight: 900;
+}
+.fp-result-text { min-width: 0; flex: 1; }
+@media (max-width: 420px) {
+  .fp-result { gap: 9px; }
+  .fp-result-img, .fp-result-noimg { width: 68px; height: 68px; flex-basis: 68px; }
+}
+.fp-msg.win { background: rgba(16, 185, 129, 0.14); border: 1px solid #10b981; color: #d1fae5; }
+.fp-msg.lose { background: rgba(190, 18, 60, 0.16); border: 1px solid #be123c; color: #fecdd3; }
+.fp-msg b { color: #fcd34d; }
+.fp-msg .fp-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.fp-btn {
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: none;
+  background: #f59e0b;
+  color: #0b0f19;
+  font-weight: 800;
+  font-size: 12px;
+  cursor: pointer;
+}
+.fp-btn.quiet { background: #334155; color: #e2e8f0; border: 1px solid #475569; }
+
+.fp-guess-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(71, 85, 105, 0.7);
+  background: rgba(30, 41, 59, 0.55);
+  font-size: 14px;
+}
+.fp-guess-row img { width: 32px; height: 32px; object-fit: cover; object-position: center top; border-radius: 8px; }
+.fp-guess-row .name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fp-guess-row .mark { font-weight: 900; }
+.fp-guess-row.ok { border-color: #10b981; background: rgba(16, 185, 129, 0.14); }
+.fp-guess-row.no .mark { color: #fb7185; }
+
+/* Bouton nav Fruits actif */
+#fruitBtn.is-active {
+  background: rgba(245, 158, 11, 0.18) !important;
+  border-color: #f59e0b !important;
+  color: #fcd34d !important;
+}
+
+/* Indice disponible (le joueur choisit de le révéler) */
+.fp-hint.is-available {
+  border-color: rgba(245, 158, 11, 0.7);
+  border-style: dashed;
+  background: rgba(30, 41, 59, 0.8);
+  cursor: pointer;
+}
+.fp-hint.is-available:hover { background: rgba(245, 158, 11, 0.12); border-style: solid; }
+.fp-hint.is-available .fp-hint-val { color: #fcd34d; font-weight: 700; }
+
+/* Bouton « Abandonner » du jeu Fruit */
+.fp-giveup {
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(244, 63, 94, 0.45);
+  background: rgba(190, 18, 60, 0.12);
+  color: #fda4af;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.fp-giveup:hover { background: rgba(190, 18, 60, 0.28); color: #fff; }
+.fp-giveup[hidden] { display: none; }

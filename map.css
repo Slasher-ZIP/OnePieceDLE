@@ -1,0 +1,216 @@
+/* ================================================================
+   Mode « Carte de Grand Line »
+   ================================================================ */
+.map-viewport {
+  /* Doit remplir le conteneur flex (absolute inset-0) : une position relative
+     laissait le SVG imposer sa hauteur d'origine et poussait l'en-tête hors écran. */
+  position: absolute;
+  overflow: hidden;
+  background: #050b14;
+  border-radius: 12px;
+  cursor: grab;
+  touch-action: none;
+}
+.map-viewport:active { cursor: grabbing; }
+.map-canvas {
+  width: 100%;
+  height: 100%;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+.map-canvas svg { width: 100%; height: 100%; display: block; }
+.map-canvas.map-animating { transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.map-island { transition: filter 0.15s; }
+.map-island:hover { filter: brightness(1.25); }
+.map-island.is-locked:hover { filter: none; }
+
+#mapIslandPanel {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: min(360px, calc(100% - 28px));
+  background: rgba(10, 16, 26, 0.97);
+  border: 1px solid rgba(246, 178, 31, 0.4);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+  z-index: 5;
+}
+.map-mini {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(71, 85, 105, 0.8);
+  background: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.map-mini img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.map-mini span {
+  position: absolute;
+  right: 1px;
+  bottom: 0;
+  font-size: 11px;
+  line-height: 1;
+  background: rgba(2, 6, 23, 0.8);
+  border-radius: 4px;
+  padding: 1px 2px;
+}
+.map-mini.is-owned { border-color: #f6b21f; }
+.map-mini.is-owned span { color: #4ade80; }
+
+.map-zoom-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(30, 41, 59, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  color: #e2e8f0;
+  font-size: 16px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.map-zoom-btn:hover { border-color: #f6b21f; color: #fff; }
+
+/* Fermeture de la carte : croix bien visible, cible large */
+.map-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 30;
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  color: #e2e8f0;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.12s;
+}
+.map-close-btn:hover,
+.map-close-btn:focus-visible {
+  background: #b91c1c;
+  border-color: #ef4444;
+  color: #fff;
+  transform: scale(1.06);
+  outline: none;
+}
+@media (max-width: 480px) {
+  .map-close-btn { width: 42px; height: 42px; font-size: 20px; }
+}
+
+/* Quêtes localisées sur la carte */
+#mapIslandPanel { max-height: calc(100% - 28px); overflow-y: auto; }
+.map-quests {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(148, 163, 184, 0.22);
+}
+.map-quests-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+.map-quests-all {
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 10px;
+  font-weight: 800;
+  color: #fbbf24;
+  text-transform: none;
+  letter-spacing: 0;
+  cursor: pointer;
+}
+.map-quests-all:hover { color: #fde68a; }
+.map-quest {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 6px 7px;
+  margin-bottom: 5px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.65);
+}
+.map-quest.is-done { border-color: rgba(16, 185, 129, 0.45); }
+.map-quest-ico {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #f59e0b;
+  color: #0b1220;
+  font-size: 10px;
+  font-weight: 900;
+}
+.map-quest.is-done .map-quest-ico { background: #10b981; }
+.map-quest-name { font-size: 11px; font-weight: 700; color: #e2e8f0; line-height: 1.2; }
+.map-quest-sub { font-size: 10px; color: #94a3b8; line-height: 1.25; margin-top: 1px; }
+.map-quest-badge { pointer-events: none; }
+.map-quests {
+  max-height: 190px;
+  overflow-y: auto;
+}
+.map-play-hint {
+  margin: 9px 0 2px;
+  font-size: 10px;
+  line-height: 1.35;
+  text-align: center;
+  font-weight: 700;
+  color: #fcd34d;
+}
+/* La modale carte ne dépasse jamais la zone visible (même sur écran bas :
+   l'en-tête et la croix de fermeture restent toujours accessibles). */
+#mapModal { overflow: hidden; }
+#mapModal > div { height: 100%; max-height: 100%; }
+/* Fond de mer sous la carte (évite toute bande noire si l'écran est très large). */
+.map-viewport {
+  background: radial-gradient(ellipse at 50% 45%, #1d5570 0%, #123a52 55%, #0a2233 100%);
+}
+
+/* Carte plus large et fiche d'île en colonne (ne recouvre plus la carte) */
+#mapModal > div { max-width: 1500px; }
+.map-body { display: flex; gap: 8px; padding: 8px; }
+.map-body > #mapViewport { position: relative; flex: 1; min-width: 0; inset: auto; }
+.map-body > #mapIslandPanel {
+  position: static;
+  flex: 0 0 340px;
+  width: 340px;
+  max-height: none;
+  margin: 0;
+}
+@media (max-width: 860px) {
+  .map-body { display: block; padding: 0; }
+  .map-body > #mapViewport { position: absolute; inset: 0; }
+  .map-body > #mapIslandPanel {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    width: min(360px, calc(100% - 28px));
+    max-height: calc(100% - 28px);
+  }
+}

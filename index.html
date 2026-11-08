@@ -39,12 +39,16 @@
   <meta name="twitter:image:alt" content="OPDLE — One Piece DLE">
   <!-- Tailwind compilé en local (voir BUILD.txt pour régénérer) -->
   <link rel="stylesheet" href="tailwind.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="fonts/PlusJakartaSans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/PlusJakartaSans-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/LuckiestGuy-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* Fallback si css/styles.css ne charge pas */
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+    /* Police auto-hébergée (plus de blocage Google Fonts) */
+    @font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/PlusJakartaSans-400.woff2') format('woff2'); }
+    @font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/PlusJakartaSans-600.woff2') format('woff2'); }
+    @font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/PlusJakartaSans-700.woff2') format('woff2'); }
+    @font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-weight: 800; font-display: swap; src: url('fonts/PlusJakartaSans-800.woff2') format('woff2'); }
     html, body { overflow-x: hidden; overflow-x: clip; /* « clip » ne casse pas position:sticky (nav) */ }
     body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0b0f19; color: #f3f4f6; }
     .cell-flip { animation: flipIn 0.5s ease-out forwards; }
@@ -91,6 +95,9 @@
   </script>
   <link rel="stylesheet" href="jolly.css">
 <link rel="stylesheet" href="tierlist.css">
+<link rel="stylesheet" href="fruits.css">
+<link rel="stylesheet" href="map.css">
+<link rel="stylesheet" href="fruit-page.css">
 </head>
 
 <body class="min-h-screen flex flex-col items-center justify-start px-4 sm:px-6 pt-0 pb-4 sm:pb-6 bg-[#0b0f19] text-gray-100">
@@ -127,6 +134,14 @@
         <span class="ico">🏅</span>
         <span id="labelTierList">Tier List</span>
       </button>
+      <button id="fruitBtn" class="nav-link" type="button">
+        <span class="ico">🍇</span>
+        <span id="labelFruits">Fruits</span>
+      </button>
+      <button id="mapBtn" class="nav-link" type="button">
+        <span class="ico">🗺️</span>
+        <span id="labelMap">Carte</span>
+      </button>
     </div>
     <div class="flex items-center gap-2 ml-auto">
       <button id="onboardHelpBtn" type="button" title="Aide / Tutoriel" class="icon-btn" aria-label="Aide">
@@ -142,7 +157,7 @@
     </div>
   </nav>
 
-  <header class="w-full max-w-3xl mb-5">
+  <header id="gameHeader" class="w-full max-w-3xl mb-5">
     <!-- Titre -->
     <div class="text-center mb-4">
       <div class="inline-flex items-center gap-2.5 sm:gap-3">
@@ -177,6 +192,10 @@
           <span id="labelAttemptsLeft" class="text-sky-400 text-[11px]">Essais</span>
           <span id="attemptsLeftCount" class="text-white font-bold tabular-nums">∞</span>
         </div>
+        <button type="button" id="arcFocusBadge" class="hidden bg-amber-500/15 border border-amber-500/50 text-amber-200 px-2.5 py-1.5 rounded-lg text-[11px] font-bold items-center gap-1.5" title="Bonus d'arc : les personnages de cet arc apparaissent plus souvent. Cliquer pour retirer.">
+          <span id="arcFocusLabel"></span>
+          <span class="text-amber-400/70">✕</span>
+        </button>
       </div>
     </div>
 
@@ -232,7 +251,7 @@
     </div>
   </header>
 
-  <main class="w-full max-w-6xl flex flex-col items-center gap-6">
+  <main id="gameMain" class="w-full max-w-6xl flex flex-col items-center gap-6">
 
     <div id="versusPickBar" class="hidden w-full max-w-md mx-auto flex-col gap-2 px-3 py-2.5 rounded-xl border border-violet-500/40 bg-violet-950/60 text-xs sm:text-sm">
       <p id="versusPickText" class="font-bold text-violet-100 leading-snug"></p>
@@ -319,6 +338,58 @@
     </div>
 
   </main>
+
+  <!-- Mode Fruit du Démon : même nav, seule la zone de jeu change -->
+  <section id="fruitView" class="hidden w-full max-w-3xl mx-auto space-y-4">
+    <div class="flex items-center gap-2">
+      <button type="button" id="fruitBackBtn" class="nav-link">← Jeu</button>
+    </div>
+    <p class="text-center text-xs text-slate-400"><span id="fpBest">…</span></p>
+
+    <div class="bg-slate-900/90 border border-slate-700/70 rounded-2xl p-3 sm:p-4 shadow-xl">
+      <div class="flex flex-col sm:flex-row gap-2">
+        <input id="fpInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
+          placeholder="Devine l'utilisateur du Fruit du Démon…" />
+        <button id="fpGuessBtn" type="button">Deviner</button>
+      </div>
+      <div class="fp-suggestions hidden" id="fpSuggestions"></div>
+      <div class="flex flex-wrap items-center justify-between gap-2 mt-2 text-[11px] text-slate-400">
+        <span id="fpAttempts" class="text-amber-300 font-bold">Essai 1</span>
+        <span id="fpLeft">10 essais restants — les indices se débloquent à chaque erreur</span>
+        <button type="button" id="fpGiveUpBtn" class="fp-giveup">Abandonner</button>
+      </div>
+    </div>
+
+    <section class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-4 sm:p-6 text-center shadow-xl">
+      <p class="text-[11px] uppercase tracking-wider text-slate-400">Quel personnage a mangé ce Fruit du Démon ?</p>
+      <h1 id="fpFruitName" class="text-2xl sm:text-4xl font-extrabold text-amber-400 mt-3 leading-tight">« … »</h1>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
+        <div class="fp-hint" id="fpHintType">
+          <span class="fp-hint-ico">⚙</span>
+          <span class="fp-hint-label">Indice type</span>
+          <span class="fp-hint-val">???</span>
+        </div>
+        <div class="fp-hint" id="fpHintArc">
+          <span class="fp-hint-ico">🗺</span>
+          <span class="fp-hint-label">Arc d'apparition</span>
+          <span class="fp-hint-val">???</span>
+        </div>
+        <div class="fp-hint" id="fpHintName">
+          <span class="fp-hint-ico">🌐</span>
+          <span class="fp-hint-label">Nom traduit</span>
+          <span class="fp-hint-val">???</span>
+        </div>
+        <div class="fp-hint" id="fpHintPower">
+          <span class="fp-hint-ico">?</span>
+          <span class="fp-hint-label">Pouvoir</span>
+          <span class="fp-hint-val">???</span>
+        </div>
+      </div>
+    </section>
+
+    <div id="fpMessage"></div>
+    <div id="fpGuesses" class="space-y-2"></div>
+  </section>
 
   <footer class="op-footer w-full max-w-3xl"><span id="footerText">Jeu de fan non affilié — One Piece © Eiichiro Oda / Shueisha · Bonne chasse aux primes ! ⚓</span></footer>
 
@@ -438,12 +509,15 @@
             <h2 id="collectionTitle" class="text-lg sm:text-xl font-extrabold text-amber-400">Album</h2>
             <p id="collectionHint" class="text-[11px] text-slate-500 mt-0.5">Album — cases assombries tant que le personnage n'est pas débloqué.</p>
           </div>
-          <div class="bg-slate-800 border border-slate-600/50 rounded-lg px-3 py-1.5 text-sm">
-            <span id="collectionUnlockedLabel" class="text-slate-400 text-xs">Débloqués</span>
-            <span id="collectionCount" class="ml-2 font-bold text-white tabular-nums">0 / 0</span>
+          <div class="flex items-center gap-2">
+            <button type="button" id="collectionFruitToggle" class="collection-fruit-toggle">Fruits</button>
+            <div class="bg-slate-800 border border-slate-600/50 rounded-lg px-3 py-1.5 text-sm">
+              <span id="collectionUnlockedLabel" class="text-slate-400 text-xs">Débloqués</span>
+              <span id="collectionCount" class="ml-2 font-bold text-white tabular-nums">0 / 0</span>
+            </div>
           </div>
         </div>
-        <div class="flex flex-wrap gap-2 mt-3 items-center">
+        <div id="collectionCharacterFilters" class="flex flex-wrap gap-2 mt-3 items-center">
           <input id="collectionSearch" type="search" autocomplete="off"
             placeholder="Rechercher un personnage…"
             class="flex-1 min-w-[140px] bg-slate-800 border border-slate-600/70 text-white text-xs font-medium rounded-lg px-2.5 py-2 outline-none focus:border-amber-400/70 placeholder:text-slate-500" />
@@ -463,7 +537,24 @@
             <input id="collectionStrawhatEra" type="checkbox" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none" />
           </label>
         </div>
-        <div class="flex flex-wrap gap-2 mt-2 text-[10px] text-slate-500">
+        <div id="fruitFiltersRow" class="hidden flex-wrap gap-2 mt-3 items-center">
+          <input id="fruitSearch" type="search" autocomplete="off"
+            placeholder="Rechercher un fruit…"
+            class="flex-1 min-w-[140px] bg-slate-800 border border-slate-600/70 text-white text-xs font-medium rounded-lg px-2.5 py-2 outline-none focus:border-amber-400/70 placeholder:text-slate-500" />
+          <select id="fruitRaritySel" class="bg-slate-800 border border-slate-600/70 text-white text-xs font-medium rounded-lg px-2.5 py-2 outline-none focus:border-amber-400/70 cursor-pointer">
+            <option value="all">Toutes raretés</option>
+          </select>
+          <select id="fruitTypeSel" class="bg-slate-800 border border-slate-600/70 text-white text-xs font-medium rounded-lg px-2.5 py-2 outline-none focus:border-indigo-400/70 cursor-pointer max-w-[220px]">
+            <option value="all">Tous types</option>
+          </select>
+          <select id="fruitSortSel" class="bg-slate-800 border border-slate-600/70 text-white text-xs font-medium rounded-lg px-2.5 py-2 outline-none focus:border-amber-400/70 cursor-pointer">
+            <option value="name">Nom</option>
+            <option value="type">Type</option>
+            <option value="user">Utilisateur</option>
+            <option value="rarity">Rareté</option>
+          </select>
+        </div>
+        <div id="collectionRarityLegend" class="flex flex-wrap gap-2 mt-2 text-[10px] text-slate-500">
           <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-slate-500"></span> <span data-rarity-label="1">Commun</span></span>
           <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> <span data-rarity-label="2">Peu commun</span></span>
           <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-500"></span> <span data-rarity-label="3">Rare</span></span>
@@ -760,9 +851,13 @@
         </div>
         <div id="tierListTiers" class="space-y-2"></div>
       </div>
+      <!-- Roster : toujours visible pendant que les rangs défilent -->
+      <div id="tierListPoolWrap" class="shrink-0 border-t border-slate-700/60 bg-slate-900/95">
+        <div id="tierListPool" class="p-2 sm:p-3"></div>
+      </div>
       <div class="p-2 sm:p-3 border-t border-slate-700/60 flex flex-wrap items-center gap-2 shrink-0">
         <label class="text-[11px] text-slate-400 flex items-center gap-1">
-          <span id="tierListSortLabel">Trier</span>
+          <span id="tierListSortLabel">Trier le roster</span>
           <select id="tierListSort" class="bg-slate-800 border border-slate-600 text-white text-xs rounded-lg px-2 py-1">
             <option value="name">Nom</option>
             <option value="rarity">Rareté</option>
@@ -770,7 +865,7 @@
           </select>
         </label>
         <span id="tierListCount" class="text-[11px] text-slate-500"></span>
-        <span id="tierListHint" class="text-[10px] text-slate-500 hidden sm:inline">Survol : changer de forme</span>
+        <span id="tierListHint" class="text-[10px] text-slate-500 hidden sm:inline">Glisse les cartes entre les rangs · survol : forme</span>
         <button id="tierListSaveBtn" class="ml-auto px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold">Mes listes</button>
         <button id="tierListAddTier" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold">+ Rang</button>
         <button id="tierListReset" class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold">Réinitialiser</button>
@@ -792,6 +887,31 @@
         </div>
         <div id="tierSaveList" class="space-y-2"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- Mode Carte de Grand Line -->
+  <div id="mapModal" class="hidden fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[70] flex items-center justify-center p-2 sm:p-4">
+    <div class="relative bg-slate-900 border border-amber-500/40 rounded-2xl w-full max-w-6xl h-[92vh] flex flex-col overflow-hidden shadow-2xl">
+      <button type="button" class="mapClose map-close-btn" title="Fermer la carte" aria-label="Fermer la carte">✕</button>
+      <div class="p-3 border-b border-slate-700/60 flex items-center gap-2 pr-14 shrink-0">
+        <h2 class="text-lg font-extrabold text-amber-300">Carte de Grand Line</h2>
+        <span id="mapCount" class="text-xs text-slate-400 tabular-nums"></span>
+        <div class="ml-auto flex gap-1.5">
+          <button type="button" id="mapZoomOut" class="map-zoom-btn" title="Dézoomer">−</button>
+          <button type="button" id="mapZoomIn" class="map-zoom-btn" title="Zoomer">+</button>
+          <button type="button" id="mapReset" class="map-zoom-btn" title="Recentrer">⟲</button>
+        </div>
+      </div>
+      <div id="mapBody" class="map-body flex-1 min-h-0 relative">
+        <div id="mapViewport" class="map-viewport absolute inset-0">
+          <div id="mapCanvas" class="map-canvas">
+            <svg id="mapSvg" viewBox="0 0 2000 1100" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+        </div>
+        <div id="mapIslandPanel" class="hidden"><div id="mapIslandBody"></div></div>
+      </div>
+      <div id="mapHint" class="p-2 text-center text-[10px] text-slate-500 shrink-0">Molette / +− pour zoomer · glisse pour déplacer · débloque 2 héros d'un arc pour révéler son île.</div>
     </div>
   </div>
 
@@ -843,16 +963,20 @@
   </div>
 
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="translations.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="translations.js" defer></script>
   <!-- Données découpées : meta → characters → history → variants → collection -->
-  <script src="data/meta.js"></script>
-  <script src="data/characters.js"></script>
-  <script src="data/history.js"></script>
-  <script src="data/variants.js"></script>
-  <script src="data/collection.js"></script>
-  <script src="app.js"></script>
-  <script src="online.js"></script>
-<script src="tierlist.js"></script>
+  <script src="data/meta.js" defer></script>
+  <script src="data/characters.js" defer></script>
+  <script src="data/history.js" defer></script>
+  <script src="data/variants.js" defer></script>
+  <script src="data/collection.js" defer></script>
+<script src="data/fruits.js" defer></script>
+  <script src="app.js" defer></script>
+  <script src="online.js" defer></script>
+<script src="tierlist.js" defer></script>
+<script src="fruits.js" defer></script>
+<script src="map.js" defer></script>
+<script src="fruit-play.js" defer></script>
 </body>
 </html>

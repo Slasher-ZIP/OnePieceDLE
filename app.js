@@ -6,6 +6,42 @@ let selectedSuggestionIndex = -1;
 let isGameOver = false;
 let currentDifficulty = localStorage.getItem("opdle_diff") || "easy";
 let currentStory = localStorage.getItem("opdle_story") || "all";
+// Miniatures pour les grilles (album, tier list, quêtes, avatars) : ~3-5 Ko
+// au lieu de 10-30 Ko, et décodage plus rapide.
+function thumbSrc(src) {
+  if (!src || typeof src !== "string") return src;
+  if (src.indexOf("img/thumbs/") === 0) return src;
+  if (src.indexOf("img/fruits/") === 0) return "img/thumbs/fruits/" + src.slice(11);
+  if (src.indexOf("img/shiny/") === 0) return "img/thumbs/shiny/" + src.slice(10);
+  if (src.indexOf("img/alt/") === 0) return "img/thumbs/alt/" + src.slice(8);
+  if (src.indexOf("img/") === 0) return "img/thumbs/char/" + src.slice(4);
+  return src;
+}
+// Île/arc choisi depuis la carte : les personnages de cet arc sont favorisés au tirage.
+let currentArcFocus = null;
+// Lieu à shiny favorisé (Elbaf → Shanks, Winner Island → Barbe Noire).
+let currentShinyFocus = null;
+// Mêmes affectations que la carte, pour que « Jouer cet arc » favorise
+// aussi les antagonistes principaux (Doflamingo à Dressrosa, etc.).
+const ARC_FOCUS_OVERRIDE = {
+  "Donquixote Doflamingo": "Dressrosa",
+  "Kaido": "Wano Kuni",
+  "Big Mom": "Whole Cake Island"
+};
+function setArcFocus(arc) { currentArcFocus = arc || null; updateArcFocusBadge(); }
+function setShinyFocus(name) {
+  currentShinyFocus = Array.isArray(name) ? name.slice() : (name ? [name] : null);
+}
+function clearArcFocus() { currentArcFocus = null; currentShinyFocus = null; updateArcFocusBadge(); }
+function updateArcFocusBadge() {
+  const el = document.getElementById("arcFocusBadge");
+  if (!el) return;
+  if (!currentArcFocus) { el.classList.add("hidden"); el.style.display = ""; return; }
+  const label = document.getElementById("arcFocusLabel");
+  if (label) label.textContent = "📍 " + currentArcFocus;
+  el.classList.remove("hidden");
+  el.style.display = "inline-flex";
+}
 let maxAttempts = Infinity;
 let mysteryCategories = []; // accumulates categories that show "???" in extreme (never includes 0 = character)
 
@@ -285,6 +321,10 @@ function unlockCharacter(name) {
 
 function canUseAsAvatar(key) {
   if (!key) return false;
+  if (key.indexOf("fruit:") === 0) {
+    const fid = key.slice(6);
+    return !!(window.OPFruits && window.OPFruits.isUnlocked(fid));
+  }
   const unlocked = getUnlockedNames();
   if (unlocked.includes(key)) return true;
   const variant = typeof findVariantById === "function" ? findVariantById(key) : null;
@@ -345,6 +385,10 @@ function findVariantById(id) {
 /** Resolve avatar target: base character name OR variant id. */
 function resolveAvatarTarget(key) {
   if (!key) return null;
+  if (key.indexOf("fruit:") === 0) {
+    const f = window.OPFruits && window.OPFruits.byId(key.slice(6));
+    return f ? { name: f.name, image: f.image } : null;
+  }
   const variant = findVariantById(key);
   if (variant) {
     const base = findCharByName(variant.baseName);
@@ -355,6 +399,10 @@ function resolveAvatarTarget(key) {
 }
 
 function avatarDisplayName(key) {
+  if (key && key.indexOf("fruit:") === 0) {
+    const f = window.OPFruits && window.OPFruits.byId(key.slice(6));
+    if (f) return f.name;
+  }
   const variant = findVariantById(key);
   if (variant && variant.displayName) {
     return variant.displayName[currentLang] || variant.displayName.fr || variant.displayName.en || variant.id;
@@ -799,6 +847,10 @@ function openCollectionModal() {
       return;
     }
     updateCollectionUI();
+    // Si l'album a été laissé en mode Fruits, l'en-tête doit rester celui des fruits.
+    if (window.OPFruits && window.OPFruits.isCollectionMode && window.OPFruits.isCollectionMode()) {
+      window.OPFruits.updateHeader();
+    }
     modal.classList.remove("hidden");
   } catch (err) {
     console.error("[OPDLE] openCollectionModal error:", err);
@@ -888,6 +940,13 @@ function updateStrawhatEraToggle() {
 }
 
 function renderCollectionGrid() {
+  // Mode « Fruits du Démon » : la collection laisse la main au module fruits.
+  if (window.OPFruits && window.OPFruits.isCollectionMode && window.OPFruits.isCollectionMode()) {
+    window.OPFruits.renderCollection(document.getElementById("collectionGrid"));
+    return;
+  }
+  const _cg = document.getElementById("collectionGrid");
+  if (_cg) _cg.classList.remove("fruit-grid");
   if (typeof syncCollectionRewards === "function") syncCollectionRewards();
 
   const grid = document.getElementById("collectionGrid");
@@ -1046,7 +1105,7 @@ function renderCollectionGrid() {
       slot.innerHTML = `
         <div class="absolute inset-0">
           ${imgSrc
-            ? `<img src="${imgSrc}" alt="" draggable="false"
+            ? `<img src="${thumbSrc(imgSrc)}" alt="" draggable="false" loading="lazy" decoding="async"
                  class="w-full h-full object-cover"
                  style="object-position:${objPos};${isUnlocked ? "" : "filter:brightness(0.55) opacity(0.6);"}"
                  onerror="this.style.display='none';const f=this.nextElementSibling;if(f)f.style.display='flex'" />
@@ -1162,7 +1221,7 @@ function openCharacterDetail(charName) {
       statsEl.innerHTML = [
         formatStatLine(lang === "fr" ? "Genre" : "Gender", gender),
         formatStatLine(lang === "fr" ? "Affiliation" : "Affiliation", aff),
-        formatStatLine(lang === "fr" ? "Fruit" : "Devil Fruit", fruit),
+        formatStatLine(lang === "fr" ? "Type de fruit" : "Fruit type", fruit),
         formatStatLine("Haki", haki),
         formatStatLine(lang === "fr" ? "Prime" : "Bounty", formatPrimeDisplay(c.prime, lang)),
         formatStatLine(lang === "fr" ? "Arc d'apparition" : "First arc", getArcDisplayName(c.arc)),
@@ -1170,6 +1229,21 @@ function openCharacterDetail(charName) {
         formatStatLine(lang === "fr" ? "Âge" : "Age", age),
         formatStatLine(lang === "fr" ? "Taille" : "Height", height)
       ].join("");
+      // Fruit du Démon précis (image + nom) si le personnage en a un
+      const df = (window.OPFruits && window.OPFruits.byUser) ? window.OPFruits.byUser(c.name) : null;
+      if (df) {
+        const dfThumb = df.image
+          ? `<img src="${thumbSrc(df.image)}" alt="" class="w-12 h-12 object-contain rounded" loading="lazy" decoding="async" onerror="this.style.display='none'">`
+          : `<span class="w-12 h-12 flex items-center justify-center text-xl rounded bg-slate-900 border border-slate-700">?</span>`;
+        statsEl.innerHTML += `<div class="mt-2 flex items-center gap-2 bg-slate-800/60 border border-amber-500/30 rounded-lg p-2">
+          ${dfThumb}
+          <div class="min-w-0">
+            <p class="text-[10px] uppercase tracking-wider text-slate-500">${lang === "fr" ? "Fruit du Démon" : "Devil Fruit"}</p>
+            <p class="text-xs font-bold text-amber-300 truncate">${df.name}</p>
+            <p class="text-[10px] text-slate-400 truncate">${lang === "en" ? (df.nameEn || "") : (df.nameFr || "")}</p>
+          </div>
+        </div>`;
+      }
     }
   }
 
@@ -1837,14 +1911,16 @@ function setDifficulty(mode) {
   if (mode === currentDifficulty) return;
   currentDifficulty = mode;
   localStorage.setItem("opdle_diff", mode);
+  clearArcFocus();
   startGame();
 }
 
 function setStory(storyId) {
-  if (storyId === currentStory) return;
+  if (storyId === currentStory) { clearArcFocus(); return; }
   if (!STORY_POINTS[storyId]) return;
   currentStory = storyId;
   localStorage.setItem("opdle_story", storyId);
+  clearArcFocus();
   startGame();
 }
 
@@ -1886,7 +1962,7 @@ function avatarHTML(character, sizeClass) {
   const objPos = getImageObjectPosition(character.name);
 
   if (character.image) {
-    return `<img src="${character.image}" alt="${safeName}" data-name="${safeName}"
+    return `<img src="${thumbSrc(character.image)}" alt="${safeName}" data-name="${safeName}"
       class="${sizeClass} rounded-xl object-cover border-2 shadow-md shrink-0"
       style="border-color:${border};object-position:${objPos}"
       onerror="handleAvatarError(this)" />`;
@@ -2083,7 +2159,16 @@ function getDrawWeight(c, difficulty) {
   const w = getRarityWeight(c.rarity || 2, diff);
   const row = NICHE_FACTOR[diff] || NICHE_FACTOR.medium;
   const f = row[nicheOf(c)];
-  return w * (typeof f === "number" && isFinite(f) && f > 0 ? f : 1);
+  const baseW = w * (typeof f === "number" && isFinite(f) && f > 0 ? f : 1);
+  // « Jouer cet arc » depuis la carte : les personnages de l'arc choisi
+  // apparaissent beaucoup plus souvent que les autres du même point d'histoire.
+  const focus = (typeof currentArcFocus !== "undefined" ? currentArcFocus : null);
+  const shinyFocus = (typeof currentShinyFocus !== "undefined" ? currentShinyFocus : null);
+  const mapArc = (typeof ARC_FOCUS_OVERRIDE !== "undefined" && ARC_FOCUS_OVERRIDE[c.name]) || c.arc;
+  let mult = 1;
+  if (focus && mapArc === focus) mult *= 10;
+  if (shinyFocus && shinyFocus.indexOf(c.name) >= 0) mult *= 8;
+  return baseW * mult;
 }
 
 function storyIndex(storyId) {
@@ -2353,6 +2438,30 @@ function formBucketMult(list) {
 function pickRandomCharacter() {
   const pool = getAvailableCharacters();
   if (pool.length === 0) return CHARACTERS[0];
+
+  // Lieu à shiny favorisé (Elbaf/Shanks, Winner Island/Barbe Noire) :
+  // on tire souvent le personnage du moment, avec une forte chance de shiny.
+  if (currentShinyFocus && currentShinyFocus.length) {
+    const candidates = currentShinyFocus
+      .map(n => pool.find(c => c.name === n))
+      .filter(Boolean);
+    if (candidates.length && Math.random() < 0.6) {
+      const fb = candidates[Math.floor(Math.random() * candidates.length)];
+      const variants = getVariantsForBase(fb.name, currentStory);
+      const shiny = variants.find(v => isVariantShiny(v) && isVariantAvailable(v, currentStory));
+      if (shiny && Math.random() < 0.75) {
+        const out = applyVariant(fb, shiny);
+        out._isShiny = true;
+        out._shinyId = shiny.id;
+        out._variantDisplay = shiny.displayName
+          ? { fr: shiny.displayName.fr + " ✦", en: shiny.displayName.en + " ✦" }
+          : { fr: fb.name + " ✦", en: fb.name + " ✦" };
+        return out;
+      }
+      return fb;
+    }
+  }
+
   const weights = pool.map(c => getDrawWeight(c, currentDifficulty));
   const total = weights.reduce((a, b) => a + b, 0) || 1;
   let r = Math.random() * total;
@@ -2705,6 +2814,7 @@ function startVersusFromModal() {
   versusRound = 1;
   versusMode = true;
   closeVersusModal();
+  clearArcFocus();
   startGame();
 }
 
@@ -2809,6 +2919,7 @@ function startGame() {
   updateAttemptsUI();
   updateModeButtons();
   updateStoryButtons();
+  updateArcFocusBadge();
   updateHeaderVisibility();
   closeModals();
   if (typeof isAdmin === "function" && isAdmin()) {
@@ -3155,7 +3266,7 @@ function renderRow(cellsData, animate = true, mysteryOverride = undefined) {
       const initials = (typeof getInitials === "function" ? getInitials(showChar.name || label) : (label || "?").slice(0, 2));
       // Une seule image ; fallback initiales UNIQUEMENT si onerror (classe distincte, pas forcée en display:block)
       const imgHtml = imgSrc
-        ? `<img src="${imgSrc}" alt="${safeName}" class="char-guess-img rounded-xl object-cover border-2 border-white/50 shadow-md" width="56" height="56" style="width:56px;height:56px;object-position:center top;" onerror="this.onerror=null;this.replaceWith(Object.assign(document.createElement('div'),{className:'char-guess-fallback',textContent:'${initials.replace(/'/g, "")}',style:'width:56px;height:56px'}))" />`
+        ? `<img src="${thumbSrc(imgSrc)}" alt="${safeName}" class="char-guess-img rounded-xl object-cover border-2 border-white/50 shadow-md" width="56" height="56" style="width:56px;height:56px;object-position:center top;" onerror="this.onerror=null;this.replaceWith(Object.assign(document.createElement('div'),{className:'char-guess-fallback',textContent:'${initials.replace(/'/g, "")}',style:'width:56px;height:56px'}))" />`
         : `<div class="char-guess-fallback" style="width:56px;height:56px">${initials}</div>`;
       cellDiv.innerHTML = `
         <div class="char-guess-wrap">
@@ -3517,32 +3628,32 @@ function questProgress(variant) {
   }
   const fr = (lang !== "en");
   if (u.winsW7mhe != null) {
-    parts.push({ label: fr ? "Victoires Water 7+ · Moyen+" : "Water 7+ wins · Medium+", cur: qGet(Q_W7MHE_KEY), need: u.winsW7mhe });
+    parts.push({ label: fr ? "Victoires en Water 7 ou après (Moyen+)" : "Wins from Water 7 onward (Medium+)", cur: qGet(Q_W7MHE_KEY), need: u.winsW7mhe });
   }
   if (u.winsDRhe != null) {
-    parts.push({ label: fr ? "Victoires Dressrosa+ · Difficile+" : "Dressrosa+ wins · Hard+", cur: qGet(Q_DRHE_KEY), need: u.winsDRhe });
+    parts.push({ label: fr ? "Victoires à Dressrosa ou après (Difficile+)" : "Wins from Dressrosa onward (Hard+)", cur: qGet(Q_DRHE_KEY), need: u.winsDRhe });
   }
   if (u.winsWChec != null) {
-    parts.push({ label: fr ? "Victoires Whole Cake+ · Difficile+" : "Whole Cake+ wins · Hard+", cur: qGet(Q_WCHE_KEY), need: u.winsWChec });
+    parts.push({ label: fr ? "Victoires à Whole Cake ou après (Difficile+)" : "Wins from Whole Cake onward (Hard+)", cur: qGet(Q_WCHE_KEY), need: u.winsWChec });
   }
   if (u.winsWanoEx != null) {
-    parts.push({ label: fr ? "Victoires Wano+ · Extrême" : "Wano+ wins · Extreme", cur: qGet(Q_WANOEX_KEY), need: u.winsWanoEx });
+    parts.push({ label: fr ? "Victoires à Wano ou après (Extrême)" : "Wins from Wano onward (Extreme)", cur: qGet(Q_WANOEX_KEY), need: u.winsWanoEx });
   }
   if (u.winsEBex != null) {
-    parts.push({ label: fr ? "Victoires East Blue · Extrême" : "East Blue wins · Extreme", cur: qGet(Q_EBEX_KEY), need: u.winsEBex });
+    parts.push({ label: fr ? "Victoires à East Blue (Extrême)" : "East Blue wins (Extreme)", cur: qGet(Q_EBEX_KEY), need: u.winsEBex });
   }
   if (u.streakW7he != null) {
-    parts.push({ label: fr ? "Série Water 7+ · Difficile+" : "Water 7+ streak · Hard+", cur: Math.min(qGet(Q_BEST_KEY), u.streakW7he), need: u.streakW7he });
+    parts.push({ label: fr ? "Meilleure série Water 7+ (Difficile+)" : "Best streak from Water 7 onward (Hard+)", cur: Math.min(qGet(Q_BEST_KEY), u.streakW7he), need: u.streakW7he });
   }
   if (u.firstTryW7 != null) {
-    parts.push({ label: fr ? "1er coup Water 7+" : "Water 7+ first try", cur: Math.min(qGet(Q_FIRSTTRY_KEY), u.firstTryW7), need: u.firstTryW7 });
+    parts.push({ label: fr ? "Victoires au 1er essai (Water 7+)" : "First-try wins (Water 7+)", cur: Math.min(qGet(Q_FIRSTTRY_KEY), u.firstTryW7), need: u.firstTryW7 });
   }
   if (Array.isArray(u.drawn)) {
     let stats = {};
     try { stats = JSON.parse(localStorage.getItem(PICK_STATS_KEY) || "{}"); } catch (e) {}
     const cur = u.drawn.filter(k => (Number(stats[k]) || 0) > 0).length;
     parts.push({
-      label: fr ? "Persos East Blue tirés" : "East Blue mysteries drawn",
+      label: fr ? "Personnages d'East Blue déjà tirés" : "East Blue characters already drawn",
       cur, need: u.drawn.length
     });
   }
@@ -3550,13 +3661,13 @@ function questProgress(variant) {
     let un = [];
     try { un = getUnlockedNames(); } catch (e) {}
     const cur = u.hasVariants.filter(id => un.includes(id)).length;
-    parts.push({ label: fr ? "Formes" : "Forms", cur, need: u.hasVariants.length });
+    parts.push({ label: fr ? "Formes de l'équipage" : "Crew forms", cur, need: u.hasVariants.length });
   }
   if (Array.isArray(u.hasCharacters)) {
     let un = [];
     try { un = getUnlockedNames(); } catch (e) {}
     const cur = u.hasCharacters.filter(n => un.includes(n)).length;
-    parts.push({ label: fr ? "Personnages" : "Characters", cur, need: u.hasCharacters.length });
+    parts.push({ label: fr ? "Personnages clés" : "Key characters", cur, need: u.hasCharacters.length });
   }
   if (u.collectionComplete) {
     const cat = (typeof COLLECTION_CATEGORIES !== "undefined" ? COLLECTION_CATEGORIES : []).find(c => c.id === u.collectionComplete);
@@ -3564,7 +3675,11 @@ function questProgress(variant) {
     const rewards = (typeof getAllCollectionRewardIds === "function") ? getAllCollectionRewardIds() : new Set();
     const target = ((cat && cat.members) || []).filter(m => !rewards.has(m));
     const unlocked = new Set((typeof getUnlockedNames === "function" ? getUnlockedNames() : []));
-    parts.push({ label: (t.questNeedAlbum || "Album") + " « " + catLabel + " »", cur: target.filter(m => unlocked.has(m)).length, need: target.length });
+    parts.push({
+      label: fr ? "Album « " + catLabel + " » complété" : catLabel + " album completed",
+      cur: target.filter(m => unlocked.has(m)).length,
+      need: target.length
+    });
   }
   return { done: (typeof isVariantUnlocked === "function" ? isVariantUnlocked(variant) : parts.every(p => p.cur >= p.need)), parts };
 }
@@ -3647,16 +3762,26 @@ function renderQuestsList() {
   const unlocked = new Set((typeof getUnlockedNames === "function" ? getUnlockedNames() : []));
   // Quêtes portées par des cartes bases (navires Merry/Sunny) : la carte EST la récompense
   const baseQuests = (typeof CHARACTERS !== "undefined" ? CHARACTERS : []).filter(c => c.unlock && c.questName);
-  const quests = CHARACTER_VARIANTS
+  const questsAll = CHARACTER_VARIANTS
     .filter(v => v.unlock)
     .concat(baseQuests)
     .slice()
     .sort((a, b) => questChronoRank(a) - questChronoRank(b));
+  // Seules les quêtes des îles débloquées sur la carte sont affichées.
+  const canGate = !!(window.OPMap && typeof window.OPMap.questUnlocked === "function");
+  const quests = canGate
+    ? questsAll.filter(v => { try { return window.OPMap.questUnlocked(v); } catch (e) { return true; } })
+    : questsAll;
+  const gateNote = canGate
+    ? `<p class="text-center text-[10px] text-slate-500 pb-2">${lang === "fr"
+        ? "Seules les quêtes des îles débloquées sur la carte apparaissent."
+        : "Only quests from islands unlocked on the map are shown."}</p>`
+    : "";
   if (!quests.length) {
-    list.innerHTML = `<p class="text-center text-slate-500 text-sm py-10">${t.questsEmpty || "—"}</p>`;
+    list.innerHTML = gateNote + `<p class="text-center text-slate-500 text-sm py-10">${t.questsEmpty || "—"}</p>`;
     return;
   }
-  list.innerHTML = quests.map(v => {
+  list.innerHTML = gateNote + quests.map(v => {
     const isDone = unlocked.has(v.id || v.name);
     const prog = questProgress(v);
     // Nom créatif de quête si défini (caché tant que verrouillé : ??? anti-spoiler)
@@ -3667,16 +3792,20 @@ function renderQuestsList() {
     const baseName = (v.questSubject && (v.questSubject[lang] || v.questSubject.fr || v.questSubject.en))
       || (v.displayName && (v.displayName[lang] || v.displayName.fr || v.displayName.en)) || v.id || v.name;
     const name = qn ? (isDone ? joinQuestName(baseName, qn) : qn) : baseName;
+    const loc = (window.OPMap && typeof window.OPMap.questLocation === "function") ? window.OPMap.questLocation(v) : null;
+    const locTxt = loc ? String(loc.name).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])) : "";
     const img = v.image
-      ? `<img src="${v.image}" alt="" draggable="false" class="w-full h-full object-cover" style="object-position:center top;${isDone ? "" : "filter:brightness(0.55) opacity(0.6);"}" onerror="this.style.display='none'" />`
+      ? `<img src="${thumbSrc(v.image)}" alt="" draggable="false" loading="lazy" decoding="async" class="w-full h-full object-cover" style="object-position:center top;${isDone ? "" : "filter:brightness(0.55) opacity(0.6);"}" onerror="this.style.display='none'" />`
       : `<span class="ico text-2xl">🏆</span>`;
     const conds = prog.parts.map(p => {
-      const pct = p.need > 0 ? Math.min(100, Math.round((p.cur / p.need) * 100)) : 100;
-      return `<div class="mt-1">
-        <div class="flex justify-between text-[10px] text-slate-400"><span>${p.label}</span><span class="tabular-nums">${p.cur} / ${p.need}</span></div>
-        <div class="h-1.5 rounded-full bg-slate-800 overflow-hidden"><div class="h-full rounded-full ${isDone ? "bg-emerald-500" : "bg-amber-500"}" style="width:${pct}%"></div></div>
-      </div>`;
-    }).join("");
+    const pct = p.need > 0 ? Math.min(100, Math.round((p.cur / p.need) * 100)) : 100;
+    const shown = Math.min(p.cur, p.need);
+    const ok = p.cur >= p.need;
+    return `<div class="mt-1">
+      <div class="flex justify-between gap-2 text-[10px] text-slate-400"><span class="min-w-0">${p.label}</span><span class="tabular-nums shrink-0">${shown} / ${p.need}${ok ? " ✓" : ""}</span></div>
+      <div class="h-1.5 rounded-full bg-slate-800 overflow-hidden"><div class="h-full rounded-full ${isDone ? "bg-emerald-500" : "bg-amber-500"}" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join("");
     return `<div class="flex gap-3 items-start bg-slate-950/60 border ${isDone ? "border-emerald-600/40" : "border-slate-700/70"} rounded-xl p-2.5">
       <div class="w-14 h-14 rounded-lg overflow-hidden bg-slate-900 shrink-0 flex items-center justify-center border border-slate-700/60">${img}</div>
       <div class="min-w-0 flex-1">
@@ -3684,6 +3813,7 @@ function renderQuestsList() {
           <p class="text-sm font-bold leading-snug min-w-0 break-words ${isDone ? "text-white" : "text-slate-500"}">${isDone ? name : (t.questLockedName || "???")}</p>
           ${isDone ? `<span class="text-[10px] font-bold text-emerald-400 shrink-0">${t.questDone || "✓"}</span>` : ""}
         </div>
+        ${loc ? `<p class="text-[10px] mt-0.5 ${loc.here ? "text-amber-300 font-bold" : "text-slate-500"}">📍 ${locTxt}${loc.here ? " · " + (lang === "fr" ? "vous êtes ici" : "you are here") : ""}</p>` : ""}
         ${conds}
       </div>
     </div>`;
@@ -4062,6 +4192,11 @@ document.getElementById("modeSelect").addEventListener("change", (e) => {
 });
 document.getElementById("storySelect").addEventListener("change", (e) => {
   setStory(e.target.value);
+});
+const arcFocusBadgeEl = document.getElementById("arcFocusBadge");
+if (arcFocusBadgeEl) arcFocusBadgeEl.addEventListener("click", () => {
+  clearArcFocus();
+  showToast(currentLang === "fr" ? "Bonus d'arc retiré" : "Arc bonus removed");
 });
 
 document.querySelectorAll(".modalCloseBtn").forEach(btn => {
@@ -6133,3 +6268,40 @@ function maybeShowOnboarding() {
 /* Thème : appliqué en tout dernier — le thème Jolly Roger vérifie l'album
    Barbe Noire, qui dépend des données admin/collection initialisées plus haut. */
 if (typeof applyTheme === "function") applyTheme(getTheme());
+
+/* --------------------------------------------------------------------------
+ * Préchauffage du cache des portraits.
+ * Les grilles (album, Tier List, quêtes) contiennent des centaines d'images :
+ * on les charge en arrière-plan (6 à la fois) après le chargement de la page.
+ * Elles s'affichent alors instantanément quand on ouvre/parcourt une grille.
+ * ------------------------------------------------------------------------ */
+function warmPortraitCache() {
+  // On respecte « économiseur de données » et les connexions très lentes.
+  const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (conn && (conn.saveData || /(^|-)2g/.test(conn.effectiveType || ""))) return;
+  const urls = new Set();
+  (typeof CHARACTERS !== "undefined" ? CHARACTERS : []).forEach(c => { if (c && c.image) urls.add(thumbSrc(c.image)); });
+  (typeof CHARACTER_VARIANTS !== "undefined" ? CHARACTER_VARIANTS : []).forEach(v => { if (v && v.image) urls.add(thumbSrc(v.image)); });
+  (typeof DEVIL_FRUITS !== "undefined" ? DEVIL_FRUITS : []).forEach(f => { if (f && f.image) urls.add(thumbSrc(f.image)); });
+  const queue = [...urls];
+  let active = 0;
+  const pump = () => {
+    while (active < 4 && queue.length) {
+      const src = queue.shift();
+      active++;
+      const img = new Image();
+      img.decoding = "async";
+      img.onload = img.onerror = () => { active--; pump(); };
+      img.src = src;
+    }
+  };
+  pump();
+}
+if (typeof window !== "undefined") {
+  const startWarm = () => setTimeout(() => {
+    if ("requestIdleCallback" in window) window.requestIdleCallback(warmPortraitCache, { timeout: 2500 });
+    else warmPortraitCache();
+  }, 1200);
+  if (document.readyState === "complete") startWarm();
+  else window.addEventListener("load", startWarm);
+}

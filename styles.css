@@ -1,6 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-
-/* ========== OPDLE — Thème Grand Line (One Piece, clean) ========== */
+/* Polices auto-hébergées (aucune requête Google Fonts) */
+@font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/PlusJakartaSans-400.woff2') format('woff2'); }
+@font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/PlusJakartaSans-600.woff2') format('woff2'); }
+@font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/PlusJakartaSans-700.woff2') format('woff2'); }
+@font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-weight: 800; font-display: swap; src: url('fonts/PlusJakartaSans-800.woff2') format('woff2'); }
+@font-face { font-family: 'Luckiest Guy'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/LuckiestGuy-Regular.woff2') format('woff2'); }
+﻿/* ========== OPDLE â€” ThÃ¨me Grand Line (One Piece, clean) ========== */
 :root {
   --op-sea-0: #060d1a;
   --op-sea-1: #0b1a33;
@@ -21,7 +25,7 @@ body[class] {
   background-attachment: fixed;
 }
 
-/* Titre façon logo pirate */
+/* Titre faÃ§on logo pirate */
 .op-title {
   font-family: var(--op-font-display);
   letter-spacing: 0.045em;
@@ -40,12 +44,12 @@ body[class] {
   font-weight: 400;
 }
 
-/* Boutons d'en-tête : bois sombre + liseré or au survol */
-#collectionBtn, #questsBtn, #versusBtn, #tierListBtn, #profileBtn, #onboardHelpBtn, #settingsBtn, #giveUpBtn {
+/* Boutons d'en-tÃªte : bois sombre + liserÃ© or au survol */
+#collectionBtn, #questsBtn, #versusBtn, #tierListBtn, #fruitBtn, #mapBtn, #profileBtn, #onboardHelpBtn, #settingsBtn, #giveUpBtn {
   background: rgba(13, 28, 52, 0.9) !important;
   border: 1px solid rgba(251, 191, 36, 0.22) !important;
 }
-#collectionBtn:hover, #questsBtn:hover, #versusBtn:hover, #tierListBtn:hover, #profileBtn:hover,
+#collectionBtn:hover, #questsBtn:hover, #versusBtn:hover, #tierListBtn:hover, #fruitBtn:hover, #mapBtn:hover, #profileBtn:hover,
 #onboardHelpBtn:hover, #settingsBtn:hover, #giveUpBtn:hover {
   border-color: rgba(251, 191, 36, 0.65) !important;
 }
@@ -62,7 +66,7 @@ body[class] {
 .guess-cell { border-radius: 14px; }
 .guess-cell.bg-slate-700 { border: 1px solid rgba(148, 163, 184, 0.28); }
 
-/* Bouton compte : pilule en haut à droite, avatar bien visible */
+/* Bouton compte : pilule en haut Ã  droite, avatar bien visible */
 #profileBtn {
   background: rgba(13, 28, 52, 0.9) !important;
   border: 1px solid rgba(251, 191, 36, 0.22) !important;
@@ -147,7 +151,7 @@ body[class] {
 .profile-pill:hover {
   border-color: rgba(251, 191, 36, 0.65);
 }
-/* Tampon WANTED (modale victoire) — volontairement discret */
+/* Tampon WANTED (modale victoire) â€” volontairement discret */
 .wanted-stamp {
   font-family: var(--op-font-display);
   display: inline-block;
@@ -161,7 +165,7 @@ body[class] {
   font-size: 0.68rem;
 }
 /* Prime en display font UNIQUEMENT quand c'est un vrai montant.
-   "Inconnu" garde la typo normale (sinon c'est énorme). */
+   "Inconnu" garde la typo normale (sinon c'est Ã©norme). */
 #modalWinnerBounty.bounty-known {
   font-family: var(--op-font-display);
   font-size: 1.6rem;
@@ -169,7 +173,7 @@ body[class] {
   letter-spacing: 0.03em;
 }
 
-/* Album façon mur d'affiches */
+/* Album faÃ§on mur d'affiches */
 .album-page { border-color: rgba(217, 119, 6, 0.28) !important; }
 
 /* Champ de recherche : focus or */
@@ -178,7 +182,7 @@ body[class] {
   box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.22), 0 10px 30px rgba(0, 0, 0, 0.45);
 }
 
-/* Scrollbars teintées or */
+/* Scrollbars teintÃ©es or */
 ::-webkit-scrollbar-thumb { background: #7c5a1e !important; }
 ::-webkit-scrollbar-thumb:hover { background: #a37c2a !important; }
 
@@ -190,7 +194,7 @@ body[class] {
   padding: 18px 12px 8px;
 }
 
-/* Thème clair : on coupe le fond marin */
+/* ThÃ¨me clair : on coupe le fond marin */
 html.light body {
   background-image: none !important;
   background-color: #f1f5f9 !important;
@@ -200,8 +204,8 @@ html.light .album-page { border-color: #e2e8f0 !important; }
 
 html, body {
   overflow-x: hidden; /* compat anciens navigateurs */
-  /* « clip » masque aussi le débordement horizontal mais, contrairement à
-     « hidden », ne crée PAS de conteneur de défilement : sans cela,
+  /* Â« clip Â» masque aussi le dÃ©bordement horizontal mais, contrairement Ã 
+     Â« hidden Â», ne crÃ©e PAS de conteneur de dÃ©filement : sans cela,
      position:sticky sur #topNav ne fonctionne plus (nav perdue au scroll). */
   overflow-x: clip;
 }
@@ -253,6 +257,9 @@ select option {
 
 .album-page {
   box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.35);
+  /* Les pages hors écran ne sont pas rendues (album de 37 pages). */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 340px;
 }
 .album-slot {
   box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.8), 0 2px 6px rgba(0, 0, 0, 0.4);
@@ -454,7 +461,7 @@ button.album-slot {
   }
 }
 
-/* Légende */
+/* LÃ©gende */
 .legend-chip {
   display: inline-flex;
   align-items: center;
@@ -479,7 +486,7 @@ button.album-slot {
 .onboard-dot.active { background: #f59e0b; width: 20px; }
 .onboard-icon { font-size: 2.75rem; line-height: 1; }
 
-/* Lisibilité — valeurs spéciales */
+/* LisibilitÃ© â€” valeurs spÃ©ciales */
 .val-unknown { color: #a78bfa; font-style: italic; } /* Inconnu */
 .val-zero { color: #94a3b8; } /* 0 / pas de prime */
 .val-none { color: #64748b; } /* Aucun */
@@ -519,7 +526,7 @@ button.album-slot {
   .guess-input-dock #suggestionsMenu { bottom: calc(100% + 6px); top: auto !important; margin-top: 0; }
 }
 
-/* Aucun — contraste plus fort */
+/* Aucun â€” contraste plus fort */
 .val-none {
   color: #e2e8f0 !important;
   font-weight: 700;
@@ -530,7 +537,7 @@ button.album-slot {
 /* Shiny appearance */
 .guess-cell.shiny-hit {
   box-shadow: 0 0 0 2px #fbbf24, 0 0 18px rgba(251, 191, 36, 0.55) !important;
-  /* pas d'animation ici : elle écrasait cell-flip et laissait opacity:0 */
+  /* pas d'animation ici : elle Ã©crasait cell-flip et laissait opacity:0 */
 }
 @keyframes shinyPulse {
   0%, 100% { filter: brightness(1); }
@@ -563,7 +570,7 @@ button.album-slot {
   font-size: 0.9rem;
 }
 
-/* Avatar picker — carrés côte à côte (padding-bottom trick, pas d’aspect-ratio fragile) */
+/* Avatar picker â€” carrÃ©s cÃ´te Ã  cÃ´te (padding-bottom trick, pas dâ€™aspect-ratio fragile) */
 #unlockedGrid,
 #unlockedGrid.avatar-picker-grid,
 .avatar-picker-grid {
@@ -593,7 +600,7 @@ button.album-slot {
   display: block !important;
   width: 100% !important;
   height: 0 !important;
-  padding: 0 0 100% 0 !important; /* carré = largeur */
+  padding: 0 0 100% 0 !important; /* carrÃ© = largeur */
   margin: 0 !important;
   border-radius: 12px !important;
   background: #0f172a !important;
@@ -642,7 +649,7 @@ button.album-slot {
   z-index: 71;
 }
 
-/* Rareté album — cadres renforcés */
+/* RaretÃ© album â€” cadres renforcÃ©s */
 .album-slot.rarity-1 { border-width: 2px; }
 .album-slot.rarity-2 { border-width: 2px; }
 .album-slot.rarity-3 { border-width: 2px; }
@@ -656,7 +663,7 @@ button.album-slot {
 /* Ligne shiny / alt (victoire) */
 .guess-row-shiny .guess-cell.bg-emerald-600,
 .guess-row-shiny .guess-cell {
-  /* les cellules déjà vertes restent ; le cadre de ligne indique shiny */
+  /* les cellules dÃ©jÃ  vertes restent ; le cadre de ligne indique shiny */
 }
 .guess-row.guess-row-shiny {
   outline: 2px solid rgba(167, 139, 250, 0.9);
@@ -704,7 +711,7 @@ button.album-slot {
   background-color: #0284c7 !important;
 }
 
-/* character cell — image unique */
+/* character cell â€” image unique */
 .guess-cell.character-cell {
   overflow: visible !important;
 }
@@ -793,7 +800,7 @@ html.light .bg-slate-900,
 html.light .bg-slate-900\/80 {
   background-color: #f8fafc !important;
 }
-/* Cartes internes (fiche perso verrouillée, quêtes, lignes détail) */
+/* Cartes internes (fiche perso verrouillÃ©e, quÃªtes, lignes dÃ©tail) */
 html.light .bg-slate-950\/60,
 html.light .bg-slate-900\/50,
 html.light .bg-slate-800\/60,
@@ -801,7 +808,7 @@ html.light .bg-slate-800\/50,
 html.light .bg-slate-800\/40 {
   background-color: #ffffff !important;
 }
-/* Cellules de jeu "raté" + pastilles sombres : gris clair en light */
+/* Cellules de jeu "ratÃ©" + pastilles sombres : gris clair en light */
 html.light .bg-slate-700 {
   background-color: #e2e8f0 !important;
   color: #334155 !important;
@@ -827,7 +834,7 @@ html.light .text-slate-500 {
 html.light .text-white {
   color: #0f172a !important;
 }
-/* Boutons d'en-tête : fond clair en light (les règles ID sombres gagneraient sinon) */
+/* Boutons d'en-tÃªte : fond clair en light (les rÃ¨gles ID sombres gagneraient sinon) */
 html.light #collectionBtn, html.light #questsBtn, html.light #versusBtn,
 html.light #profileBtn, html.light #onboardHelpBtn, html.light #settingsBtn,
 html.light #giveUpBtn {
@@ -894,7 +901,7 @@ html.light .album-page {
   background: #fff !important;
   border-color: #e2e8f0 !important;
 }
-/* Slots : le JS impose un fond inline (#0f172a) → !important requis */
+/* Slots : le JS impose un fond inline (#0f172a) â†’ !important requis */
 html.light .album-slot {
   background: #ffffff !important;
 }
@@ -928,20 +935,20 @@ html.light #adminBar {
 }
 
 /* ================================================================
-   Responsive — polissage mobile / tablette
-   Mesures avant/après sur 390 px : nav 145 px → ~52 px,
-   barre admin 134 px → ~48 px, select Mode/Histoire empilés → côte à côte.
+   Responsive â€” polissage mobile / tablette
+   Mesures avant/aprÃ¨s sur 390 px : nav 145 px â†’ ~52 px,
+   barre admin 134 px â†’ ~48 px, select Mode/Histoire empilÃ©s â†’ cÃ´te Ã  cÃ´te.
    ================================================================ */
 
-/* La barre admin (position:fixed, en haut) décale la page ET la nav collante,
-   sinon elle les recouvre. Hauteur pilotée en JS : syncAdminBarOffset().
-   !important obligatoire : le body porte la classe Tailwind « pt-0 ». */
+/* La barre admin (position:fixed, en haut) dÃ©cale la page ET la nav collante,
+   sinon elle les recouvre. Hauteur pilotÃ©e en JS : syncAdminBarOffset().
+   !important obligatoire : le body porte la classe Tailwind Â« pt-0 Â». */
 body {
   padding-top: var(--admin-bar-h, 0px) !important;
 }
 
-/* Aides sous les réglages : chaque texte reste dans SA colonne même quand
-   l'autre est masqué (display:none le retirerait du flux sinon). */
+/* Aides sous les rÃ©glages : chaque texte reste dans SA colonne mÃªme quand
+   l'autre est masquÃ© (display:none le retirerait du flux sinon). */
 #modeHelpText {
   grid-column: 1;
 }
@@ -949,9 +956,9 @@ body {
   grid-column: 2;
 }
 
-/* Mots clés des aides : blanc + gras (respiration avec le gris de base,
-   s'accorde au titre/au reste du site). La règle vise le <span> lui-même :
-   elle l'emporte sur la couleur héritée du <p> (text-slate-400) sans
+/* Mots clÃ©s des aides : blanc + gras (respiration avec le gris de base,
+   s'accorde au titre/au reste du site). La rÃ¨gle vise le <span> lui-mÃªme :
+   elle l'emporte sur la couleur hÃ©ritÃ©e du <p> (text-slate-400) sans
    conflit de couches Tailwind. */
 .help-key {
   color: #ffffff; /* blanc sur fond sombre */
@@ -962,7 +969,7 @@ html.light .help-key {
   font-weight: 700;
 }
 
-/* Cible tactile confortable pour le petit « ? » de l'aide Histoire */
+/* Cible tactile confortable pour le petit Â« ? Â» de l'aide Histoire */
 #storyHelpBtn,
 #modeHelpBtn {
   padding: 7px 9px;
@@ -971,11 +978,11 @@ html.light .help-key {
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-/* État actif (aide ouverte) : fond discret + contour, piloté par
-   aria-expanded pour qu'il se réinitialise toujours à la fermeture.
-   Le fond passe par background-image : Tailwind déclare
+/* Ã‰tat actif (aide ouverte) : fond discret + contour, pilotÃ© par
+   aria-expanded pour qu'il se rÃ©initialise toujours Ã  la fermeture.
+   Le fond passe par background-image : Tailwind dÃ©clare
    background-color:transparent en @layer, ce qui l'emporte sur un
-   auteur !important — background-image n'est pas concerné. */
+   auteur !important â€” background-image n'est pas concernÃ©. */
 .help-toggle[aria-expanded="true"] {
   background-image: linear-gradient(rgba(148,163,184,0.18), rgba(148,163,184,0.18)) !important;
   box-shadow: inset 0 0 0 1px rgba(148,163,184,0.5);
@@ -984,7 +991,7 @@ html.light .help-key {
 #storyHelpBtn.help-toggle[aria-expanded="true"] {
   color: #7dd3fc !important; /* sky-300 : les 2 boutons restent bleus */
 }
-/* Même état actif en thème clair : fond visible + texte conservé.
+/* MÃªme Ã©tat actif en thÃ¨me clair : fond visible + texte conservÃ©.
    (background-image pour contourner le reset Tailwind, cf. plus haut.) */
 html.light .help-toggle[aria-expanded="true"] {
   background-image: linear-gradient(rgba(15,23,42,0.10), rgba(15,23,42,0.10)) !important;
@@ -996,7 +1003,7 @@ html.light #storyHelpBtn.help-toggle[aria-expanded="true"] {
 }
 
 @media (max-width: 960px) {
-  /* Nav : les liens rejoignent la ligne du logo → une seule ligne */
+  /* Nav : les liens rejoignent la ligne du logo â†’ une seule ligne */
   #topNav {
     gap: 6px;
   }
@@ -1012,7 +1019,7 @@ html.light #storyHelpBtn.help-toggle[aria-expanded="true"] {
     font-size: 0.85rem;
   }
 
-  /* Barre admin : une seule ligne défilante au lieu de 4 lignes empilées */
+  /* Barre admin : une seule ligne dÃ©filante au lieu de 4 lignes empilÃ©es */
   #adminBar {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -1036,8 +1043,8 @@ html.light #storyHelpBtn.help-toggle[aria-expanded="true"] {
 }
 
 @media (max-width: 640px) {
-  /* Nav ultra-compacte : le logo de la barre cède la place au grand titre H1
-     juste en dessous → liens + icônes sur une seule ligne (défilante si besoin). */
+  /* Nav ultra-compacte : le logo de la barre cÃ¨de la place au grand titre H1
+     juste en dessous â†’ liens + icÃ´nes sur une seule ligne (dÃ©filante si besoin). */
   #topNav {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -1071,8 +1078,8 @@ html.light #storyHelpBtn.help-toggle[aria-expanded="true"] {
 }
 
 @media (max-width: 480px) {
-  /* Écrans très étroits : la nav passe en icônes seules (🃏 🏆 ⚔️) pour
-     tenir sur une ligne — les libellés restent visibles au-delà de 480 px. */
+  /* Ã‰crans trÃ¨s Ã©troits : la nav passe en icÃ´nes seules (ðŸƒ ðŸ† âš”ï¸) pour
+     tenir sur une ligne â€” les libellÃ©s restent visibles au-delÃ  de 480 px. */
   #topNav .nav-link span:last-child {
     display: none;
   }
@@ -1082,9 +1089,9 @@ html.light #storyHelpBtn.help-toggle[aria-expanded="true"] {
 }
 
 /* ============================================================================
- * Ajustements responsive (mobile / tablette) — 2026-10
- * Objectifs : cibles tactiles >= 40 px, en-tête plus compact, meilleure
- * utilisation de la largeur sur tablette, libellés lisibles, modales en dvh.
+ * Ajustements responsive (mobile / tablette) â€” 2026-10
+ * Objectifs : cibles tactiles >= 40 px, en-tÃªte plus compact, meilleure
+ * utilisation de la largeur sur tablette, libellÃ©s lisibles, modales en dvh.
  * ========================================================================== */
 @media (min-width: 521px) and (max-width: 819px) {
   #results > .guess-row {
@@ -1144,7 +1151,7 @@ html.light #storyHelpBtn.help-toggle[aria-expanded="true"] {
   .guess-cell-label { font-size: 0.65rem !important; letter-spacing: 0.04em; }
 }
 
-/* Accessibilité : focus clavier visible + lien d'évitement */
+/* AccessibilitÃ© : focus clavier visible + lien d'Ã©vitement */
 :focus-visible {
   outline: 2px solid #f59e0b;
   outline-offset: 2px;
@@ -1164,8 +1171,8 @@ html.light #storyHelpBtn.help-toggle[aria-expanded="true"] {
 .skip-link:focus { left: 0; }
 
 /* ================================================================
-   Sélecteur de thème — pastilles (sans texte)
-   Chaque pastille montre le thème : noir, blanc, ou le crâne du logo.
+   SÃ©lecteur de thÃ¨me â€” pastilles (sans texte)
+   Chaque pastille montre le thÃ¨me : noir, blanc, ou le crÃ¢ne du logo.
    ================================================================ */
 .theme-swatch {
   position: relative;
@@ -1223,8 +1230,9 @@ html.light #storyHelpBtn.help-toggle[aria-expanded="true"] {
 
 /* ================================================================
    Salon / matchmaking en attente
-   Le plateau de jeu est masqué tant qu'un adversaire n'est pas trouvé,
-   pour éviter tout élément parasite (légende « Trop bas / Too low »,
-   champ de saisie…) visible derrière la modale Versus.
+   Le plateau de jeu est masquÃ© tant qu'un adversaire n'est pas trouvÃ©,
+   pour Ã©viter tout Ã©lÃ©ment parasite (lÃ©gende Â« Trop bas / Too low Â»,
+   champ de saisieâ€¦) visible derriÃ¨re la modale Versus.
    ================================================================ */
 body.vs-room-waiting main { display: none !important; }
+
