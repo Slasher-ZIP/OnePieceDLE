@@ -4,7 +4,7 @@
 @font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/PlusJakartaSans-700.woff2') format('woff2'); }
 @font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-weight: 800; font-display: swap; src: url('fonts/PlusJakartaSans-800.woff2') format('woff2'); }
 @font-face { font-family: 'Luckiest Guy'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/LuckiestGuy-Regular.woff2') format('woff2'); }
-﻿/* ========== OPDLE â€” ThÃ¨me Grand Line (One Piece, clean) ========== */
+/* ========== OPDLE â€” ThÃ¨me Grand Line (One Piece, clean) ========== */
 :root {
   --op-sea-0: #060d1a;
   --op-sea-1: #0b1a33;
