@@ -836,18 +836,27 @@ html.light .text-white {
 }
 /* Boutons d'en-tÃªte : fond clair en light (les rÃ¨gles ID sombres gagneraient sinon) */
 html.light #collectionBtn, html.light #questsBtn, html.light #versusBtn,
+html.light #tierListBtn, html.light #fruitBtn, html.light #mapBtn,
 html.light #profileBtn, html.light #onboardHelpBtn, html.light #settingsBtn,
 html.light #giveUpBtn {
   background: #ffffff !important;
   border-color: #cbd5e1 !important;
+  color: #334155 !important;
 }
 html.light #giveUpBtn { color: #be123c !important; }
 html.light #onboardHelpBtn { color: #4338ca !important; }
 html.light #settingsBtn { color: #334155 !important; }
 html.light #collectionBtn:hover, html.light #questsBtn:hover, html.light #versusBtn:hover,
+html.light #tierListBtn:hover, html.light #fruitBtn:hover, html.light #mapBtn:hover,
 html.light #profileBtn:hover, html.light #onboardHelpBtn:hover,
 html.light #settingsBtn:hover, html.light #giveUpBtn:hover {
   border-color: #f59e0b !important;
+}
+html.light #tierListBtn.is-active, html.light #fruitBtn.is-active, html.light #mapBtn.is-active,
+html.light #collectionBtn.is-active, html.light #questsBtn.is-active, html.light #versusBtn.is-active {
+  background: #fef3c7 !important;
+  border-color: #f59e0b !important;
+  color: #92400e !important;
 }
 html.light #guessInput {
   background: #fff !important;
