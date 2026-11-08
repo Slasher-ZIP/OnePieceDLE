@@ -38,11 +38,11 @@
   <meta name="twitter:image" content="https://slasher-zip.github.io/OnePieceDLE/og-image.png?v=3">
   <meta name="twitter:image:alt" content="OPDLE — One Piece DLE">
   <!-- Tailwind compilé en local (voir BUILD.txt pour régénérer) -->
-  <link rel="stylesheet" href="tailwind.css?v=20261108-2">
+  <link rel="stylesheet" href="tailwind.css?v=20261108-3">
   <link rel="preload" href="fonts/PlusJakartaSans-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/PlusJakartaSans-700.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/LuckiestGuy-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css?v=20261108-2">
+  <link rel="stylesheet" href="styles.css?v=20261108-3">
   <style>
     /* Police auto-hébergée (plus de blocage Google Fonts) */
     @font-face { font-family: 'Plus Jakarta Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/PlusJakartaSans-400.woff2') format('woff2'); }
@@ -93,11 +93,11 @@
       else if (_th === "light") { document.documentElement.classList.remove("dark"); document.documentElement.classList.add("light"); }
     } catch (e) {}
   </script>
-  <link rel="stylesheet" href="jolly.css?v=20261108-2">
-<link rel="stylesheet" href="tierlist.css?v=20261108-2">
-<link rel="stylesheet" href="fruits.css?v=20261108-2">
-<link rel="stylesheet" href="map.css?v=20261108-2">
-<link rel="stylesheet" href="fruit-page.css?v=20261108-2">
+  <link rel="stylesheet" href="jolly.css?v=20261108-3">
+<link rel="stylesheet" href="tierlist.css?v=20261108-3">
+<link rel="stylesheet" href="fruits.css?v=20261108-3">
+<link rel="stylesheet" href="map.css?v=20261108-3">
+<link rel="stylesheet" href="fruit-page.css?v=20261108-3">
 </head>
 
 <body class="min-h-screen flex flex-col items-center justify-start px-4 sm:px-6 pt-0 pb-4 sm:pb-6 bg-[#0b0f19] text-gray-100">
@@ -895,7 +895,7 @@
     <div class="relative bg-slate-900 border border-amber-500/40 rounded-2xl w-full max-w-6xl h-[92vh] flex flex-col overflow-hidden shadow-2xl">
       <button type="button" class="mapClose map-close-btn" title="Fermer la carte" aria-label="Fermer la carte">✕</button>
       <div class="p-3 border-b border-slate-700/60 flex items-center gap-2 pr-14 shrink-0">
-        <h2 class="text-lg font-extrabold text-amber-300">Carte de Grand Line</h2>
+        <h2 id="mapTitle" class="text-lg font-extrabold text-amber-300">Carte de Grand Line</h2>
         <span id="mapCount" class="text-xs text-slate-400 tabular-nums"></span>
         <div class="ml-auto flex gap-1.5">
           <button type="button" id="mapZoomOut" class="map-zoom-btn" title="Dézoomer">−</button>
@@ -964,19 +964,19 @@
 
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="translations.js?v=20261108-2" defer></script>
+  <script src="translations.js?v=20261108-3" defer></script>
   <!-- Données découpées : meta → characters → history → variants → collection -->
-  <script src="data/meta.js?v=20261108-2" defer></script>
-  <script src="data/characters.js?v=20261108-2" defer></script>
-  <script src="data/history.js?v=20261108-2" defer></script>
-  <script src="data/variants.js?v=20261108-2" defer></script>
-  <script src="data/collection.js?v=20261108-2" defer></script>
-<script src="data/fruits.js?v=20261108-2" defer></script>
-  <script src="app.js?v=20261108-2" defer></script>
-  <script src="online.js?v=20261108-2" defer></script>
-<script src="tierlist.js?v=20261108-2" defer></script>
-<script src="fruits.js?v=20261108-2" defer></script>
-<script src="map.js?v=20261108-2" defer></script>
-<script src="fruit-play.js?v=20261108-2" defer></script>
+  <script src="data/meta.js?v=20261108-3" defer></script>
+  <script src="data/characters.js?v=20261108-3" defer></script>
+  <script src="data/history.js?v=20261108-3" defer></script>
+  <script src="data/variants.js?v=20261108-3" defer></script>
+  <script src="data/collection.js?v=20261108-3" defer></script>
+<script src="data/fruits.js?v=20261108-3" defer></script>
+  <script src="app.js?v=20261108-3" defer></script>
+  <script src="online.js?v=20261108-3" defer></script>
+<script src="tierlist.js?v=20261108-3" defer></script>
+<script src="fruits.js?v=20261108-3" defer></script>
+<script src="map.js?v=20261108-3" defer></script>
+<script src="fruit-play.js?v=20261108-3" defer></script>
 </body>
 </html>

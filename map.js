@@ -8,33 +8,33 @@
 
   const ISLANDS = [
     // East Blue (quart nord-est)
-    { id: "fuchsia", name: "Village de Fuchsia", short: "Fuchsia", arc: "Romance Dawn", story: "eastblue", region: "east", x: 1210, y: 250, desc: "Le port où tout commence. Luffy y rencontre Shanks et mange le Gomu Gomu no Mi." },
-    { id: "orange", name: "Orange Town", short: "Orange Town", arc: "Orange", story: "eastblue", region: "east", x: 1320, y: 165, desc: "Ville portuaire de Buggy le Clown et de la belle Alvida." },
-    { id: "syrup", name: "Syrup Village", short: "Syrup Village", arc: "Syrup", story: "eastblue", region: "east", x: 1450, y: 280, desc: "Le village de Kaya et du capitaine Kuro aux mille plans." },
-    { id: "baratie", name: "Baratie", short: "Baratie", arc: "Baratie", story: "eastblue", region: "east", x: 1580, y: 175, desc: "Le restaurant flottant de Zeff, où Sanji rejoint l'équipage." },
-    { id: "arlong", name: "Arlong Park", short: "Arlong Park", arc: "Arlong Park", story: "eastblue", region: "east", x: 1700, y: 290, desc: "Le repaire d'Arlong et le sacrifice de Nami pour Cocoyasi." },
-    { id: "loguetown", name: "Loguetown", short: "Loguetown", arc: "Loguetown", story: "eastblue", region: "east", x: 1830, y: 190, desc: "La ville du roi des pirates, où tout pirate rêve de partir." },
+    { id: "fuchsia", name: "Village de Fuchsia", short: "Fuchsia", arc: "Romance Dawn", story: "eastblue", region: "east", x: 1210, y: 250, desc: "Le port où tout commence. Luffy y rencontre Shanks et mange le Gomu Gomu no Mi.", labelSide: "above" },
+    { id: "orange", name: "Orange Town", short: "Orange Town", arc: "Orange", story: "eastblue", region: "east", x: 1320, y: 165, desc: "Ville portuaire de Buggy le Clown et de la belle Alvida.", labelSide: "above" },
+    { id: "syrup", name: "Syrup Village", short: "Syrup Village", arc: "Syrup", story: "eastblue", region: "east", x: 1450, y: 280, desc: "Le village de Kaya et du capitaine Kuro aux mille plans.", labelSide: "above" },
+    { id: "baratie", name: "Baratie", short: "Baratie", arc: "Baratie", story: "eastblue", region: "east", x: 1580, y: 175, desc: "Le restaurant flottant de Zeff, où Sanji rejoint l'équipage.", labelSide: "above" },
+    { id: "arlong", name: "Arlong Park", short: "Arlong Park", arc: "Arlong Park", story: "eastblue", region: "east", x: 1700, y: 290, desc: "Le repaire d'Arlong et le sacrifice de Nami pour Cocoyasi.", labelSide: "above" },
+    { id: "loguetown", name: "Loguetown", short: "Loguetown", arc: "Loguetown", story: "eastblue", region: "east", x: 1830, y: 190, desc: "La ville du roi des pirates, où tout pirate rêve de partir.", labelSide: "above" },
     // Paradise (moitié droite de la Grand Line)
-    { id: "reversemtn", name: "Reverse Mountain", short: "Reverse Mountain", arc: "Reverse Mountain", story: "eastblue", region: "center", x: 1010, y: 540, desc: "L'entrée de la Grand Line : les quatre courants se croisent au sommet de la Red Line." },
-    { id: "alabasta", name: "Alabasta", short: "Alabasta", arc: "Alabasta", story: "alabasta", region: "paradise", x: 1125, y: 560, desc: "Le royaume de sable, en proie à la Baroque Works de Crocodile." },
-    { id: "jaya", name: "Jaya", short: "Jaya", arc: "Jaya", story: "skypiea", region: "paradise", x: 1205, y: 520, desc: "L'île du roi de la jet-set et de la cité d'or disparue." },
-    { id: "skypiea", name: "Skypiea", short: "Skypiea", arc: "Skypiea", story: "skypiea", region: "paradise", x: 1285, y: 435, desc: "L'île céleste d'Enel et de la cloche d'or." },
-    { id: "longring", name: "Long Ring Long Land", short: "Long Ring", arc: "Long Ring Long Land", story: "skypiea", region: "paradise", x: 1360, y: 560, desc: "L'île des longues terres et du Davy Back Fight." },
+    { id: "reversemtn", name: "Reverse Mountain", short: "Reverse Mountain", arc: "Reverse Mountain", story: "eastblue", region: "center", x: 1000, y: 545, desc: "L'entrée de la Grand Line : les quatre courants se croisent au sommet de la Red Line.", labelSide: "above" },
+    { id: "alabasta", name: "Alabasta", short: "Alabasta", arc: "Alabasta", story: "alabasta", region: "paradise", x: 1125, y: 575, desc: "Le royaume de sable, en proie à la Baroque Works de Crocodile.", labelSide: "below" },
+    { id: "jaya", name: "Jaya", short: "Jaya", arc: "Jaya", story: "skypiea", region: "paradise", x: 1205, y: 520, desc: "L'île du roi de la jet-set et de la cité d'or disparue.", labelSide: "above" },
+    { id: "skypiea", name: "Skypiea", short: "Skypiea", arc: "Skypiea", story: "skypiea", region: "paradise", x: 1290, y: 440, desc: "L'île céleste d'Enel et de la cloche d'or.", labelSide: "above" },
+    { id: "longring", name: "Long Ring Long Land", short: "Long Ring", arc: "Long Ring Long Land", story: "skypiea", region: "paradise", x: 1365, y: 575, desc: "L'île des longues terres et du Davy Back Fight.", labelSide: "below" },
     { id: "water7", name: "Water 7", short: "Water 7", arc: "Water 7", story: "water7", region: "paradise", x: 1440, y: 520, desc: "La cité des eaux et le chantier naval de Galley-La." },
-    { id: "enies", name: "Enies Lobby", short: "Enies Lobby", arc: "Enies Lobby", story: "water7", region: "paradise", x: 1520, y: 560, desc: "L'île judiciaire : le sauvetage de Robin et le drapeau brûlé." },
-    { id: "thriller", name: "Thriller Bark", short: "Thriller Bark", arc: "Thriller Bark", story: "thriller", region: "paradise", x: 1600, y: 520, desc: "Le navire-île de Moria, peuplé de zombies et d'ombres volées." },
-    { id: "sabaody", name: "Archipel de Sabaody", short: "Sabaody", arc: "Archipel de Sabaody", story: "marineford", region: "paradise", x: 1685, y: 560, desc: "Les mangroves géantes, les bulles et la descente vers l'île des Hommes-Poissons." },
+    { id: "enies", name: "Enies Lobby", short: "Enies Lobby", arc: "Enies Lobby", story: "water7", region: "paradise", x: 1525, y: 575, desc: "L'île judiciaire : le sauvetage de Robin et le drapeau brûlé.", labelSide: "below" },
+    { id: "thriller", name: "Thriller Bark", short: "Thriller Bark", arc: "Thriller Bark", story: "thriller", region: "paradise", x: 1605, y: 520, desc: "Le navire-île de Moria, peuplé de zombies et d'ombres volées.", labelSide: "above" },
+    { id: "sabaody", name: "Archipel de Sabaody", short: "Sabaody", arc: "Archipel de Sabaody", story: "marineford", region: "paradise", x: 1685, y: 575, desc: "Les mangroves géantes, les bulles et la descente vers l'île des Hommes-Poissons.", labelSide: "below" },
     // New World (moitié gauche)
-    { id: "fishman", name: "Île des Hommes-Poissons", short: "Fish-Man Island", arc: "Île des Hommes-Poissons", story: "fishman", region: "center", x: 1010, y: 700, under: true, desc: "Sous la Red Line, le royaume Ryugu et la prophétie de Joy Boy." },
-    { id: "punkhazard", name: "Punk Hazard", short: "Punk Hazard", arc: "Punk Hazard", story: "dressrosa", region: "new", x: 890, y: 560, desc: "L'île de glace et de feu, laboratoire de Caesar Clown." },
-    { id: "dressrosa", name: "Dressrosa", short: "Dressrosa", arc: "Dressrosa", story: "dressrosa", region: "new", x: 810, y: 520, desc: "L'île-jouet de Doflamingo et la révolte des gladiateurs." },
-    { id: "zou", name: "Zou", short: "Zou", arc: "Zou", story: "dressrosa", region: "new", x: 730, y: 560, desc: "L'île sur le dos d'un éléphant géant, refuge des Minks." },
-    { id: "wholecake", name: "Whole Cake Island", short: "Whole Cake Island", arc: "Whole Cake Island", story: "wholecake", region: "new", x: 650, y: 520, desc: "Le territoire de Big Mom, ses îles sucrées et son mariage piégé." },
-    { id: "wano", name: "Wano", short: "Wano", arc: "Wano Kuni", story: "wano", region: "new", x: 570, y: 560, desc: "Le pays des samouraïs, la chute de Kaido et l'éveil de Gear 5." },
-    { id: "egghead", name: "Egghead", short: "Egghead", arc: "Egghead", story: "all", region: "new", x: 710, y: 595, labelSide: "below", desc: "L'île du futur de Vegapunk, porte vers les secrets du monde." },
-    { id: "elbaf", name: "Elbaf", short: "Elbaf", arc: "Elbaf", story: "all", region: "new", x: 800, y: 560, labelSide: "above", alwaysOpen: true, desc: "Le pays des géants, terre de guerre et de légendes. C'est ici que Kid a défié Shanks." },
-    { id: "winner", name: "Winner Island", short: "Winner Island", arc: "Winner Island", story: "all", region: "new", x: 690, y: 520, labelSide: "above", alwaysOpen: true, desc: "L'île du Nouveau Monde où l'équipage de Law est tombé dans une embuscade des Pirates de Barbe Noire." },
-    { id: "laughtale", name: "Laugh Tale", short: "Laugh Tale", arc: null, story: null, region: "decor", x: 250, y: 540, decor: true, desc: "L'île au trésor de Gol D. Roger, au bout de la Grand Line." }
+    { id: "fishman", name: "Île des Hommes-Poissons", short: "Fish-Man", arc: "Île des Hommes-Poissons", story: "fishman", region: "center", x: 100, y: 575, desc: "Sous la Red Line, le royaume Ryugu et la prophétie de Joy Boy.", labelSide: "below" },
+    { id: "punkhazard", name: "Punk Hazard", short: "Punk Hazard", arc: "Punk Hazard", story: "dressrosa", region: "new", x: 195, y: 520, desc: "L'île de glace et de feu, laboratoire de Caesar Clown.", labelSide: "above" },
+    { id: "dressrosa", name: "Dressrosa", short: "Dressrosa", arc: "Dressrosa", story: "dressrosa", region: "new", x: 290, y: 575, desc: "L'île-jouet de Doflamingo et la révolte des gladiateurs.", labelSide: "below" },
+    { id: "zou", name: "Zou", short: "Zou", arc: "Zou", story: "dressrosa", region: "new", x: 385, y: 520, desc: "L'île sur le dos d'un éléphant géant, refuge des Minks.", labelSide: "above" },
+    { id: "wholecake", name: "Whole Cake Island", short: "Whole Cake", arc: "Whole Cake Island", story: "wholecake", region: "new", x: 480, y: 575, desc: "Le territoire de Big Mom, ses îles sucrées et son mariage piégé.", labelSide: "below" },
+    { id: "wano", name: "Wano", short: "Wano", arc: "Wano Kuni", story: "wano", region: "new", x: 575, y: 520, desc: "Le pays des samouraïs, la chute de Kaido et l'éveil de Gear 5.", labelSide: "above" },
+    { id: "egghead", name: "Egghead", short: "Egghead", arc: "Egghead", story: "all", region: "new", x: 660, y: 575, desc: "L'île du futur de Vegapunk, porte vers les secrets du monde.", labelSide: "below" },
+    { id: "elbaf", name: "Elbaf", short: "Elbaf", arc: "Elbaf", story: "all", region: "new", x: 810, y: 575, desc: "Le pays des géants, terre de guerre et de légendes. C'est ici que Kid a défié Shanks.", labelSide: "below" },
+    { id: "winner", name: "Winner Island", short: "Winner", arc: "Winner Island", story: "all", region: "new", x: 735, y: 520, desc: "L'île du Nouveau Monde où l'équipage de Law est tombé dans une embuscade des Pirates de Barbe Noire.", labelSide: "above" },
+    { id: "laughtale", name: "Laugh Tale", short: "Laugh Tale", arc: null, story: null, region: "decor", x: 895, y: 520, decor: true, desc: "L'île au trésor de Gol D. Roger, au bout de la Grand Line.", labelSide: "above" }
   ];
   const NEED = 2;
   let scale = 1, tx = 0, ty = 0;
@@ -224,6 +224,8 @@
         : "East Blue " + eastStats.opened + " / " + eastStats.total;
     }
     const hintEl = document.getElementById("mapHint");
+    const titleEl = document.getElementById("mapTitle");
+    if (titleEl) titleEl.textContent = L("Carte de Grand Line", "Grand Line Map");
     if (hintEl) {
       hintEl.textContent = world
         ? L("Clique sur une île révélée pour voir sa fiche · molette / +− pour zoomer.", "Click a revealed island for its file · wheel / +− to zoom.")
@@ -235,102 +237,115 @@
     ISLANDS.forEach(p => { byId[p.id] = p; });
     const east = ["fuchsia","orange","syrup","baratie","arlong","loguetown"].map(id => byId[id]);
     const paradise = ["reversemtn","alabasta","jaya","skypiea","longring","water7","enies","thriller","sabaody"].map(id => byId[id]);
-    const newworld = ["fishman","punkhazard","dressrosa","zou","wholecake","wano"].map(id => byId[id]);
+    const newworld = ["fishman","punkhazard","dressrosa","zou","wholecake","wano","egghead","elbaf","laughtale"].map(id => byId[id]);
     const pathOf = (arr) => arr.map((p, i) => (i === 0 ? "M" : " L") + p.x + " " + p.y).join("");
-    const loguetown = byId.loguetown, rev = byId.reversemtn, sab = byId.sabaody, fish = byId.fishman, punk = byId.punkhazard;
+    const loguetown = byId.loguetown, rev = byId.reversemtn, sab = byId.sabaody, fish = byId.fishman;
     // East Blue → Reverse Mountain (liaison, révélée avec la Grand Line)
     const eastPath = pathOf(east) + (world ? ` Q ${(loguetown.x + rev.x) / 2} ${loguetown.y + 90} ${rev.x} ${rev.y}` : "");
-    // Paradise → virage sous la Red Line (Fish-Man) → New World
-    const grandPath = pathOf(paradise)
-      + ` C ${sab.x - 140} ${sab.y + 230}, ${fish.x + 230} ${fish.y + 90}, ${fish.x} ${fish.y}`
-      + ` C ${fish.x - 230} ${fish.y + 90}, ${punk.x + 140} ${punk.y + 230}, ${punk.x} ${punk.y}`
-      + newworld.slice(2).map(p => ` L ${p.x} ${p.y}`).join("");
-    // Route finale (discrète) : Wano → Laugh Tale, en restant sur la Grand Line.
-    const finalPath = `M ${byId.wano.x} ${byId.wano.y} Q 420 520 ${byId.laughtale.x} ${byId.laughtale.y}`;
+    // Route Mugiwara : Paradise puis tour du monde et New World (comme la carte du wiki).
+    const paradisePath = pathOf(paradise);
+    const newWorldPath = pathOf(newworld);
+    const wrapOut = `M ${sab.x} ${sab.y} Q 1900 ${sab.y} 1990 ${sab.y}`;
+    const wrapIn = `M 10 ${fish.y} L ${fish.x} ${fish.y}`;
 
     let html = `
       <defs>
         <radialGradient id="sea" cx="50%" cy="45%" r="80%">
-          <stop offset="0%" stop-color="#1d5570"/><stop offset="55%" stop-color="#123a52"/><stop offset="100%" stop-color="#0a2233"/>
+          <stop offset="0%" stop-color="#2f7690"/><stop offset="55%" stop-color="#1d5771"/><stop offset="100%" stop-color="#123e55"/>
         </radialGradient>
         <linearGradient id="redline" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stop-color="#5a1a1a"/><stop offset="35%" stop-color="#8f2b2b"/><stop offset="65%" stop-color="#7a2222"/><stop offset="100%" stop-color="#4a1414"/>
+          <stop offset="0%" stop-color="#5e1b1b"/><stop offset="35%" stop-color="#9a2f2f"/><stop offset="65%" stop-color="#8a2828"/><stop offset="100%" stop-color="#531717"/>
         </linearGradient>
         <linearGradient id="land" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#4f7f4a"/><stop offset="100%" stop-color="#2f5a34"/>
+          <stop offset="0%" stop-color="#78a05a"/><stop offset="100%" stop-color="#4a7440"/>
         </linearGradient>
         <pattern id="hatch" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="16" stroke="rgba(160,210,240,0.14)" stroke-width="2"/>
+          <line x1="0" y1="0" x2="0" y2="16" stroke="rgba(220,245,252,0.10)" stroke-width="2"/>
         </pattern>
         <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
           <path d="M50 0H0V50" fill="none" stroke="rgba(160,210,240,0.05)" stroke-width="1"/>
         </pattern>
       </defs>
       <rect width="2000" height="1100" fill="url(#sea)"/>
+      <rect x="0" y="0" width="22" height="1100" fill="url(#redline)" stroke="#3a0f0f" stroke-width="2"/>
+      <rect x="1978" y="0" width="22" height="1100" fill="url(#redline)" stroke="#3a0f0f" stroke-width="2"/>
       <rect width="2000" height="1100" fill="url(#grid)"/>
 
       <!-- Bandes Calm Belt -->
-      <rect x="0" y="430" width="2000" height="70" fill="rgba(9,30,46,0.65)"/>
-      <rect x="0" y="430" width="2000" height="70" fill="url(#hatch)"/>
-      <rect x="0" y="600" width="2000" height="80" fill="rgba(9,30,46,0.65)"/>
-      <rect x="0" y="600" width="2000" height="80" fill="url(#hatch)"/>
-      <text x="470" y="468" text-anchor="middle" font-family="Georgia, serif" font-size="24" fill="rgba(160,210,240,0.45)" letter-spacing="12">CALM BELT</text>
-      <text x="1530" y="468" text-anchor="middle" font-family="Georgia, serif" font-size="24" fill="rgba(160,210,240,0.45)" letter-spacing="12">CALM BELT</text>
-      <text x="470" y="652" text-anchor="middle" font-family="Georgia, serif" font-size="24" fill="rgba(160,210,240,0.45)" letter-spacing="12">CALM BELT</text>
-      <text x="1530" y="652" text-anchor="middle" font-family="Georgia, serif" font-size="24" fill="rgba(160,210,240,0.45)" letter-spacing="12">CALM BELT</text>
+      <rect x="0" y="400" width="2000" height="80" fill="rgba(150,220,238,0.16)"/>
+      <rect x="0" y="400" width="2000" height="80" fill="url(#hatch)"/>
+      <rect x="0" y="620" width="2000" height="80" fill="rgba(150,220,238,0.16)"/>
+      <rect x="0" y="620" width="2000" height="80" fill="url(#hatch)"/>
+      <text x="470" y="428" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="rgba(226,245,252,0.55)" letter-spacing="10">CALM BELT</text>
+      <text x="1530" y="428" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="rgba(226,245,252,0.55)" letter-spacing="10">CALM BELT</text>
+      <text x="470" y="690" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="rgba(226,245,252,0.55)" letter-spacing="10">CALM BELT</text>
+      <text x="1530" y="690" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="rgba(226,245,252,0.55)" letter-spacing="10">CALM BELT</text>
 
       <!-- Grand Line -->
-      <rect x="0" y="500" width="2000" height="100" fill="rgba(30,90,120,0.18)"/>
-      <line x1="0" y1="500" x2="2000" y2="500" stroke="rgba(160,210,240,0.18)" stroke-width="2"/>
-      <line x1="0" y1="600" x2="2000" y2="600" stroke="rgba(160,210,240,0.18)" stroke-width="2"/>
-      <text x="1380" y="590" text-anchor="middle" font-family="Georgia, serif" font-size="24" fill="rgba(246,178,31,0.35)" letter-spacing="10">${world ? "PARADISE" : ""}</text>
-      <text x="640" y="590" text-anchor="middle" font-family="Georgia, serif" font-size="24" fill="rgba(246,178,31,0.35)" letter-spacing="10">${world ? "NEW WORLD" : ""}</text>
+      <rect x="0" y="480" width="2000" height="140" fill="rgba(120,200,225,0.10)"/>
+      <line x1="0" y1="480" x2="2000" y2="480" stroke="rgba(226,245,252,0.28)" stroke-width="2"/>
+      <line x1="0" y1="620" x2="2000" y2="620" stroke="rgba(226,245,252,0.28)" stroke-width="2"/>
 
       <!-- Red Line -->
-      <path d="M 950 0 L 1050 0 L 1040 120 L 1062 250 L 1032 380 L 1058 490 L 1022 545 L 1060 610 L 1032 730 L 1060 850 L 1040 980 L 1050 1100 L 950 1100 L 960 980 L 940 850 L 962 730 L 938 610 L 978 545 L 942 490 L 968 380 L 938 250 L 960 120 Z"
+      <path d="M 892 0 L 1108 0 L 1090 110 L 1116 215 L 1080 320 L 1106 405 L 1052 470 L 1022 505 L 1015 545 L 1022 590 L 1052 625 L 1106 695 L 1080 800 L 1116 905 L 1090 1010 L 1108 1100 L 892 1100 L 910 1010 L 884 905 L 920 800 L 894 695 L 948 625 L 978 590 L 985 545 L 978 505 L 948 470 L 894 405 L 920 320 L 884 215 L 910 110 Z"
         fill="url(#redline)" stroke="#3a0f0f" stroke-width="3"/>
-      <text x="1000" y="300" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="rgba(40,8,8,0.75)" letter-spacing="4">RED</text>
-      <text x="1000" y="340" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="rgba(40,8,8,0.75)" letter-spacing="4">LINE</text>
+      <!-- Courants croisés de Reverse Mountain -->
+      <g stroke="rgba(200,238,250,0.45)" stroke-width="2.5" stroke-linecap="round">
+        <line x1="938" y1="500" x2="1062" y2="592"/>
+        <line x1="1062" y1="500" x2="938" y2="592"/>
+      </g>
+      <text x="1000" y="296" text-anchor="middle" font-family="Georgia, serif" font-size="38" fill="rgba(56,12,12,0.8)" letter-spacing="4">RED</text>
+      <text x="1000" y="338" text-anchor="middle" font-family="Georgia, serif" font-size="38" fill="rgba(56,12,12,0.8)" letter-spacing="4">LINE</text>
       ${world ? "" : `<rect x="0" y="420" width="2000" height="290" fill="rgba(4,10,18,0.82)"/>
         <text x="1000" y="548" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="rgba(246,178,31,0.5)" letter-spacing="8">GRAND LINE — À DÉCOUVRIR</text>
         <text x="1000" y="585" text-anchor="middle" font-family="Segoe UI" font-size="15" fill="rgba(160,210,240,0.55)">Termine East Blue (6/6) pour révéler la suite</text>`}
 
       <!-- Îles décoratives (Blues) -->
       <g fill="url(#land)" stroke="rgba(20,50,25,0.7)" stroke-width="2" opacity="0.9">
+        <ellipse cx="170" cy="150" rx="46" ry="18"/><ellipse cx="600" cy="260" rx="60" ry="24"/><ellipse cx="860" cy="145" rx="40" ry="16"/><ellipse cx="930" cy="225" rx="30" ry="12"/>
         <ellipse cx="300" cy="200" rx="70" ry="28"/><ellipse cx="470" cy="320" rx="52" ry="22"/>
         <ellipse cx="660" cy="160" rx="46" ry="20"/><ellipse cx="760" cy="330" rx="38" ry="16"/>
-        <ellipse cx="320" cy="880" rx="64" ry="26"/><ellipse cx="540" cy="990" rx="50" ry="20"/>
-        <ellipse cx="1250" cy="880" rx="70" ry="28"/><ellipse cx="1500" cy="990" rx="46" ry="18"/>
+        <ellipse cx="150" cy="770" rx="44" ry="18"/><ellipse cx="700" cy="790" rx="36" ry="15"/><ellipse cx="900" cy="905" rx="42" ry="17"/>
+        <ellipse cx="660" cy="890" rx="64" ry="26"/><ellipse cx="790" cy="1010" rx="50" ry="20"/>
+        <ellipse cx="1445" cy="125" rx="36" ry="15"/><ellipse cx="1655" cy="120" rx="28" ry="12"/><ellipse cx="1190" cy="335" rx="34" ry="14"/>
+        <ellipse cx="1250" cy="880" rx="70" ry="28"/><ellipse cx="1500" cy="990" rx="46" ry="18"/><ellipse cx="1790" cy="775" rx="30" ry="12"/><ellipse cx="1255" cy="1015" rx="32" ry="13"/>
         <ellipse cx="1700" cy="860" rx="40" ry="16"/>
       </g>
 
       <!-- Labels des mers -->
-      <text x="470" y="90" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="rgba(160,210,240,0.45)" letter-spacing="6">NORTH BLUE</text>
-      <text x="1530" y="90" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="rgba(160,210,240,0.45)" letter-spacing="6">EAST BLUE</text>
-      <text x="470" y="1050" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="rgba(160,210,240,0.45)" letter-spacing="6">WEST BLUE</text>
-      <text x="1530" y="1050" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="rgba(160,210,240,0.45)" letter-spacing="6">SOUTH BLUE</text>
+      <text x="470" y="90" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="rgba(214,238,248,0.55)" letter-spacing="6">NORTH BLUE</text>
+      <text x="1530" y="90" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="rgba(214,238,248,0.55)" letter-spacing="6">EAST BLUE</text>
+      <text x="210" y="452" text-anchor="middle" font-family="Georgia, serif" font-size="27" font-style="italic" font-weight="800" fill="#cfefff" stroke="#0b2233" stroke-width="3.5" paint-order="stroke" letter-spacing="2">${world ? (isEn() ? "New World" : "Nouveau Monde") : ""}</text>
+      <text x="1108" y="452" text-anchor="middle" font-family="Georgia, serif" font-size="27" font-style="italic" font-weight="800" fill="#cfefff" stroke="#0b2233" stroke-width="3.5" paint-order="stroke" letter-spacing="2">${world ? "Paradise" : ""}</text>
+      <text x="470" y="1050" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="rgba(214,238,248,0.55)" letter-spacing="6">WEST BLUE</text>
+      <text x="1530" y="1050" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="rgba(214,238,248,0.55)" letter-spacing="6">SOUTH BLUE</text>
 
       <!-- Routes -->
       <path d="${eastPath}" fill="none" stroke="rgba(246,178,31,0.5)" stroke-width="3" stroke-dasharray="9 8"/>
-      ${world ? `<path d="${grandPath}" fill="none" stroke="rgba(246,178,31,0.7)" stroke-width="3" stroke-dasharray="10 8" stroke-linejoin="round"/>` : ""}
       ${world ? `
-        <!-- Trois routes post-Wano : Luffy (SE), Law (NE), Kid (E), toutes sur la Grand Line -->
-        <path d="M ${byId.wano.x} ${byId.wano.y} Q 635 600 ${byId.egghead.x} ${byId.egghead.y}"
+        <!-- Route Mugiwara (rouge) : Paradise, tour du monde, New World -->
+        <path d="${paradisePath}" fill="none" stroke="#ef4444" stroke-width="3.5" stroke-dasharray="9 7" stroke-linejoin="round"/>
+        <path d="${wrapOut}" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="4 7" opacity="0.9"/>
+        <path d="${wrapIn}" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="4 7" opacity="0.9"/>
+        <path d="${newWorldPath}" fill="none" stroke="#ef4444" stroke-width="3.5" stroke-dasharray="9 7" stroke-linejoin="round"/>
+        <!-- Trois routes post-Wano : Luffy (SE), Law (NE), Kid (E) -->
+        <path d="M ${byId.wano.x} ${byId.wano.y} Q 630 600 ${byId.egghead.x} ${byId.egghead.y}"
           fill="none" stroke="#4ade80" stroke-width="2.5" stroke-dasharray="6 7" stroke-linecap="round" opacity="0.9"/>
-        <path d="M ${byId.wano.x} ${byId.wano.y} Q 635 520 ${byId.winner.x} ${byId.winner.y}"
+        <path d="M ${byId.wano.x} ${byId.wano.y} Q 620 510 ${byId.winner.x} ${byId.winner.y}"
           fill="none" stroke="#a78bfa" stroke-width="2.5" stroke-dasharray="6 7" stroke-linecap="round" opacity="0.9"/>
-        <path d="M ${byId.wano.x} ${byId.wano.y} Q 690 560 ${byId.elbaf.x} ${byId.elbaf.y}"
+        <path d="M ${byId.wano.x} ${byId.wano.y} Q 680 560 ${byId.elbaf.x} ${byId.elbaf.y}"
           fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="6 7" stroke-linecap="round" opacity="0.9"/>
-        <path d="${finalPath}" fill="none" stroke="rgba(246,178,31,0.3)" stroke-width="2" stroke-dasharray="4 9"/>
-        <g transform="translate(62, 872)" font-family="Segoe UI, Arial">
-          <rect x="-14" y="-30" width="352" height="128" rx="12" fill="rgba(5,15,25,0.72)" stroke="rgba(148,163,184,0.28)"/>
-          <text x="0" y="-8" font-size="13" font-weight="800" fill="#94a3b8" letter-spacing="2">ROUTES APRÈS WANO</text>
-          <line x1="0" y1="16" x2="26" y2="16" stroke="#4ade80" stroke-width="4" stroke-dasharray="6 5"/>
-          <text x="36" y="21" font-size="16" font-weight="700" fill="#86efac">Luffy → Egghead</text>
-          <line x1="0" y1="44" x2="26" y2="44" stroke="#a78bfa" stroke-width="4" stroke-dasharray="6 5"/>
-          <text x="36" y="49" font-size="16" font-weight="700" fill="#c4b5fd">Law → Winner Island</text>
-          <line x1="0" y1="72" x2="26" y2="72" stroke="#38bdf8" stroke-width="4" stroke-dasharray="6 5"/>
-          <text x="36" y="77" font-size="16" font-weight="700" fill="#7dd3fc">Kid → Elbaf</text>
+        <g transform="translate(62, 852)" font-family="Segoe UI, Arial">
+          <rect x="-14" y="-30" width="352" height="160" rx="12" fill="rgba(5,15,25,0.78)" stroke="rgba(148,163,184,0.28)"/>
+          <text x="0" y="-8" font-size="13" font-weight="800" fill="#94a3b8" letter-spacing="2">ROUTES</text>
+          <line x1="0" y1="16" x2="26" y2="16" stroke="#ef4444" stroke-width="4" stroke-dasharray="6 5"/>
+          <text x="36" y="21" font-size="16" font-weight="700" fill="#fca5a5">Mugiwara (route principale)</text>
+          <line x1="0" y1="44" x2="26" y2="44" stroke="#4ade80" stroke-width="4" stroke-dasharray="6 5"/>
+          <text x="36" y="49" font-size="16" font-weight="700" fill="#86efac">Luffy → Egghead</text>
+          <line x1="0" y1="72" x2="26" y2="72" stroke="#a78bfa" stroke-width="4" stroke-dasharray="6 5"/>
+          <text x="36" y="77" font-size="16" font-weight="700" fill="#c4b5fd">Law → Winner Island</text>
+          <line x1="0" y1="100" x2="26" y2="100" stroke="#38bdf8" stroke-width="4" stroke-dasharray="6 5"/>
+          <text x="36" y="105" font-size="16" font-weight="700" fill="#7dd3fc">Kid → Elbaf</text>
         </g>
       ` : ""}
 
@@ -340,10 +355,10 @@
       const open = isOpen(p, un);
       const isDecor = !!p.decor;
       const st = arcStats(p, un);
-      const col = open ? "#f6b21f" : (isDecor ? "#6b7280" : "#4b5f73");
+      const col = open ? "#f6b21f" : (isDecor ? "#9ca3af" : "#7f97ab");
       const idx = ISLANDS.indexOf(p);
       const above = p.under ? false : (p.labelSide ? p.labelSide === "above" : (p.y < 500 || idx % 2 === 0));
-      const labelY = p.under ? p.y + 52 : (above ? p.y - 44 : p.y + 60);
+      const labelY = above ? p.y - 52 : p.y + 46;
       const name = p.short || p.name;
       const here = getPos() === p.id;
       const quests = open ? islandQuests(p) : [];
@@ -361,9 +376,9 @@
             <circle r="10" fill="${pendingQuests ? "#f59e0b" : "#10b981"}" stroke="#0b1220" stroke-width="2"/>
             <text x="0" y="3.5" text-anchor="middle" font-size="11.5" font-weight="900" fill="#0b1220">${pendingQuests ? "!" : "✓"}</text>
           </g>` : ""}
-          <text x="${p.x}" y="${labelY}" text-anchor="middle" font-size="19" font-weight="${open ? 800 : 600}"
-            font-family="Segoe UI, Arial" fill="${open ? "#f6f1e6" : (isDecor ? "#9ca3af" : "#64748b")}">${esc(name)}</text>
-          <text x="${p.x}" y="${labelY + 18}" text-anchor="middle" font-size="12.5" fill="${open ? "#c9a25a" : "#475569"}">${here ? "📍 " + L("vous êtes ici", "you are here") : sub}</text>
+          <text x="${p.x}" y="${labelY}" text-anchor="middle" font-size="15" font-weight="${open ? 800 : 600}"
+            font-family="Segoe UI, Arial" fill="${open ? "#ffffff" : (isDecor ? "#c7d2dc" : "#c2d2e0")}">${esc(name)}</text>
+          <text x="${p.x}" y="${labelY + 17}" text-anchor="middle" font-size="10.5" fill="${open ? "#ffd98a" : "#9fb4c7"}">${here ? "📍 " + L("vous êtes ici", "you are here") : sub}</text>
         </g>`;
     });
     svg.innerHTML = html;
