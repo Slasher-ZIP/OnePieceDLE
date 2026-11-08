@@ -6279,10 +6279,10 @@ function warmPortraitCache() {
   // On respecte « économiseur de données » et les connexions très lentes.
   const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
   if (conn && (conn.saveData || /(^|-)2g/.test(conn.effectiveType || ""))) return;
-  // Uniquement les premiers portraits (le reste des grilles se charge à la
-  // demande via loading="lazy") : évite de télécharger ~400 miniatures en fond.
   const urls = new Set();
-  (typeof CHARACTERS !== "undefined" ? CHARACTERS : []).slice(0, 120).forEach(c => { if (c && c.image) urls.add(thumbSrc(c.image)); });
+  (typeof CHARACTERS !== "undefined" ? CHARACTERS : []).forEach(c => { if (c && c.image) urls.add(thumbSrc(c.image)); });
+  (typeof CHARACTER_VARIANTS !== "undefined" ? CHARACTER_VARIANTS : []).forEach(v => { if (v && v.image) urls.add(thumbSrc(v.image)); });
+  (typeof DEVIL_FRUITS !== "undefined" ? DEVIL_FRUITS : []).forEach(f => { if (f && f.image) urls.add(thumbSrc(f.image)); });
   const queue = [...urls];
   let active = 0;
   const pump = () => {
