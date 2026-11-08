@@ -36,7 +36,6 @@ const DEVIL_FRUITS = [
   { id: "zou_mammoth", name: "Zou Zou no Mi, Model: Mammoth", type: "Ancient Zoan", user: "Jack", arc: "Zou", nameFr: "Fruit de l'Éléphant, modèle Mammouth", nameEn: "Elephant-Elephant Fruit, Model: Mammoth", power: { fr: "Transforme en mammouth.", en: "Transforms into a mammoth." }, rarity: 4, aliases: ["ZOU ZOU NO MI MODEL MAMMOTH", "MAMMOTH", "MAMMOUTH", "JACK"] },
   { id: "hebi_orochi", name: "Hebi Hebi no Mi, Model: Yamata no Orochi", type: "Mythical Zoan", user: "Kurozumi Orochi", arc: "Wano Kuni", nameFr: "Fruit du Serpent, modèle Yamata no Orochi", nameEn: "Snake-Snake Fruit, Model: Yamata no Orochi", power: { fr: "Transforme en serpent à huit têtes.", en: "Transforms into an eight-headed snake." }, rarity: 5, aliases: ["HEBI HEBI NO MI MODEL YAMATA NO OROCHI", "YAMATA NO OROCHI", "OROCHI"] },
   { id: "tori_falcon", name: "Tori Tori no Mi, Model: Falcon", type: "Zoan", user: "Pell", arc: "Alabasta", nameFr: "Fruit de l'Oiseau, modèle Faucon", nameEn: "Bird-Bird Fruit, Model: Falcon", power: { fr: "Transforme en faucon.", en: "Transforms into a falcon." }, rarity: 2, aliases: ["TORI TORI NO MI MODEL FALCON", "FALCON", "FAUCON", "PELL"] },
-  { id: "uma", name: "Uma Uma no Mi", type: "Zoan", user: "Pierre", arc: "Skypiea", nameFr: "Fruit du Cheval", nameEn: "Horse-Horse Fruit", power: { fr: "Transforme en cheval.", en: "Transforms into a horse." }, rarity: 2, aliases: ["UMA UMA NO MI", "HORSE HORSE FRUIT", "FRUIT DU CHEVAL", "CHEVAL", "PIERRE"] },
   { id: "baku", name: "Baku Baku no Mi", type: "Paramecia", user: "Wapol", arc: "Royaume de Drum", nameFr: "Fruit du Glouton", nameEn: "Munch-Munch Fruit", power: { fr: "Mange et fusionne n'importe quoi.", en: "Eats and fuses anything." }, rarity: 3, aliases: ["BAKU BAKU NO MI", "MUNCH MUNCH FRUIT", "FRUIT DU GLOUTON", "GLOUTON", "WAPOL"] },
   { id: "mane", name: "Mane Mane no Mi", type: "Paramecia", user: "Bentham (Mr. 2)", arc: "Alabasta", nameFr: "Fruit du Visage", nameEn: "Clone-Clone Fruit", power: { fr: "Copie l'apparence de quiconque est touché.", en: "Copies anyone's appearance on touch." }, rarity: 3, aliases: ["MANE MANE NO MI", "CLONE CLONE FRUIT", "FRUIT DU VISAGE", "VISAGE", "MR 2", "BON CLAY"] },
   { id: "supa", name: "Supa Supa no Mi", type: "Paramecia", user: "Daz Bonez (Mr. 1)", arc: "Alabasta", nameFr: "Fruit des Lames", nameEn: "Dice-Dice Fruit", power: { fr: "Transforme le corps en lames d'acier.", en: "Turns the body into steel blades." }, rarity: 3, aliases: ["SUPA SUPA NO MI", "DICE DICE FRUIT", "FRUIT DES LAMES", "LAMES", "MR 1", "DAZ BONEZ"] },
@@ -55,10 +54,6 @@ const DEVIL_FRUITS = [
   { id: "bomu", name: "Bomu Bomu no Mi", type: "Paramecia", user: "Mr. 5", arc: "Alabasta", nameFr: "Fruit Explosif", nameEn: "Bomb-Bomb Fruit", power: { fr: "Transforme le corps en explosif.", en: "Turns the body into explosives." }, rarity: 2, aliases: ["BOMU BOMU NO MI", "BOMB BOMB FRUIT", "FRUIT EXPLOSIF", "EXPLOSIF", "MR 5"] },
   { id: "kilo", name: "Kiro Kiro no Mi", type: "Paramecia", user: "Miss Valentine", arc: "Alabasta", nameFr: "Fruit du Poids", nameEn: "Kilo-Kilo Fruit", power: { fr: "Modifie son poids à volonté.", en: "Changes its weight at will." }, rarity: 2, aliases: ["KIRO KIRO NO MI", "KILO KILO NO MI", "FRUIT DU POIDS", "POIDS", "MISS VALENTINE"] },
   { id: "doru", name: "Doru Doru no Mi", type: "Paramecia", user: "Galdino (Mr. 3)", arc: "Alabasta", nameFr: "Fruit de la Cire", nameEn: "Wax-Wax Fruit", power: { fr: "Produit et durcit de la cire.", en: "Produces and hardens wax." }, rarity: 2, aliases: ["DORU DORU NO MI", "WAX WAX FRUIT", "FRUIT DE LA CIRE", "CIRE", "MR 3", "GALDINO"] },
-  { id: "sabi", name: "Sabi Sabi no Mi", type: "Paramecia", user: "Shu", arc: "Enies Lobby", nameFr: "Fruit de la Rouille", nameEn: "Rust-Rust Fruit", power: { fr: "Rouille le métal.", en: "Rusts metal." }, rarity: 2, aliases: ["SABI SABI NO MI", "RUST RUST FRUIT", "FRUIT DE LA ROUILLE", "ROUILLE", "SHU"] },
-  { id: "beri", name: "Beri Beri no Mi", type: "Paramecia", user: "Very Good", arc: "Enies Lobby", nameFr: "Fruit des Baies", nameEn: "Berry-Berry Fruit", power: { fr: "Sépare le corps en baies.", en: "Splits the body into berries." }, rarity: 2, aliases: ["BERI BERI NO MI", "BERRY BERRY FRUIT", "FRUIT DES BAIES", "BAIES", "VERY GOOD"] },
-  { id: "noko", name: "Noko Noko no Mi", type: "Paramecia", user: "Nero", arc: "Enies Lobby", nameFr: "Fruit du Champignon", nameEn: "Mushroom-Mushroom Fruit", power: { fr: "Produit des spores de champignon.", en: "Produces mushroom spores." }, rarity: 2, aliases: ["NOKO NOKO NO MI", "MUSHROOM MUSHROOM FRUIT", "FRUIT DU CHAMPIGNON", "CHAMPIGNON", "NERO"] },
-  { id: "ato", name: "Ato Ato no Mi", type: "Paramecia", user: "Jola", arc: "Dressrosa", nameFr: "Fruit de l'Art", nameEn: "Art-Art Fruit", power: { fr: "Transforme les gens en œuvres d'art.", en: "Turns people into artworks." }, rarity: 2, aliases: ["ATO ATO NO MI", "ART ART FRUIT", "FRUIT DE L ART", "ART", "JOLA"] },
   { id: "inu_dachshund", name: "Inu Inu no Mi, Model: Dachshund", type: "Zoan", user: "Lassoo", arc: "Alabasta", nameFr: "Fruit du Chien, modèle Teckel", nameEn: "Dog-Dog Fruit, Model: Dachshund", power: { fr: "Transforme en teckel.", en: "Transforms into a dachshund." }, rarity: 2, aliases: ["INU INU NO MI MODEL DACHSHUND", "DACHSHUND", "TECKEL", "LASSOO"] },
 
   { id: "mero", name: "Mero Mero no Mi", type: "Paramecia", user: "Boa Hancock", arc: "Amazon Lily", nameFr: "Fruit de l'Amour", nameEn: "Love-Love Fruit", power: { fr: "Pétrifie les personnes attirées par l'utilisatrice.", en: "Petrifies those who feel attraction." }, rarity: 5, aliases: ["MERO MERO NO MI", "LOVE LOVE FRUIT", "FRUIT DE L AMOUR", "MEDUSE", "BOA HANCOCK"] },
@@ -85,11 +80,7 @@ if (typeof window !== "undefined") window.DEVIL_FRUITS = DEVIL_FRUITS;
 // suggestions + validation, jamais dans le jeu de devinette de personnages,
 // l'album, la Tier List ou la carte.
 const FRUIT_ONLY_USERS = [
-  { name: "Pierre", aliases: ["PIERRE"], fruit: "uma" },
-  { name: "Shu", aliases: ["SHU"], fruit: "sabi" },
-  { name: "Very Good", aliases: ["VERY GOOD", "VERYGOOD"], fruit: "beri" },
-  { name: "Nero", aliases: ["NERO"], fruit: "noko" },
-  { name: "Jola", aliases: ["JOLA"], fruit: "ato" },
+
   { name: "Leo (non-canon)", aliases: ["LEO NON CANON"], fruit: "nui" },
   { name: "Ann", aliases: ["ANN"], fruit: "bijo" },
   { name: "Smiley", aliases: ["SMILEY"], fruit: "sara_axolotl" }
@@ -99,10 +90,7 @@ if (typeof window !== "undefined") window.FRUIT_ONLY_USERS = FRUIT_ONLY_USERS;
 // Fruits dont le design n'a jamais été montré : on ne met AUCUNE image
 // (plutôt qu'une image de personnage/scène). Voir la collection.
 const FRUITS_WITHOUT_IMAGE = new Set([
-  "ato", "beri", "buki", "bari", "chiyu", "doku", "gasu", "giro", "hie",
-  "inu_dachshund", "inu_wolf", "magu", "memo", "nagi", "noko", "numa",
-  "pika", "sabi", "shiro", "soru", "tori_falcon", "uma", "wara", "yuki",
-  "zou_mammoth", "hito_daibutsu", "suke", "zushi"
+  "buki", "bari", "chiyu", "doku", "gasu", "giro", "hie", "inu_dachshund", "inu_wolf", "magu", "memo", "nagi", "numa", "pika", "shiro", "soru", "tori_falcon", "wara", "yuki", "zou_mammoth", "hito_daibutsu", "suke", "zushi"
 ]);
 DEVIL_FRUITS.forEach(f => {
   if (!f.image && !FRUITS_WITHOUT_IMAGE.has(f.id)) f.image = "img/fruits/" + f.id + ".webp";

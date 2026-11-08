@@ -1096,7 +1096,7 @@ const CHARACTERS = [
     },
     prime: null,
     arc: "Archipel de Sabaody",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Second du Roi des Pirates", en: "Pirate King's First Mate" },
     age: 78,
     height: 188,
     rarity: 4
@@ -1629,7 +1629,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Skypiea",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Dieu de Skypiea", en: "God of Skypiea" },
     age: 39,
     height: 266,
     rarity: 4
@@ -2065,7 +2065,7 @@ const CHARACTERS = [
     },
     prime: 300000000,
     arc: "Punk Hazard",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Scientifique, Ancien chercheur de MADS", en: "Scientist, Former MADS Researcher" },
     age: 55,
     height: 309,
     rarity: 2
@@ -2100,7 +2100,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Zou",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Mousquetaire, Tribu des Minks", en: "Musketeer, Mink Tribe" },
     age: 15,
     height: 161,
     rarity: 2
@@ -2275,7 +2275,7 @@ const CHARACTERS = [
     },
     prime: 12000000,
     arc: "Baratie",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Commandant, Armada de Krieg", en: "Commander, Krieg Armada" },
     age: 27,
     height: 186,
     rarity: 3
@@ -2689,7 +2689,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Rêverie",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Roi du monde", en: "King of the World" },
     age: 0,
     height: 0,
     rarity: 5
@@ -2722,7 +2722,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Egghead",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Gorosei, Chevalier Divin", en: "Elder, Holy Knight" },
     age: 0,
     height: 0,
     rarity: 5
@@ -2759,7 +2759,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Egghead",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Gorosei, Guerrier Divin", en: "Elder, Warrior God" },
     age: 0,
     height: 0,
     rarity: 4
@@ -2796,7 +2796,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Egghead",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Gorosei, Guerrier Divin", en: "Elder, Warrior God" },
     age: 0,
     height: 0,
     rarity: 4
@@ -2834,7 +2834,7 @@ const CHARACTERS = [
       },
     prime: 0,
     arc: "Egghead",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Gorosei, Guerrier Divin", en: "Elder, Warrior God" },
     age: 0,
     height: 0,
     rarity: 4
@@ -2871,7 +2871,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Egghead",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Gorosei, Guerrier Divin", en: "Elder, Warrior God" },
     age: 0,
     height: 0,
     rarity: 4
@@ -2904,7 +2904,7 @@ const CHARACTERS = [
     },
     prime: 2600000000,
     arc: "Elbaf",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Prince d'Elbaf", en: "Prince of Elbaf" },
     age: 63,
     height: 0,
     rarity: 4
@@ -2936,7 +2936,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Elbaf",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Chevalier Divin", en: "Holy Knight" },
     age: 39,
     height: 0,
     rarity: 4
@@ -2968,7 +2968,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Impel Down",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Directeur d'Impel Down", en: "Warden of Impel Down" },
     age: 47,
     height: 491,
     rarity: 3
@@ -3064,7 +3064,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Water 7",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Maire de Water 7, Charpentier", en: "Mayor of Water 7, Shipwright" },
     age: 40,
     height: 199,
     rarity: 2
@@ -3098,7 +3098,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Water 7",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Charpentier, Créateur du Sunny", en: "Shipwright, Sunny's Creator" },
     age: 67,
     height: 296,
     rarity: 3
@@ -3234,7 +3234,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Whole Cake Island",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Princesse du Germa, Commandante", en: "Germa Princess, Commander" },
     age: 24,
     height: 173,
     rarity: 3
@@ -3270,7 +3270,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Whole Cake Island",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Prince du Germa, Commandant", en: "Germa Prince, Commander" },
     age: 21,
     height: 186,
     rarity: 3
@@ -3306,7 +3306,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Whole Cake Island",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Prince du Germa, Commandant", en: "Germa Prince, Commander" },
     age: 21,
     height: 185,
     rarity: 3
@@ -3342,7 +3342,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Whole Cake Island",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Prince du Germa, Commandant", en: "Germa Prince, Commander" },
     age: 21,
     height: 194,
     rarity: 3
@@ -3413,7 +3413,7 @@ const CHARACTERS = [
     },
     prime: 382000000,
     arc: "Zou",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Capitaine, Tribu des Minks", en: "Captain, Mink Tribe" },
     age: 32,
     height: 233,
     rarity: 3
@@ -3450,7 +3450,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Zou",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Duc de Zou, Roi du jour", en: "Duke of Zou, Day Ruler" },
     age: 40,
     height: 511,
     rarity: 3
@@ -3486,7 +3486,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Zou",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Duc de Zou, Roi de la nuit", en: "Duke of Zou, Night Ruler" },
     age: 40,
     height: 522,
     rarity: 3
@@ -3767,7 +3767,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Egghead",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Gorosei, Scientifique", en: "Elder, Scientist" },
     age: 0,
     height: 0,
     rarity: 4
@@ -4319,7 +4319,7 @@ const CHARACTERS = [
       },
     prime: null,
     arc: "Punk Hazard",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Officier, Pirates de Don Quichotte", en: "Officer, Donquixote Pirates" },
     age: 24,
     height: 181,
     rarity: 3
@@ -4355,7 +4355,7 @@ const CHARACTERS = [
       },
     prime: 15000000,
     arc: "Dressrosa",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Officier, Pirates de Don Quichotte", en: "Officer, Donquixote Pirates" },
     age: 16,
     height: 145,
     rarity: 3
@@ -4424,7 +4424,7 @@ const CHARACTERS = [
     },
     prime: null,
     arc: "Punk Hazard",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Officier, Pirates de Don Quichotte", en: "Officer, Donquixote Pirates" },
     age: 30,
     height: 227,
     rarity: 3
@@ -4491,7 +4491,7 @@ const CHARACTERS = [
     },
     prime: null,
     arc: "Elbaf",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Membre de l'équipage de Roger", en: "Roger Pirates Member" },
     age: null,
     height: null,
     rarity: 4
@@ -4559,7 +4559,7 @@ const CHARACTERS = [
     },
     prime: 1500,
     arc: "Archipel de Sabaody",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Navigateur, Pirates du Heart", en: "Navigator, Heart Pirates" },
     age: 22,
     height: 240,
     rarity: 2
@@ -4660,7 +4660,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Zou",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Éléphant géant, Porteur de Zou", en: "Giant Elephant, Carrier of Zou" },
     age: 1000,
     height: 500000,
     rarity: 5
@@ -4692,7 +4692,7 @@ const CHARACTERS = [
     },
     prime: null,
     arc: "Egghead",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Figure légendaire", en: "Legendary Figure" },
     age: 0,
     height: 0,
     rarity: 5
@@ -4763,7 +4763,7 @@ const CHARACTERS = [
     },
     prime: null,
     arc: "Punk Hazard",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Officier, Pirates de Don Quichotte", en: "Officer, Donquixote Pirates" },
     age: 10,
     height: 110,
     rarity: 3
@@ -4795,7 +4795,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Egghead",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Robot antique", en: "Ancient Robot" },
     age: 900,
     height: 0,
     rarity: 2
@@ -4827,7 +4827,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Syrup",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Héritière de Syrup, Médecin", en: "Syrup Heiress, Doctor" },
     age: 19,
     height: 169,
     rarity: 3
@@ -5242,7 +5242,7 @@ const CHARACTERS = [
     },
     prime: 8000000,
     arc: "Arlong Park",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Capitaine, Pirates d'Arlong", en: "Captain, Arlong Pirates" },
     age: 38,
     height: 220,
     rarity: 2
@@ -5277,7 +5277,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Archipel de Sabaody",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Sirène, Île des Hommes-Poissons", en: "Mermaid, Fish-Man Island" },
     age: 18,
     height: 197,
     rarity: 3
@@ -5309,7 +5309,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Archipel de Sabaody",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Étoile de mer, Designer", en: "Starfish, Designer" },
     age: 33,
     height: 50,
     rarity: 3
@@ -5377,7 +5377,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Skypiea",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Dieu de Skypiea, Chevalier Divin", en: "God of Skypiea, Holy Knight" },
     age: 68,
     height: 180,
     rarity: 3
@@ -5412,7 +5412,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Skypiea",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Guerrier de Shandia", en: "Shandia Warrior" },
     age: 24,
     height: 183,
     rarity: 3
@@ -5444,7 +5444,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Skypiea",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Explorateur, Amiral", en: "Explorer, Admiral" },
     age: 39,
     height: 220,
     rarity: 4
@@ -5478,7 +5478,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Skypiea",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Prêtresse de Skypiea", en: "Skypiea Priestess" },
     age: 21,
     height: 176,
     rarity: 3
@@ -5514,7 +5514,7 @@ const CHARACTERS = [
     // pas 0 (qui signifierait « pas de prime »).
     prime: null,
     arc: "Amazon Lily",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Ancienne Impératrice, Pirates Kuja", en: "Former Empress, Kuja Pirates" },
     age: 77,
     height: 160,
     rarity: 4
@@ -5550,7 +5550,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Whole Cake Island",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Journaliste, Roi de la presse", en: "Journalist, King of the Press" },
     age: 53,
     height: 305,
     rarity: 3
@@ -5886,7 +5886,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Alabasta",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Garde royal d'Alabasta", en: "Alabasta Royal Guard" },
     age: 35,
     height: 189,
     rarity: 3
@@ -5918,7 +5918,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Water 7",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Contremaître, Galley-La", en: "Foreman, Galley-La" },
     age: 26,
     height: 195,
     rarity: 2
@@ -6132,7 +6132,7 @@ const CHARACTERS = [
     },
     prime: 7800000,
     arc: "Post-Enies Lobby",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Cheffe des bandits du Mont Colubo", en: "Mountain Bandit Leader" },
     age: 55,
     height: 221,
     rarity: 3
@@ -6166,7 +6166,7 @@ const CHARACTERS = [
       },
     prime: null,
     arc: "Stampede",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Ancien membre de Roger", en: "Former Roger Pirate" },
     age: 45,
     height: 355,
     rarity: 4
@@ -6199,7 +6199,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Elbaf",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Chevalier Divin", en: "Holy Knight" },
     age: 77,
     height: 175,
     rarity: 4
@@ -6232,7 +6232,7 @@ const CHARACTERS = [
     },
     prime: null,
     arc: "Film Red",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Chanteuse, Fille de Shanks", en: "Singer, Shanks' Daughter" },
     age: 21,
     height: 169,
     rarity: 4
@@ -6832,7 +6832,7 @@ const CHARACTERS = [
     },
     prime: 40000000,
     arc: "Amazon Lily",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Sœur de Hancock, Pirates Kuja", en: "Hancock's Sister, Kuja Pirates" },
     age: 30,
     height: 453,
     rarity: 3
@@ -6866,7 +6866,7 @@ const CHARACTERS = [
     },
     prime: 40000000,
     arc: "Amazon Lily",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Sœur de Hancock, Pirates Kuja", en: "Hancock's Sister, Kuja Pirates" },
     age: 28,
     height: 432,
     rarity: 3
@@ -6900,7 +6900,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Archipel de Sabaody",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Ancienne Impératrice, Pirates Kuja", en: "Former Empress, Kuja Pirates" },
     age: 64,
     height: 186,
     rarity: 3
@@ -6932,7 +6932,7 @@ const CHARACTERS = [
     },
     prime: null,
     arc: "Reverse Mountain",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Médecin de Roger", en: "Roger's Doctor" },
     age: 73,
     height: 203,
     rarity: 3
@@ -7027,7 +7027,7 @@ const CHARACTERS = [
     },
     prime: null,
     arc: "Thriller Bark",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Géant légendaire", en: "Legendary Giant" },
     age: 159,
     height: 6700,
     rarity: 3
@@ -7267,7 +7267,7 @@ const CHARACTERS = [
     haki: { fr: "Aucun", en: "None" },
     prime: null,
     arc: "Orange",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Lion, Cross Guild", en: "Lion, Cross Guild" },
     age: null,
     height: null,
     rarity: 1
@@ -7290,7 +7290,7 @@ const CHARACTERS = [
     haki: { fr: "Aucun", en: "None" },
     prime: null,
     arc: "Orange",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Dresseur, Cross Guild", en: "Beast Tamer, Cross Guild" },
     age: 29,
     height: 197,
     rarity: 1
@@ -7313,7 +7313,7 @@ const CHARACTERS = [
     haki: { fr: "Aucun", en: "None" },
     prime: null,
     arc: "Orange",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Acrobate, Cross Guild", en: "Acrobat, Cross Guild" },
     age: 34,
     height: 208,
     rarity: 1
@@ -7333,7 +7333,7 @@ const CHARACTERS = [
     haki: { fr: "Aucun", en: "None" },
     prime: 0,
     arc: "Royaume de Drum",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Médecin, Royaume de Drum", en: "Doctor, Drum Kingdom" },
     age: 141,
     height: 188,
     rarity: 2
@@ -7351,7 +7351,7 @@ const CHARACTERS = [
     haki: { fr: "Aucun", en: "None" },
     prime: 0,
     arc: "Arlong Park",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Habitante de Cocoyashi", en: "Cocoyasi Villager" },
     age: 22,
     height: 170,
     rarity: 1
@@ -7370,7 +7370,7 @@ const CHARACTERS = [
     haki: { fr: "Aucun", en: "None" },
     prime: 0,
     arc: "Romance Dawn",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Épéiste, Dojo Shimotsuki", en: "Swordsman, Shimotsuki Dojo" },
     age: 11,
     height: 150,
     rarity: 2
@@ -7388,7 +7388,7 @@ const CHARACTERS = [
     haki: { fr: "Aucun", en: "None" },
     prime: 0,
     arc: "Arlong Park",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Chef du village Cocoyashi", en: "Cocoyasi Village Chief" },
     age: 48,
     height: 173,
     rarity: 1
@@ -7408,7 +7408,7 @@ const CHARACTERS = [
     haki: { fr: "Aucun", en: "None" },
     prime: 0,
     arc: "Arlong Park",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Mère adoptive de Nami", en: "Nami's Adoptive Mother" },
     age: 30,
     height: null,
     rarity: 2
@@ -7429,7 +7429,7 @@ const CHARACTERS = [
     haki: { fr: "Inconnu", en: "Unknown" },
     prime: null,
     arc: "Whole Cake Island",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Officier, Pirates de Big Mom", en: "Officer, Big Mom Pirates" },
     age: 43,
     height: 350,
     rarity: 3
@@ -7469,7 +7469,7 @@ const CHARACTERS = [
     haki: { fr: "Inconnu", en: "Unknown" },
     prime: null,
     arc: "Île des Hommes-Poissons",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Commandante, Armée Révolutionnaire", en: "Commander, Revolutionary Army" },
     age: 23,
     height: 160,
     rarity: 3
@@ -7490,7 +7490,7 @@ const CHARACTERS = [
     haki: { fr: "Observation, Armement", en: "Observation, Armament" },
     prime: 300000000,
     arc: "Whole Cake Island",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Officier, Pirates de Big Mom", en: "Officer, Big Mom Pirates" },
     age: 48,
     height: 492,
     rarity: 3
@@ -7746,7 +7746,7 @@ const CHARACTERS = [
     haki: { fr: "Inconnu", en: "Unknown" },
     prime: 31000000,
     arc: "Dressrosa",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Officier, Pirates de Don Quichotte", en: "Officer, Donquixote Pirates" },
     age: 33,
     height: 260,
     rarity: 2
@@ -7772,7 +7772,7 @@ const CHARACTERS = [
     haki: { fr: "Aucun", en: "None" },
     prime: 0,
     arc: "Syrup",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Navire des Chapeaux de paille", en: "Straw Hat Ship" },
     age: null,
     height: null,
     rarity: 4,
@@ -7805,7 +7805,7 @@ const CHARACTERS = [
     haki: { fr: "Aucun", en: "None" },
     prime: 0,
     arc: "Water 7",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Navire des Chapeaux de paille", en: "Straw Hat Ship" },
     age: null,
     height: null,
     rarity: 4,
@@ -7832,7 +7832,7 @@ const CHARACTERS = [
     haki: { fr: "Aucun", en: "None" },
     prime: 0,
     arc: "Thriller Bark",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Navire-île", en: "Island Ship" },
     age: null,
     height: null,
     rarity: 4,
@@ -7859,7 +7859,7 @@ const CHARACTERS = [
     haki: { fr: "Aucun", en: "None" },
     prime: 0,
     arc: "Dressrosa",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Navire de Big Mom", en: "Big Mom's Ship" },
     age: null,
     height: null,
     rarity: 4,
@@ -7897,7 +7897,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Water 7",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Cheffe de gare, Water 7", en: "Station Master, Water 7" },
     age: 72,
     height: 168,
     rarity: 2
@@ -7929,7 +7929,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Syrup",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Gardien de l'île", en: "Island Guardian" },
     age: 45,
     height: 130,
     rarity: 1
@@ -7963,7 +7963,7 @@ const CHARACTERS = [
     },
     prime: 120000000,
     arc: "Whole Cake Island",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Officier, Pirates de Big Mom", en: "Officer, Big Mom Pirates" },
     age: 38,
     height: 260,
     rarity: 3
@@ -8028,7 +8028,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Royaume de Drum",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Médecin", en: "Doctor" },
     age: 68,
     height: 213,
     rarity: 2
@@ -8099,7 +8099,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Zou",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Mousquetaire, Tribu des Minks", en: "Musketeer, Mink Tribe" },
     age: 28,
     height: 181,
     rarity: 2
@@ -8132,7 +8132,7 @@ const CHARACTERS = [
     },
     prime: null,
     arc: "Whole Cake Island",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Fille de Big Mom", en: "Big Mom's Daughter" },
     age: 26,
     height: 215,
     rarity: 2
@@ -8200,7 +8200,7 @@ const CHARACTERS = [
     },
     prime: 429000000,
     arc: "Île des Hommes-Poissons",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Officier, Pirates de Big Mom", en: "Officer, Big Mom Pirates" },
     age: 46,
     height: 301,
     rarity: 3
@@ -8234,7 +8234,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Skypiea",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Prêtre d'Enel", en: "Enel's Priest" },
     age: 29,
     height: 189,
     rarity: 3
@@ -8268,7 +8268,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Skypiea",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Prêtre d'Enel", en: "Enel's Priest" },
     age: 33,
     height: 191,
     rarity: 3
@@ -8302,7 +8302,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Skypiea",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Prêtre d'Enel", en: "Enel's Priest" },
     age: 27,
     height: 179,
     rarity: 3
@@ -8336,7 +8336,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Skypiea",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Prêtre d'Enel", en: "Enel's Priest" },
     age: 31,
     height: 220,
     rarity: 3
@@ -8368,7 +8368,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Reverse Mountain",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Canard, Royaume d'Alabasta", en: "Duck, Alabasta Kingdom" },
     age: 16,
     height: 150,
     rarity: 1
@@ -8400,7 +8400,7 @@ const CHARACTERS = [
     },
     prime: 0,
     arc: "Alabasta",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Chef rebelle d'Alabasta", en: "Alabasta Rebel Leader" },
     age: 22,
     height: 177,
     rarity: 2
@@ -8673,7 +8673,7 @@ const CHARACTERS = [
     haki: { fr: "Aucun", en: "None" },
     prime: 0,
     arc: "Romance Dawn",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Tavernière, Partys Bar", en: "Bartender, Partys Bar" },
     age: 31,
     height: 166,
     rarity: 1
@@ -8695,7 +8695,7 @@ const CHARACTERS = [
     haki: { fr: "Aucun", en: "None" },
     prime: 0,
     arc: "Reverse Mountain",
-    titre: { fr: "Aucun", en: "None" },
+    titre: { fr: "Baleine, Gardien de Reverse Mountain", en: "Whale, Reverse Mountain Guardian" },
     age: 53,
     height: 40000,
     rarity: 3

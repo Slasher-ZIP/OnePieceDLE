@@ -1324,7 +1324,7 @@ const CHARACTER_VARIANTS = [
       en: "Brook"
     },
     aliases: [ "BROOK PRE ELLIPSE", "PRE TIMESKIP BROOK", "BROOK AVANT", "BROOK THRILLER BARK" ],
-    image: "img/alt/BrookPre.webp",
+    image: "img/alt/BrookPre_hd.webp",
     stories: [ "thriller", "marineford" ],
     // Remplace la forme de base à Thriller Bark (brook_young coexiste) ; seule forme à Marineford
     excludesBase: true,
@@ -1466,7 +1466,7 @@ const CHARACTER_VARIANTS = [
       en: "Usopp"
     },
     aliases: [ "USOPP PRE ELLIPSE", "PRE TIMESKIP USOPP", "USOPP AVANT ELLIPSE" ],
-    image: "img/alt/UsoppPre.webp",
+    image: "img/alt/UsoppPre_hd.webp",
     stories: [ "eastblue", "alabasta", "skypiea", "water7", "thriller", "marineford" ],
     excludesBase: true,
     onlyAsVariant: false,
