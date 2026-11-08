@@ -205,6 +205,7 @@
     }
     if (animate) {
       canvas.classList.add("map-animating");
+      holdRaster(900);
       setTimeout(() => canvas.classList.remove("map-animating"), 850);
     }
     applyTransform();
@@ -484,8 +485,33 @@
     if (!canvas) return;
     canvas.style.transform = "translate(" + tx + "px," + ty + "px) scale(" + scale + ")";
   }
+  // Pendant un zoom/déplacement on autorise la couche GPU (fluidité), puis on
+  // la relâche pour que le SVG soit re-rasterisé net à la nouvelle échelle.
+  let rasterTimer = 0;
+  function holdRaster(ms) {
+    const canvas = document.getElementById("mapCanvas");
+    if (!canvas) return;
+    canvas.classList.add("is-interacting");
+    clearTimeout(rasterTimer);
+    rasterTimer = setTimeout(() => canvas.classList.remove("is-interacting"), ms || 180);
+  }
   function resetView() { focusStage(true); }
-  function setZoom(s) { scale = Math.max(0.6, Math.min(3, s)); applyTransform(); }
+  function setZoom(s) {
+    scale = Math.max(0.6, Math.min(3, s));
+    applyTransform();
+    holdRaster(220);
+  }
+  function zoomAtCenter(f) {
+    const vp = document.getElementById("mapViewport");
+    if (!vp) { setZoom(scale * f); return; }
+    const mx = vp.clientWidth / 2, my = vp.clientHeight / 2;
+    const old = scale;
+    setZoom(scale * f);
+    tx = mx - (mx - tx) * (scale / old);
+    ty = my - (my - ty) * (scale / old);
+    applyTransform();
+    holdRaster(220);
+  }
 
   function setupPanZoom() {
     const vp = document.getElementById("mapViewport");
@@ -501,12 +527,14 @@
       tx = mx - (mx - tx) * (scale / old);
       ty = my - (my - ty) * (scale / old);
       applyTransform();
+      holdRaster(240);
     }, { passive: false });
     vp.addEventListener("pointerdown", (e) => {
       if (e.target.closest(".map-island")) return;
       const canvas = document.getElementById("mapCanvas");
       if (canvas) canvas.classList.remove("map-animating");
       dragging = true; lastX = e.clientX; lastY = e.clientY;
+      holdRaster(1200);
       vp.setPointerCapture(e.pointerId);
     });
     vp.addEventListener("pointermove", (e) => {
@@ -514,9 +542,10 @@
       tx += e.clientX - lastX; ty += e.clientY - lastY;
       lastX = e.clientX; lastY = e.clientY;
       applyTransform();
+      holdRaster(280);
     });
-    vp.addEventListener("pointerup", () => { dragging = false; });
-    vp.addEventListener("pointercancel", () => { dragging = false; });
+    vp.addEventListener("pointerup", () => { dragging = false; holdRaster(90); });
+    vp.addEventListener("pointercancel", () => { dragging = false; holdRaster(90); });
   }
 
   function setup() {
@@ -533,8 +562,8 @@
     const zin = document.getElementById("mapZoomIn");
     const zout = document.getElementById("mapZoomOut");
     const zreset = document.getElementById("mapReset");
-    if (zin) zin.addEventListener("click", () => setZoom(scale * 1.2));
-    if (zout) zout.addEventListener("click", () => setZoom(scale * 0.83));
+    if (zin) zin.addEventListener("click", () => zoomAtCenter(1.2));
+    if (zout) zout.addEventListener("click", () => zoomAtCenter(0.83));
     if (zreset) zreset.addEventListener("click", () => focusStage(true));
     setupPanZoom();
     document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !modal.classList.contains("hidden")) modal.classList.add("hidden"); });

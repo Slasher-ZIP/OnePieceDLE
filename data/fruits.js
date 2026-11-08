@@ -80,6 +80,22 @@ const DEVIL_FRUITS = [
 // (les chemins d'images sont attribués plus bas, sauf designs inconnus)
 
 if (typeof window !== "undefined") window.DEVIL_FRUITS = DEVIL_FRUITS;
+// Utilisateurs de Fruits du Démon absents du casting jouable (personnages
+// secondaires ou non-canoniques). Ils existent UNIQUEMENT pour le jeu Fruit :
+// suggestions + validation, jamais dans le jeu de devinette de personnages,
+// l'album, la Tier List ou la carte.
+const FRUIT_ONLY_USERS = [
+  { name: "Pierre", aliases: ["PIERRE"], fruit: "uma" },
+  { name: "Shu", aliases: ["SHU"], fruit: "sabi" },
+  { name: "Very Good", aliases: ["VERY GOOD", "VERYGOOD"], fruit: "beri" },
+  { name: "Nero", aliases: ["NERO"], fruit: "noko" },
+  { name: "Jola", aliases: ["JOLA"], fruit: "ato" },
+  { name: "Leo (non-canon)", aliases: ["LEO NON CANON"], fruit: "nui" },
+  { name: "Ann", aliases: ["ANN"], fruit: "bijo" },
+  { name: "Smiley", aliases: ["SMILEY"], fruit: "sara_axolotl" }
+];
+if (typeof window !== "undefined") window.FRUIT_ONLY_USERS = FRUIT_ONLY_USERS;
+
 // Fruits dont le design n'a jamais été montré : on ne met AUCUNE image
 // (plutôt qu'une image de personnage/scène). Voir la collection.
 const FRUITS_WITHOUT_IMAGE = new Set([

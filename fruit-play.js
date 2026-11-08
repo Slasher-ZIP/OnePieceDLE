@@ -6,6 +6,7 @@
   if (typeof document === "undefined") return;
   const FRUITS = (typeof DEVIL_FRUITS !== "undefined" ? DEVIL_FRUITS : []);
   const CHARS = (typeof CHARACTERS !== "undefined" ? CHARACTERS : []);
+  const FRUIT_ONLY = (typeof FRUIT_ONLY_USERS !== "undefined" ? FRUIT_ONLY_USERS : []);
   if (!FRUITS.length || !CHARS.length) return;
 
   const KEY = "opdle_fruits_unlocked";
@@ -34,14 +35,29 @@
   function validUsers(f) {
     // On résout chaque nom vers le personnage réel de la base (nom canonique),
     // sinon un fruit dont l'utilisateur n'est connu que par un alias serait impossible à deviner.
+    // Les utilisateurs « fruit uniquement » (Pierre, Shu, Very Good…) n'existent
+    // pas dans le casting : ils restent valables pour le jeu Fruit, et seulement ici.
     return [f.user].concat(f.altUsers || []).filter(Boolean)
-      .map(u => { const c = charByName(u) || findChar(u); return c ? c.name : null; })
+      .map(u => {
+        const c = charByName(u) || findChar(u);
+        if (c) return c.name;
+        const fo = fruitOnlyUser(u);
+        return fo ? fo.name : null;
+      })
       .filter(Boolean);
   }
   function playable(f) { return validUsers(f).length > 0; }
   function pool() {
     const p = FRUITS.filter(playable);
     return p.length ? p : FRUITS;
+  }
+  function fruitOnlyUser(text) {
+    const q = clean(text);
+    if (!q) return null;
+    return FRUIT_ONLY.find(u => clean(u.name) === q || (u.aliases || []).some(a => clean(a) === q)) || null;
+  }
+  function findAnyUser(text) {
+    return findChar(text) || fruitOnlyUser(text);
   }
   function findChar(text) {
     const q = clean(text);
@@ -167,7 +183,7 @@
 
   function submit(text) {
     if (over) return;
-    const c = findChar(text);
+    const c = findAnyUser(text);
     if (!c) { flashError(); return; }
     if (guesses.indexOf(c.name) >= 0) return;
     guesses.push(c.name);
@@ -203,7 +219,7 @@
       inp.addEventListener("input", () => {
         const q = clean(inp.value);
         if (!q) { hideSug(); return; }
-        const matches = CHARS.filter(c => clean(c.name).indexOf(q) >= 0 || (c.aliases || []).some(a => clean(a).indexOf(q) >= 0)).slice(0, 8);
+        const matches = CHARS.concat(FRUIT_ONLY).filter(c => clean(c.name).indexOf(q) >= 0 || (c.aliases || []).some(a => clean(a).indexOf(q) >= 0)).slice(0, 8);
         if (!matches.length) { hideSug(); return; }
         menu.innerHTML = "";
         matches.forEach(c => {

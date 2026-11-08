@@ -26,6 +26,72 @@
     else { try { localStorage.setItem("opdle_avatar", fruitAvatarKey(id)); } catch (e) {} }
     if (typeof showToast === "function") showToast((isEn() ? "Avatar: " : "Avatar : ") + byId(id).name);
   }
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+  function rarityText(f) {
+    const r = Number(f.rarity) || 0;
+    if (typeof rarityLabel === "function") return rarityLabel(r, isEn() ? "en" : "fr");
+    return r ? "★".repeat(Math.min(6, r)) : "";
+  }
+  function isCurrentAvatar(id) {
+    try {
+      const cur = (typeof getCurrentAvatarName === "function") ? getCurrentAvatarName() : localStorage.getItem("opdle_avatar");
+      return cur === fruitAvatarKey(id);
+    } catch (e) { return false; }
+  }
+  function closeDetail() {
+    const m = document.getElementById("fruitDetailModal");
+    if (m) m.classList.add("hidden");
+  }
+  function openDetail(id) {
+    const f = byId(id);
+    if (!f || !isUnlocked(id)) return;
+    const modal = document.getElementById("fruitDetailModal");
+    const body = document.getElementById("fruitDetailBody");
+    if (!modal || !body) return;
+    const l = isEn() ? "en" : "fr";
+    const localized = l === "en" ? (f.nameEn || f.nameFr || "") : (f.nameFr || f.nameEn || "");
+    const other = l === "en" ? (f.nameFr || "") : (f.nameEn || "");
+    const users = [f.user].concat(f.altUsers || []).filter(Boolean);
+    const power = f.power ? (f.power[l] || f.power.fr || f.power.en || "") : "";
+    const rarity = rarityText(f);
+    const current = isCurrentAvatar(id);
+    const figure = f.image
+      ? `<img src="${esc(f.image)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fruit-noimg" style="display:none">?</div>`
+      : `<div class="fruit-noimg">?</div>`;
+    body.innerHTML = `
+      <div class="fruit-detail-top">
+        <div class="fruit-detail-figure">${figure}</div>
+        <div class="min-w-0 flex-1">
+          <p class="fruit-detail-romaji">${esc(f.name)}</p>
+          <p class="fruit-detail-localized">${esc(localized)}${other && other !== localized ? " · " + esc(other) : ""}</p>
+          <div class="fruit-detail-badges">
+            ${f.type ? `<span class="fruit-badge is-type">${esc(f.type)}</span>` : ""}
+            ${rarity ? `<span class="fruit-badge is-rarity">${esc(rarity)}</span>` : ""}
+          </div>
+        </div>
+      </div>
+      <div class="fruit-detail-grid">
+        <div><dt>${L("Utilisateur", "User")}</dt><dd>${esc(users.join(" · ") || "—")}</dd></div>
+        <div><dt>${L("Arc", "Arc")}</dt><dd>${esc(f.arc || "—")}</dd></div>
+      </div>
+      ${power ? `<p class="fruit-detail-power"><b>${L("Pouvoir", "Power")}</b>${esc(power)}</p>` : ""}
+      <div class="fruit-detail-actions">
+        <button type="button" class="fruit-detail-avatar${current ? " is-current" : ""}" id="fruitDetailAvatarBtn"${current ? " disabled" : ""}>${current ? L("✓ Avatar actuel", "✓ Current avatar") : L("Utiliser comme avatar", "Use as avatar")}</button>
+        <button type="button" class="fruit-detail-close" id="fruitDetailCloseBtn">${L("Fermer", "Close")}</button>
+      </div>`;
+    modal.classList.remove("hidden");
+    const av = document.getElementById("fruitDetailAvatarBtn");
+    if (av && !current) av.addEventListener("click", () => {
+      useAsAvatar(id);
+      av.textContent = L("✓ Avatar actuel", "✓ Current avatar");
+      av.classList.add("is-current");
+      av.disabled = true;
+    });
+    const close = document.getElementById("fruitDetailCloseBtn");
+    if (close) close.addEventListener("click", closeDetail);
+  }
 
   function sortFruits(list) {
     const sel = document.getElementById("fruitSortSel");
@@ -74,7 +140,7 @@
       card.innerHTML = `${thumb}
         <div class="fruit-card-name">${ok ? f.name : "???"}</div>
         <div class="fruit-card-meta">${ok ? f.type : L("Verrouillé", "Locked")}</div>`;
-      if (ok) card.addEventListener("click", () => useAsAvatar(f.id));
+      if (ok) card.addEventListener("click", () => openDetail(f.id));
       container.appendChild(card);
     });
     updateHeader();
@@ -87,7 +153,7 @@
     const got = getUnlocked().filter(id => byId(id)).length;
     if (collectionMode) {
       if (count) count.textContent = got + " / " + total;
-      if (hint) hint.textContent = L("Collection des Fruits du Démon — clique sur un fruit débloqué pour le mettre en avatar.", "Devil Fruit collection — click an unlocked fruit to set it as your avatar.");
+      if (hint) hint.textContent = L("Collection des Fruits du Démon — clique sur un fruit débloqué pour voir sa fiche et le mettre en avatar.", "Devil Fruit collection — click an unlocked fruit for its details and to set it as your avatar.");
     }
   }
 
@@ -123,6 +189,11 @@
   function setup() {
     const toggle = document.getElementById("collectionFruitToggle");
     if (toggle) toggle.addEventListener("click", (e) => { e.stopPropagation(); setCollectionMode(!collectionMode); });
+    const detail = document.getElementById("fruitDetailModal");
+    if (detail) detail.addEventListener("click", (e) => { if (e.target === detail) closeDetail(); });
+    const detailClose = document.getElementById("fruitDetailClose");
+    if (detailClose) detailClose.addEventListener("click", closeDetail);
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDetail(); });
     const sort = document.getElementById("fruitSortSel");
     if (sort) sort.addEventListener("change", () => { if (collectionMode) renderCollection(document.getElementById("collectionGrid")); });
     const search = document.getElementById("fruitSearch");
@@ -151,6 +222,7 @@
     list: LIST, byId, byUser, isUnlocked, unlock, fruitAvatarKey,
     isCollectionMode: () => collectionMode,
     setCollectionMode, renderCollection, updateHeader,
+    openDetail, closeDetail,
     _sortFruits: sortFruits
   };
 })();

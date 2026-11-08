@@ -4369,8 +4369,7 @@ const CHARACTERS = [
   "FAMILLE DONQUICHOTE",
   "DONQUICHOTE",
   "EQUIPAGE DE DOFLAMINGO",
-  "GROSSE VOIX",
-  "PIERRE"
+  "GROSSE VOIX"
 ],
     gender: {
       fr: "Homme",
